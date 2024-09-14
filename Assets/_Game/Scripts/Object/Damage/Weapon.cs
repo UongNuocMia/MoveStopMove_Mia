@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : GameUnit, IInteractable
+public class Weapon : GameUnit
 {
-    [SerializeField] private GameObject visualBooster;
-    [SerializeField] private BoxCollider boxCollider;
-    [SerializeField] private Bullet bullet;
-    private Enum.WeaponEnum weaponEnum;
+    [SerializeField] private GameObject visualWeapon;
+    [SerializeField] private Bullet bulletPrefabs;
+    private Bullet bullet;
     private Character owner;
+    private Enum.WeaponEnum weaponEnum;
 
 
 
@@ -16,30 +16,17 @@ public class Weapon : GameUnit, IInteractable
     {
         owner = character;
     }
-
-    private void OnFire()
+    public void Fire()
     {
-        bullet.SetOwner(owner);
+        if (bullet == null)
+        {
+            bullet = (Bullet)SimplePool.Spawn(bulletPrefabs, owner.ShootPoint.position, Quaternion.identity);
+            bullet.SetOwner(owner);
+        }
+        bullet.SetPosition(owner.ShootPoint.position);
+        bullet.OnFire();
     }
 
-    private void Start()
-    {
-
-    }
-
-    protected void OnHideVisual(bool isHide) => visualBooster.SetActive(isHide);
-    protected void OnHideCollision(bool isHide) => boxCollider.enabled = !isHide;
-
-    public Transform GetTransform()
-    {
-        return TF;
-    }
-
-    public void Interact(Character character)
-    {
-        character.TakeDamage();
-        OnHideVisual(true);
-        OnHideCollision(true);
-    }
+    protected void OnHideVisual(bool isHide) => visualWeapon.SetActive(isHide);
 
 }

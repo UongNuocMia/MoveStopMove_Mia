@@ -21,11 +21,6 @@ public class Booster : GameUnit, IInteractable
     {
 
     }
-    public Transform GetTransform()
-    {
-        return TF;
-    }
-
     public void Interact(Character character)
     {
         character.GetBooster(booster);

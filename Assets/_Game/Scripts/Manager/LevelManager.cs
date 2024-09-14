@@ -3,18 +3,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-public enum ColorEnum
-{
-    White, //none
-    Red,
-    Purple,
-    Green,
-    Blue,
-    Yellow,
-    Pink,
-    Black,
-    Grey,
-}
+
 
 
 public class LevelManager : Singleton<LevelManager>
@@ -112,8 +101,9 @@ public class LevelManager : Singleton<LevelManager>
         return top3Characters;
     }
 
-    internal static void SetCharacterRemain()
+    public void SetCharacterRemain()
     {
-        throw new System.NotImplementedException();
+        //total character onstage = ??
+        
     }
 }

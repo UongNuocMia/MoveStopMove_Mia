@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.TextCore.Text;
+using static Enum;
 public class Character : GameUnit
 {
     [SerializeField] private SkinnedMeshRenderer colorRenderer;
-
     [SerializeField] protected Animator anim;
     [SerializeField] protected Weapon currentWeapon;
+    [SerializeField] protected Transform shootPoint;
+    [SerializeField] protected Transform weaponPoint;
     [SerializeField] protected CharacterConfigSO characterConfigSO;
-
     private string currentAnimName;
     protected bool isMoving;
     protected bool isEndGame;
@@ -18,12 +18,13 @@ public class Character : GameUnit
     protected float speed;
     protected float health;
     protected float interactRange;
-    protected Enum.BoosterEnum currentBooster;
+    protected BoosterEnum currentBooster;
     protected List<Character> characterInArea = new();
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
     public int Score { protected set; get; } = 0;
     public Character target { private set; get; }
-    public ColorEnum CharacterColorEnum { protected set; get; }
+
+    public Transform ShootPoint => shootPoint;
    
 
     private void Start()
@@ -36,8 +37,9 @@ public class Character : GameUnit
         interactRange = 3f;
         speed = characterConfigSO.speed;
         health = characterConfigSO.health;
-        currentBooster = Enum.BoosterEnum.None;
+        currentBooster = BoosterEnum.None;
         agent = GetComponent<NavMeshAgent>();
+        SetUpWeapon();
     }
 
     private void SetUpWeapon()
@@ -45,10 +47,8 @@ public class Character : GameUnit
         currentWeapon.SetOwner(this);
     }
 
-    [SerializeField] private float rotationSpeed = 0.2f;
     public void OnEnemyGetInArea(Character character)
     {
-         // just for test
         characterInArea.Add(character);
     }
 
@@ -71,11 +71,6 @@ public class Character : GameUnit
         Attack();
     }
 
-    public void Scan()
-    {
-        Attack();
-    }
-
     private Character FindNearstEnemy()
     {
         float distance = Vector3.Distance(TF.position, characterInArea[0].TF.position);
@@ -92,14 +87,21 @@ public class Character : GameUnit
 
     public void TakeDamage()
     {
-        //tèo luôn
+        health = 0;
+        OnDeath();
+    }
+
+    private void OnDeath()
+    {
         Debug.Log("die");
+
     }
 
     private void Attack()
     {
-        isAttack = true;
         ChangeAnim(Constants.ATTACK_ANIM);
+        currentWeapon.Fire();
+        isAttack = true;
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -111,18 +113,17 @@ public class Character : GameUnit
         }
     }
 
-    public void GetBooster(Enum.BoosterEnum booster)
+    public void GetBooster(BoosterEnum booster)
     {
         currentBooster = booster;
         OnGetBooster(currentBooster);
-        currentBooster = Enum.BoosterEnum.None;
+        currentBooster = BoosterEnum.None;
     }
 
     #region Status
     public void OnChangeColor(Material material, ColorEnum colorEnum)
     {
         colorRenderer.material = material;
-        CharacterColorEnum = colorEnum;
     }
     public virtual void OnStartGame()
     {
@@ -153,21 +154,21 @@ public class Character : GameUnit
         //    ChangeAnim(Constants.LOSE_ANIM);
     }
 
-    private void OnGetBooster(Enum.BoosterEnum boosterEnum)
+    private void OnGetBooster(BoosterEnum boosterEnum)
     {
         switch (boosterEnum)
         {
-            case Enum.BoosterEnum.None:
+            case BoosterEnum.None:
                 break;
-            case Enum.BoosterEnum.KingSpeed:
+            case BoosterEnum.KingSpeed:
                 speed++;
                 break;
-            case Enum.BoosterEnum.Hulk:
+            case BoosterEnum.Hulk:
                 SetScale(0.1f);
                 break;
-            case Enum.BoosterEnum.Fly:
+            case BoosterEnum.Fly:
                 break;
-            case Enum.BoosterEnum.WeaponScale:
+            case BoosterEnum.WeaponScale:
                 currentWeapon.SetScale(0.1f);
                 break;
             default:
@@ -191,7 +192,7 @@ public class Character : GameUnit
     public void OnKillSucess(Character character)
     {
         characterInArea.Remove(character);
-        LevelManager.SetCharacterRemain();
-        UIManager.ShowNoti();
+        LevelManager.Ins.SetCharacterRemain();
+        UIManager.Ins.ShowNoti();
     }
 }

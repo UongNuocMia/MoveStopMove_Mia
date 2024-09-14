@@ -195,9 +195,9 @@ public class UIManager : Singleton<UIManager>
         backCanvas.Clear();
     }
 
-    internal static void ShowNoti()
+    public void ShowNoti()
     {
-        throw new NotImplementedException();
+        
     }
 
     #endregion

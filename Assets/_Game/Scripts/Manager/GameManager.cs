@@ -16,7 +16,6 @@ public class GameManager : Singleton<GameManager>
     public int Level { private set; get; }
     public int PlayerScore { private set; get; }
     public bool IsMaxLevel { private set; get; }
-    public List<ColorEnum> RandomColorList { private set; get; } = new();
 
     private static GameState gameState = GameState.MainMenu;
     public static bool IsState(GameState state) => gameState == state;
