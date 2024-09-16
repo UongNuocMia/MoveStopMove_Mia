@@ -1,19 +1,19 @@
 ﻿
 using UnityEngine;
 
-public class MoveToEndPointState : IState<Enemy>
+public class MoveToEndPointState : IState<Bot>
 {
-    public void OnEnter(Enemy enemy)
+    public void OnEnter(Bot enemy)
     {
 
     }
 
-    public void OnExecute(Enemy enemy)
+    public void OnExecute(Bot enemy)
     {
 
     }
 
-    public void OnExit(Enemy enemy)
+    public void OnExit(Bot enemy)
     {
 
     }

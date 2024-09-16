@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static Enum;
+using static UnityEngine.UI.GridLayoutGroup;
 public class Character : GameUnit
 {
     [SerializeField] private SkinnedMeshRenderer colorRenderer;
     [SerializeField] protected Animator anim;
-    [SerializeField] protected Weapon currentWeapon;
+    [SerializeField] protected Transform hairPoint;
     [SerializeField] protected Transform shootPoint;
     [SerializeField] protected Transform weaponPoint;
     [SerializeField] protected CharacterConfigSO characterConfigSO;
+    [SerializeField] protected Weapon weaponPrefab; // for test
     private string currentAnimName;
     protected bool isMoving;
     protected bool isEndGame;
     protected bool isAttack;
     protected float speed;
     protected float health;
-    protected float interactRange;
-    protected BoosterEnum currentBooster;
+    protected BoosterType currentBooster;
+    protected Weapon currentWeapon;
     protected List<Character> characterInArea = new();
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
     public int Score { protected set; get; } = 0;
@@ -34,17 +35,18 @@ public class Character : GameUnit
     protected virtual void OnInit()
     {
         Score = 0;
-        interactRange = 3f;
         speed = characterConfigSO.speed;
         health = characterConfigSO.health;
-        currentBooster = BoosterEnum.None;
+        currentBooster = BoosterType.None;
         agent = GetComponent<NavMeshAgent>();
         SetUpWeapon();
     }
 
     private void SetUpWeapon()
     {
-        currentWeapon.SetOwner(this);
+        Weapon weapon = Instantiate(weaponPrefab, weaponPoint);
+        weapon.SetOwner(this);
+        currentWeapon = weapon;
     }
 
     public void OnEnemyGetInArea(Character character)
@@ -113,11 +115,11 @@ public class Character : GameUnit
         }
     }
 
-    public void GetBooster(BoosterEnum booster)
+    public void GetBooster(BoosterType booster)
     {
         currentBooster = booster;
         OnGetBooster(currentBooster);
-        currentBooster = BoosterEnum.None;
+        currentBooster = BoosterType.None;
     }
 
     #region Status
@@ -144,31 +146,23 @@ public class Character : GameUnit
     {
 
     }
-    public void OnResult(Transform transform, int rank)
-    {
-        TF.position = transform.position;
-        TF.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-        if (rank == 0)
-            ChangeAnim(Constants.WIN_ANIM);
-        //else
-        //    ChangeAnim(Constants.LOSE_ANIM);
-    }
 
-    private void OnGetBooster(BoosterEnum boosterEnum)
+
+    private void OnGetBooster(BoosterType boosterEnum)
     {
         switch (boosterEnum)
         {
-            case BoosterEnum.None:
+            case BoosterType.None:
                 break;
-            case BoosterEnum.KingSpeed:
+            case BoosterType.KingSpeed:
                 speed++;
                 break;
-            case BoosterEnum.Hulk:
+            case BoosterType.Hulk:
                 SetScale(0.1f);
                 break;
-            case BoosterEnum.Fly:
+            case BoosterType.Fly:
                 break;
-            case BoosterEnum.WeaponScale:
+            case BoosterType.WeaponScale:
                 currentWeapon.SetScale(0.1f);
                 break;
             default:

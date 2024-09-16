@@ -1,6 +1,7 @@
 public class Constants
 {
     //Tag
+    public const string OBSTACLE_TAG = "Obstacle";
     public const string CHARACTER_TAG = "Character";
     public const string INTERACTABLE_TAG = "Interactable";
 

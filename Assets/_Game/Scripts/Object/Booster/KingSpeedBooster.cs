@@ -7,6 +7,6 @@ public class KingSpeedBooster : Booster
     protected override void OnInit()
     {
         base.OnInit();
-        booster = Enum.BoosterEnum.KingSpeed;
+        booster = BoosterType.KingSpeed;
     }
 }

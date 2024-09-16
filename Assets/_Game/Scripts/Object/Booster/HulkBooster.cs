@@ -7,6 +7,6 @@ public class HulkBooster : Booster
     protected override void OnInit()
     {
         base.OnInit();
-        booster = Enum.BoosterEnum.Hulk;
+        booster = BoosterType.Hulk;
     }
 }

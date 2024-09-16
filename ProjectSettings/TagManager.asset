@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Character
   - Interactable
+  - Obstacle
   layers:
   - Default
   - TransparentFX

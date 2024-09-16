@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PatrolState : IState<Enemy>
+public class PatrolState : IState<Bot>
 {
-    public void OnEnter(Enemy enemy)
+    public void OnEnter(Bot enemy)
     {
       
     }
 
-    public void OnExecute(Enemy enemy)
+    public void OnExecute(Bot enemy)
     {
 
     }
     
-    public void OnExit(Enemy t)
+    public void OnExit(Bot t)
     {
 
     }

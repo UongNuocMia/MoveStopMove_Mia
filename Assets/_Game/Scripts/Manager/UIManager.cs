@@ -121,7 +121,7 @@ public class UIManager : Singleton<UIManager>
         {
             if (uiResources == null)
             {
-                uiResources = Resources.LoadAll<UICanvas>("UI/");
+                uiResources = Resources.LoadAll<UICanvas>("UIPrefabs/");
             }
 
             for (int i = 0; i < uiResources.Length; i++)

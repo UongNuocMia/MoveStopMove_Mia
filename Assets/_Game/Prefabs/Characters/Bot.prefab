@@ -158,13 +158,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3106858456819224383}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fe3ddcbde99f6345aeb713f2c670848, type: 3}
+  m_Script: {fileID: 11500000, guid: 4cb3b3808982f324c9b2a23082064260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolType: 2
+  poolType: 0
   colorRenderer: {fileID: 0}
   anim: {fileID: 2441501143559319710}
   currentWeapon: {fileID: 8379834035939711534}
+  hairPoint: {fileID: 2564575200894459973}
   shootPoint: {fileID: 1849879444346131848}
   weaponPoint: {fileID: 8641066574078163068}
   characterConfigSO: {fileID: 11400000, guid: 87636a50f4fe2fe46a33c98d514dc4d0, type: 2}
@@ -234,7 +235,7 @@ GameObject:
   - component: {fileID: 5865346394295946037}
   - component: {fileID: 9147582894711852377}
   - component: {fileID: 4471280666416161668}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttackArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,6 +290,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0f8bfb251233a4fb923d7583ae41c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7509294413916252863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2564575200894459973}
+  m_Layer: 0
+  m_Name: Hair
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2564575200894459973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7509294413916252863}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0000000014479157, y: 0.000000030864612, z: -0.0000000050349627, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4707181086541641110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &725435049802807038
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -359,6 +391,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -4216859302048453862, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       insertIndex: 0
       addedObject: {fileID: 1849879444346131848}
+    - targetCorrespondingSourceObject: {fileID: -3800467336962686104, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2564575200894459973}
     - targetCorrespondingSourceObject: {fileID: -3220319501169496967, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       insertIndex: 0
       addedObject: {fileID: 8641066574078163068}
@@ -367,6 +402,11 @@ PrefabInstance:
 --- !u!95 &2441501143559319710 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 725435049802807038}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4707181086541641110 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3800467336962686104, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 725435049802807038}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &5722939996907019748 stripped

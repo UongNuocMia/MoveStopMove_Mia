@@ -65,7 +65,7 @@ public class GameManager : Singleton<GameManager>
 
     private void PrepareLevel()
     {
-        Level = Data.Ins.GetLevel();
+        Level = UserData.Ins.GetLevel();
         UIManager.Ins.OpenUI<MainMenu>();
         LevelManager.Ins.OnLoadMap();
         player = Spawner.Ins.GetPlayer();
@@ -93,7 +93,7 @@ public class GameManager : Singleton<GameManager>
         List<Character> top3Characters = LevelManager.Ins.GetTop3Characters();
         PlayerScore = player.Score;
         UIManager.Ins.CloseUI<GamePlay>();
-        if (Winner is Enemy)
+        if (Winner is Bot)
         {
             UIManager.Ins.OpenUI<Lose>();
         }
@@ -101,10 +101,10 @@ public class GameManager : Singleton<GameManager>
         {
             UIManager.Ins.OpenUI<Win>();
         }
-        for (int i = 0; i < top3Characters.Count; i++)
-        {
-            top3Characters[i].OnResult(LevelManager.Ins.RankTransformList[i], i);
-        }
+        //for (int i = 0; i < top3Characters.Count; i++)
+        //{
+        //    top3Characters[i].OnResult(LevelManager.Ins.RankTransformList[i], i);
+        //}
         CameraFollow.FindCharacter(top3Characters[0].TF);
     }
 
@@ -116,7 +116,7 @@ public class GameManager : Singleton<GameManager>
             IsMaxLevel = true;
             Level = 0;
         }
-        Data.Ins.SetLevel(Level);
+        UserData.Ins.SetLevel(Level);
         ChangeState(GameState.MainMenu);
     }
 

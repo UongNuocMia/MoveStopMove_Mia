@@ -8,9 +8,7 @@ public class Weapon : GameUnit
     [SerializeField] private Bullet bulletPrefabs;
     private Bullet bullet;
     private Character owner;
-    private Enum.WeaponEnum weaponEnum;
-
-
+    private WeaponType weaponEnum;
 
     public void SetOwner(Character character)
     {
@@ -26,7 +24,6 @@ public class Weapon : GameUnit
         bullet.SetPosition(owner.ShootPoint.position);
         bullet.OnFire();
     }
-
     protected void OnHideVisual(bool isHide) => visualWeapon.SetActive(isHide);
 
 }

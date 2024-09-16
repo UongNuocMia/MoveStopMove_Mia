@@ -29,4 +29,9 @@ public class Player : Character
     {
         return speed;
     }
+
+    public void OnResult()
+    {
+        ChangeAnim(Constants.DANCE_ANIM);
+    }
 }

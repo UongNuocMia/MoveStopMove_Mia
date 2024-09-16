@@ -3,9 +3,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : Character
+public class Bot : Character
 { 
-    private IState<Enemy> currentState;
+    private IState<Bot> currentState;
 
     protected override void OnInit()
     {
@@ -29,8 +29,7 @@ public class Enemy : Character
         TF.forward = Vector3.Slerp(TF.forward, moveDirection, 0);
         ChangeAnim(Constants.RUN_ANIM);
     }
-
-    public void ChangeState(IState<Enemy> newState)
+    public void ChangeState(IState<Bot> newState)
     {
         if (currentState != null)
         {
