@@ -9,7 +9,6 @@ public class GamePlay : UICanvas
         UIManager.Ins.OpenUI<Setting>();
         GameManager.Ins.ChangeState(GameState.Setting);
     }
-
     //public void WinButton()
     //{
     //    UIManager.Ins.OpenUI<Win>().score.text = Random.Range(100, 200).ToString();
