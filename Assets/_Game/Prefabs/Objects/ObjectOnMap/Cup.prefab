@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4898984415278213563}
+  - component: {fileID: 1843956951156186221}
   m_Layer: 0
   m_Name: Cup
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,12 +27,28 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.7110445, y: 0, z: 0.1355834}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4435363509916381793}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1843956951156186221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2392067813228465495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d1b5fb6735550c409279bc4758863e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialsList:
+  - {fileID: 2100000, guid: 7d5c443488a133c43a2c9872be7024ea, type: 2}
+  - {fileID: 2100000, guid: 122c02c9f1709944d8954322fec378ee, type: 2}
+  obstacleMeshRenderer: {fileID: 3298534060679514382}
 --- !u!1001 &4181357927660443018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,15 +109,66 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7d5c443488a133c43a2c9872be7024ea, type: 2}
     - target: {fileID: 919132149155446097, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
       propertyPath: m_Name
       value: SM_Cup_01
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3798296185365749168}
   m_SourcePrefab: {fileID: 100100000, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
+--- !u!23 &3298534060679514382 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
+  m_PrefabInstance: {fileID: 4181357927660443018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3946915997964560603 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
+  m_PrefabInstance: {fileID: 4181357927660443018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &3798296185365749168
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3946915997964560603}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7251255731686344134, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}
 --- !u!4 &4435363509916381793 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9921f29533ce9b846b4fc738bcdd9529, type: 3}

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Bullet : GameUnit, IInteractable
 {
-    [SerializeField] private GameObject visualBullet;
+    [SerializeField] private GameObject bulletVisual;
     [SerializeField] private BoxCollider boxCollider;
     [SerializeField] private Rigidbody rb;
     private Character owner;
@@ -68,7 +68,7 @@ public class Bullet : GameUnit, IInteractable
         character.TakeDamage();
         OnDeSpawn();
     }
-    protected void OnHideVisual(bool isHide) => visualBullet.SetActive(!isHide);
+    protected void OnHideVisual(bool isHide) => bulletVisual.SetActive(!isHide);
     protected void OnHideCollision(bool isHide) => boxCollider.enabled = !isHide;
 
 }

@@ -1,16 +1,16 @@
 public class IdleState : IState<Bot>
 {
-    public void OnEnter(Bot enemy)
+    public void OnEnter(Bot bot)
     {
-        enemy.ChangeAnim(Constants.IDLE_ANIM);
+        bot.ChangeAnim(Constants.IDLE_ANIM);
     }
 
-    public void OnExecute(Bot enemy)
+    public void OnExecute(Bot bot)
     {
 
     }
 
-    public void OnExit(Bot enemy)
+    public void OnExit(Bot bot)
     {
 
     }

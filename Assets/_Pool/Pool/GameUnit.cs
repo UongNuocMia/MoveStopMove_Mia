@@ -31,7 +31,7 @@ public class GameUnit : MonoBehaviour
         tf.position = pos;
     }
 
-    public void SetScale(float scale )
+    public void SetScale(float scale)
     {
         tf.localScale = new Vector3(tf.localScale.x + scale, tf.localScale.y + scale, tf.localScale.z + scale);
     }

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 0
-  visualWeapon: {fileID: 5516336895345071249}
+  weaponVisual: {fileID: 5516336895345071249}
   bulletPrefabs: {fileID: -7404916019836541684, guid: 762571856533f8847b9bd59ec5961e6b, type: 3}
 --- !u!1001 &5516336895345103409
 PrefabInstance:
@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 37a28123e5e39f44fbff5daa106af161, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.806
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 37a28123e5e39f44fbff5daa106af161, type: 3}
       propertyPath: m_LocalRotation.w

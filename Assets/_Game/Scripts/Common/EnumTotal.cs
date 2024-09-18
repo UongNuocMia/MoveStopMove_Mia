@@ -10,9 +10,16 @@ public enum BoosterType
 public enum WeaponType
 {
     None = 0,
-    Hammer = 1,
-    Axe = 2,
-    Knife = 3,
+    Arrow = 1,
+    Axe_0 = 2,
+    Axe_1 = 3,
+    Boomerang = 4,
+    Candy_0 = 5,
+    Candy_1 = 6,
+    Candy_2 = 7,
+    Candy_4 = 8,
+    Hammer = 9,
+    Knife = 10,
 }
 public enum PantType
 {

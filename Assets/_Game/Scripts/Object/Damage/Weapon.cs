@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Weapon : GameUnit
 {
-    [SerializeField] private GameObject visualWeapon;
+    [SerializeField] private GameObject weaponVisual;
     [SerializeField] private Bullet bulletPrefabs;
     private Bullet bullet;
     private Character owner;
@@ -16,14 +16,21 @@ public class Weapon : GameUnit
     }
     public void Fire()
     {
+        OnHideVisual(true);
         if (bullet == null)
         {
-            bullet = (Bullet)SimplePool.Spawn(bulletPrefabs, owner.ShootPoint.position, Quaternion.identity);
+            bullet = Instantiate(bulletPrefabs);
             bullet.SetOwner(owner);
         }
-        bullet.SetPosition(owner.ShootPoint.position);
+        
+        bullet.transform.position = owner.ShootPoint.position;
         bullet.OnFire();
     }
-    protected void OnHideVisual(bool isHide) => visualWeapon.SetActive(isHide);
+
+    public void OnOwnerDeath()
+    {
+
+    }
+    public void OnHideVisual(bool isHide) => weaponVisual.SetActive(!isHide);
 
 }

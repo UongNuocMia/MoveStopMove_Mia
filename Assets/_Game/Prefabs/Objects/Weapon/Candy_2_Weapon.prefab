@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 0
-  visualWeapon: {fileID: 3481652496663601835}
+  weaponVisual: {fileID: 3481652496663601835}
   bulletPrefabs: {fileID: 6712281823706813250, guid: 72df2bec7224bcd43a9b1838c1793696, type: 3}
 --- !u!1001 &3481652496663700491
 PrefabInstance:

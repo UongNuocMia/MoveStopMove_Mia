@@ -16,4 +16,17 @@ public static class Utilities
             ts[r] = tmp;
         }
     }
+    public static float GetTimeCurrentAnim(Animator anim, string currentAnim)
+    {
+        float animTime = 0;
+        AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
+        foreach (AnimationClip clip in clips)
+        {
+            if (clip.name == currentAnim)
+            {
+                animTime = clip.length;
+            }
+        }
+        return animTime;
+    }
 }

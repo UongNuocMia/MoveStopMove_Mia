@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 0
-  visualWeapon: {fileID: 3736694452551005774}
+  weaponVisual: {fileID: 3736694452551005774}
   bulletPrefabs: {fileID: 6836709934225140458, guid: 34ddeca44cc3bf741865636d23f268df, type: 3}
 --- !u!1001 &4682207426822729543
 PrefabInstance:
@@ -123,6 +123,10 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: ceffb78c74021304889ac584f173d156, type: 3}
       propertyPath: m_Name
       value: Arrow
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: ceffb78c74021304889ac584f173d156, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -7,7 +7,9 @@ public class Player : Character
     protected override void OnInit()
     {
         base.OnInit();
+        currentWeapon = GameManager.Ins.GetWeapon((WeaponType)UserData.Ins.GetWeapon());
         playerMovement = GetComponent<PlayerMovement>();
+        SetUpWeapon();
     }
 
     private void Update()
@@ -21,7 +23,10 @@ public class Player : Character
                 isAttack = false;
             }
             else
+            {
                 OnStopMoving();
+                
+            }
         }
     }
 

@@ -7,12 +7,12 @@ using UnityEngine.UIElements;
 
 public class Spawner : Singleton<Spawner>
 {
-    [SerializeField] private Bot enemyPrefab;
+    [SerializeField] private Bot botPrefab;
     [SerializeField] private Player playerPrefab;
 
     private Player player;
     private List<Vector3> randomPositionList = new();
-    public List<Bot> EnemyList { private set; get; } = new();
+    public List<Bot> BotList { private set; get; } = new();
     public List<Character> CharacterList { private set; get; } = new();
 
     public void GenarateCharacter(List<Vector3> positionList, int indexOfPlayer)
@@ -36,8 +36,8 @@ public class Spawner : Singleton<Spawner>
                 }
                 else
                 {
-                    character = SetUpEnemy(positionList[i]);
-                    EnemyList.Add((Bot)character);
+                    character = SetUpBot(positionList[i]);
+                    BotList.Add((Bot)character);
                 }
                 CharacterList.Add(character);
             }
@@ -61,10 +61,10 @@ public class Spawner : Singleton<Spawner>
         Utilities.Shuffle(randomList);
         return randomList;
     }
-    private Bot SetUpEnemy(Vector3 position)
+    private Bot SetUpBot(Vector3 position)
     {
-        Bot enemy = (Bot)SimplePool.Spawn(this.enemyPrefab, position, Quaternion.identity);
-        return enemy;
+        Bot bot = (Bot)SimplePool.Spawn(this.botPrefab, position, Quaternion.identity);
+        return bot;
     }
     private Player SetUpPlayer(Vector3 position)
     {
@@ -77,8 +77,8 @@ public class Spawner : Singleton<Spawner>
         return player;
     }
 
-    public List<Bot> GetListEnemy()
+    public List<Bot> GetListBot()
     {
-        return EnemyList;
+        return BotList;
     }
 }

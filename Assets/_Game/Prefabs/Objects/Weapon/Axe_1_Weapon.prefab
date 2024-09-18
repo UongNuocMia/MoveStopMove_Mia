@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 8724999896382143539}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.22012287, y: 0.974, z: 0.9084603}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 0
-  visualWeapon: {fileID: 35600363527906161}
-  bulletPrefabs: {fileID: 0}
+  weaponVisual: {fileID: 35600363527906161}
+  bulletPrefabs: {fileID: 700127479994107943, guid: 3c8d2ef44e0940143b934320fb0ac1da, type: 3}
 --- !u!1001 &35600363527939537
 PrefabInstance:
   m_ObjectHideFlags: 0

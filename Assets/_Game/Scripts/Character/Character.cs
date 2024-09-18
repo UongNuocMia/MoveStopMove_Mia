@@ -2,29 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.UI.GridLayoutGroup;
 public class Character : GameUnit
 {
-    [SerializeField] private SkinnedMeshRenderer colorRenderer;
+    [SerializeField] protected SkinnedMeshRenderer colorRenderer;
     [SerializeField] protected Animator anim;
     [SerializeField] protected Transform hairPoint;
     [SerializeField] protected Transform shootPoint;
     [SerializeField] protected Transform weaponPoint;
     [SerializeField] protected CharacterConfigSO characterConfigSO;
-    [SerializeField] protected Weapon weaponPrefab; // for test
     private string currentAnimName;
+    protected bool isDead;
     protected bool isMoving;
-    protected bool isEndGame;
     protected bool isAttack;
+    protected bool isEndGame;
     protected float speed;
     protected float health;
     protected BoosterType currentBooster;
     protected Weapon currentWeapon;
-    protected List<Character> characterInArea = new();
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
+
     public int Score { protected set; get; } = 0;
     public Character target { private set; get; }
-
+    public List<Character> characterInAreaList { private set; get; } = new();
     public Transform ShootPoint => shootPoint;
    
 
@@ -35,38 +34,45 @@ public class Character : GameUnit
     protected virtual void OnInit()
     {
         Score = 0;
+        isDead = false;
         speed = characterConfigSO.speed;
         health = characterConfigSO.health;
         currentBooster = BoosterType.None;
         agent = GetComponent<NavMeshAgent>();
-        SetUpWeapon();
     }
 
-    private void SetUpWeapon()
+    protected void SetUpWeapon()
     {
-        Weapon weapon = Instantiate(weaponPrefab, weaponPoint);
-        weapon.SetOwner(this);
-        currentWeapon = weapon;
+        Instantiate(currentWeapon, weaponPoint);
+        currentWeapon.OnHideVisual(false);
+        currentWeapon.SetOwner(this);
     }
 
     public void OnEnemyGetInArea(Character character)
     {
-        characterInArea.Add(character);
+        if (character.isDead)
+            return;
+        characterInAreaList.Add(character);
     }
 
     public void OnEnemyGetOutArea(Character character)
     {
-        if (characterInArea.Contains(character))
+        if (characterInAreaList.Contains(character))
         {
-            characterInArea.Remove(character);
+            characterInAreaList.Remove(character);
         }
     }
 
     public void OnStopMoving()
     {
-        if (isAttack)
-            return;
-        if (characterInArea.Count == 0) return;
+        if (characterInAreaList.Count == 0) return;
+        ChangeAnim(Constants.IDLE_ANIM);
+        OnPrepareAttack();
+    }
+
+    public void OnPrepareAttack()
+    {
+        if (isAttack) return;
         target = FindNearstEnemy();
         if (target == null) return;
         TF.LookAt(target.TF);
@@ -75,11 +81,11 @@ public class Character : GameUnit
 
     private Character FindNearstEnemy()
     {
-        float distance = Vector3.Distance(TF.position, characterInArea[0].TF.position);
-        if (characterInArea.Count == 1)
-            return characterInArea[0];
+        float distance = Vector3.Distance(TF.position, characterInAreaList[0].TF.position);
+        if (characterInAreaList.Count == 1)
+            return characterInAreaList[0];
         Character character = null;
-        foreach (var characterNear in characterInArea)
+        foreach (var characterNear in characterInAreaList)
         {
             if (Vector3.Distance(TF.position, characterNear.TF.position) < distance)
                 character = characterNear;
@@ -93,10 +99,12 @@ public class Character : GameUnit
         OnDeath();
     }
 
-    private void OnDeath()
+    protected virtual void OnDeath()
     {
         Debug.Log("die");
-
+        ChangeAnim(Constants.DEAD_ANIM);
+        currentWeapon.OnOwnerDeath();
+        isDead = true;
     }
 
     private void Attack()
@@ -104,6 +112,13 @@ public class Character : GameUnit
         ChangeAnim(Constants.ATTACK_ANIM);
         currentWeapon.Fire();
         isAttack = true;
+        float time = Utilities.GetTimeCurrentAnim(anim, "Attack");
+        Invoke(nameof(ChangeToIdle), time);
+    }
+
+    private void ChangeToIdle()
+    {
+        ChangeAnim(Constants.IDLE_ANIM);
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -185,7 +200,7 @@ public class Character : GameUnit
 
     public void OnKillSucess(Character character)
     {
-        characterInArea.Remove(character);
+        characterInAreaList.Remove(character);
         LevelManager.Ins.SetCharacterRemain();
         UIManager.Ins.ShowNoti();
     }

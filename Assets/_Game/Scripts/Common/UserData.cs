@@ -17,8 +17,13 @@ public class UserData : Singleton<UserData>
         return PlayerPrefs.GetInt(lEVEL_KEY);
     }
 
-    public void GetWeapon(WeaponType weaponType)
+    public void SetWeapon(WeaponType weaponType)
     {
         PlayerPrefs.SetInt(WEAPON_KEY, (int)weaponType);
+    }
+
+    public int GetWeapon()
+    {
+       return PlayerPrefs.GetInt(WEAPON_KEY,(int)WeaponType.Hammer);
     }
 }

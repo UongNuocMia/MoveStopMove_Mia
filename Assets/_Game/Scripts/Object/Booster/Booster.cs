@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Booster : GameUnit, IInteractable
 {
-    [SerializeField] protected GameObject visualBooster;
+    [SerializeField] protected GameObject boosterVisual;
     [SerializeField] protected BoxCollider boxCollider;
     protected BoosterType booster;
     
@@ -14,7 +14,7 @@ public class Booster : GameUnit, IInteractable
         OnInit();
     }
 
-    protected void OnHideVisual(bool isHide) => visualBooster.SetActive(isHide);
+    protected void OnHideVisual(bool isHide) => boosterVisual.SetActive(!isHide);
     protected void OnHideCollision(bool isHide) => boxCollider.enabled = !isHide;
 
     protected virtual void OnInit()

@@ -8,6 +8,8 @@ public class GameManager : Singleton<GameManager>
 {
     //[SerializeField] UserData userData;
     //[SerializeField] CSVData csv;
+    [SerializeField] private WeaponDataSO weaponDataSO;
+    [SerializeField] private MaterialsDataSO colorDataSO;
     [SerializeField] private DynamicJoystick dynamicJoystick;
     [SerializeField] private Player player;
     public Character Winner;
@@ -121,4 +123,15 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void IsPlayAgain(bool isPlayAgain) => IsMaxLevel = !isPlayAgain;
+
+
+    public Weapon GetWeapon(WeaponType weaponType)
+    {
+       return weaponDataSO.GetWeapon((int)weaponType);
+    }
+
+    public Material GetColorMaterial(ColorEnum colorEnum)
+    {
+        return colorDataSO.GetMaterials((int)colorEnum);
+    }
 }
