@@ -35,6 +35,20 @@ public enum PantType
     Vantim = 9,
 }
 
+public enum HeadType
+{
+    None = 0,
+    Arrow = 1,
+    Cowboy = 2,
+    Crown = 3,
+    Ear = 4,
+    Hat = 5,
+    Hat_Cap = 6,
+    Hat_Yellow = 7,
+    Headphone = 8,
+    Rau = 9,
+}
+
 public enum ColorEnum
 {
     None = 0,

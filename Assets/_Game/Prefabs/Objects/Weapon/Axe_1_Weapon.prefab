@@ -48,6 +48,7 @@ MonoBehaviour:
   poolType: 0
   weaponVisual: {fileID: 35600363527906161}
   bulletPrefabs: {fileID: 700127479994107943, guid: 3c8d2ef44e0940143b934320fb0ac1da, type: 3}
+  weaponSO: {fileID: 11400000, guid: f4a7ebceca58cb9419dd436db4b93b26, type: 2}
 --- !u!1001 &35600363527939537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59,6 +60,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 6083ff9012eefa348b00b8c543f1a742, type: 3}
       propertyPath: m_Name
       value: Axe_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 6083ff9012eefa348b00b8c543f1a742, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 6083ff9012eefa348b00b8c543f1a742, type: 3}
       propertyPath: m_LocalPosition.x

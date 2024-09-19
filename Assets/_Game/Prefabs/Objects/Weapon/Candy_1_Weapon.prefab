@@ -48,6 +48,7 @@ MonoBehaviour:
   poolType: 0
   weaponVisual: {fileID: 3981191813165918788}
   bulletPrefabs: {fileID: -3274486597106762320, guid: 86caf8066b037a547b2f59a457fb1750, type: 3}
+  weaponSO: {fileID: 11400000, guid: 06e3867b7e8190349925443779aed3eb, type: 2}
 --- !u!1001 &3981191813165952228
 PrefabInstance:
   m_ObjectHideFlags: 0

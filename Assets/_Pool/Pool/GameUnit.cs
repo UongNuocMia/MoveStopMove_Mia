@@ -28,6 +28,10 @@ public class GameUnit : MonoBehaviour
 
     public void SetPosition(Vector3 pos)
     {
+        if (tf == null)
+        {
+            tf = transform;
+        }
         tf.position = pos;
     }
 

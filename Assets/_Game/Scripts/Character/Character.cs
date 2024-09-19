@@ -65,14 +65,13 @@ public class Character : GameUnit
 
     public void OnStopMoving()
     {
-        if (characterInAreaList.Count == 0) return;
         ChangeAnim(Constants.IDLE_ANIM);
         OnPrepareAttack();
     }
 
     public void OnPrepareAttack()
     {
-        if (isAttack) return;
+        if (characterInAreaList.Count == 0 || isAttack) return;
         target = FindNearstEnemy();
         if (target == null) return;
         TF.LookAt(target.TF);

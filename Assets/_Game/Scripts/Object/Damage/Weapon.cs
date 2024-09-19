@@ -6,13 +6,21 @@ public class Weapon : GameUnit
 {
     [SerializeField] private GameObject weaponVisual;
     [SerializeField] private Bullet bulletPrefabs;
+    [SerializeField] private WeaponSO weaponSO;
     private Bullet bullet;
     private Character owner;
     private WeaponType weaponEnum;
+    private float attackRange;
+    private float attackSpeed;
 
     public void SetOwner(Character character)
     {
         owner = character;
+    }
+    public void OnInit()
+    {
+        attackRange = weaponSO.attackRange;
+        attackSpeed = weaponSO.attackSpeed;
     }
     public void Fire()
     {
@@ -21,9 +29,9 @@ public class Weapon : GameUnit
         {
             bullet = Instantiate(bulletPrefabs);
             bullet.SetOwner(owner);
-        }
-        
-        bullet.transform.position = owner.ShootPoint.position;
+            bullet.SetStats(weaponSO.attackSpeed, weaponSO.attackRange);
+        }       
+        bullet.SetPosition(owner.ShootPoint.position);
         bullet.OnFire();
     }
 
