@@ -163,8 +163,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolType: 0
   colorRenderer: {fileID: 961418925958701076}
+  pantRenderer: {fileID: 8265997460625532279}
   anim: {fileID: 2441501143559319710}
-  hairPoint: {fileID: 2564575200894459973}
+  headPoint: {fileID: 4707181086541641110}
   shootPoint: {fileID: 1849879444346131848}
   weaponPoint: {fileID: 8641066574078163068}
   characterConfigSO: {fileID: 11400000, guid: 87636a50f4fe2fe46a33c98d514dc4d0, type: 2}
@@ -421,5 +422,10 @@ Transform:
 --- !u!4 &6439693559269055111 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3220319501169496967, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 725435049802807038}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8265997460625532279 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 725435049802807038}
   m_PrefabAsset: {fileID: 0}

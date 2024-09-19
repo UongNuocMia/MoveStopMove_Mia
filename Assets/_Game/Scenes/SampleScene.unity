@@ -136,6 +136,10 @@ PrefabInstance:
       value: Bot (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7166745668119278888, guid: c25762171d771ec4b8e109d3e69824a8, type: 3}
+      propertyPath: headPoint
+      value: 
+      objectReference: {fileID: 1616706717}
+    - target: {fileID: 7166745668119278888, guid: c25762171d771ec4b8e109d3e69824a8, type: 3}
       propertyPath: weaponPrefab
       value: 
       objectReference: {fileID: 1023220900817138042, guid: a7fc32a808363f64992da014f858d858, type: 3}
@@ -791,6 +795,16 @@ MonoBehaviour:
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 23800000, guid: bba122efa217b0b4a96d4a4c5beabaf2, type: 2}
+--- !u!137 &1313269766 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6600286340357991759, guid: bbe2b8c8c4758644087f505455fe81f1, type: 3}
+  m_PrefabInstance: {fileID: 1586589784}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1424045730 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7529193754045676974, guid: bbe2b8c8c4758644087f505455fe81f1, type: 3}
+  m_PrefabInstance: {fileID: 1586589784}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1497294015
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,6 +917,14 @@ PrefabInstance:
       value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 8127309061321723543, guid: bbe2b8c8c4758644087f505455fe81f1, type: 3}
+      propertyPath: headPoint
+      value: 
+      objectReference: {fileID: 1424045730}
+    - target: {fileID: 8127309061321723543, guid: bbe2b8c8c4758644087f505455fe81f1, type: 3}
+      propertyPath: pantRenderer
+      value: 
+      objectReference: {fileID: 1313269766}
+    - target: {fileID: 8127309061321723543, guid: bbe2b8c8c4758644087f505455fe81f1, type: 3}
       propertyPath: weaponPrefab
       value: 
       objectReference: {fileID: 2623776096801422437, guid: 2fb2ebabbe11d564899cceb845e56114, type: 3}
@@ -956,6 +978,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbe2b8c8c4758644087f505455fe81f1, type: 3}
+--- !u!4 &1616706717 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4707181086541641110, guid: c25762171d771ec4b8e109d3e69824a8, type: 3}
+  m_PrefabInstance: {fileID: 35137893}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1694944858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,6 +1225,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponDataSO: {fileID: 11400000, guid: 3c4663939aa3fba4d855cc5d1f0daf26, type: 2}
   colorDataSO: {fileID: 11400000, guid: 7a001bef52bb3914db462798d535ace7, type: 2}
+  pantDataSO: {fileID: 11400000, guid: 95a8eb9f31bbed64f9426b3b58868787, type: 2}
+  headDataSO: {fileID: 11400000, guid: cd6726a9c31bc6d4490b967945e9958e, type: 2}
   dynamicJoystick: {fileID: 198808311}
   player: {fileID: 1985068987}
   Winner: {fileID: 0}

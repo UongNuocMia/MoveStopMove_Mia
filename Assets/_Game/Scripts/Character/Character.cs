@@ -5,21 +5,26 @@ using UnityEngine.AI;
 public class Character : GameUnit
 {
     [SerializeField] protected SkinnedMeshRenderer colorRenderer;
+    [SerializeField] protected SkinnedMeshRenderer pantRenderer;
     [SerializeField] protected Animator anim;
-    [SerializeField] protected Transform hairPoint;
+    [SerializeField] protected Transform headPoint;
     [SerializeField] protected Transform shootPoint;
     [SerializeField] protected Transform weaponPoint;
     [SerializeField] protected CharacterConfigSO characterConfigSO;
     private string currentAnimName;
     protected bool isDead;
     protected bool isMoving;
-    protected bool isAttack;
+    protected bool isAttacked;
     protected bool isEndGame;
     protected float speed;
     protected float health;
+    protected float attackRange;
+    protected float attackSpeed;
     protected BoosterType currentBooster;
     protected Weapon currentWeapon;
+    protected GameObject currentHeadGO;
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
+
 
     public int Score { protected set; get; } = 0;
     public Character target { private set; get; }
@@ -44,7 +49,7 @@ public class Character : GameUnit
     protected void SetUpWeapon()
     {
         Instantiate(currentWeapon, weaponPoint);
-        currentWeapon.OnHideVisual(false);
+        //currentWeapon.OnHideVisual(false);
         currentWeapon.SetOwner(this);
     }
 
@@ -52,6 +57,7 @@ public class Character : GameUnit
     {
         if (character.isDead)
             return;
+        isAttacked = false;
         characterInAreaList.Add(character);
     }
 
@@ -63,19 +69,24 @@ public class Character : GameUnit
         }
     }
 
-    public void OnStopMoving()
+    protected void OnStopMoving()
     {
-        ChangeAnim(Constants.IDLE_ANIM);
-        OnPrepareAttack();
+        if (isCanAttack())
+            OnPrepareAttack();
     }
 
     public void OnPrepareAttack()
     {
-        if (characterInAreaList.Count == 0 || isAttack) return;
-        target = FindNearstEnemy();
-        if (target == null) return;
         TF.LookAt(target.TF);
         Attack();
+    }
+
+    public bool isCanAttack()
+    {
+        if (characterInAreaList.Count == 0 || isAttacked) return false;
+        target = FindNearstEnemy();
+        if (target == null) return false;
+        return true;
     }
 
     private Character FindNearstEnemy()
@@ -102,7 +113,6 @@ public class Character : GameUnit
     {
         Debug.Log("die");
         ChangeAnim(Constants.DEAD_ANIM);
-        currentWeapon.OnOwnerDeath();
         isDead = true;
     }
 
@@ -110,7 +120,7 @@ public class Character : GameUnit
     {
         ChangeAnim(Constants.ATTACK_ANIM);
         currentWeapon.Fire();
-        isAttack = true;
+        isAttacked = true;
         float time = Utilities.GetTimeCurrentAnim(anim, "Attack");
         Invoke(nameof(ChangeToIdle), time);
     }

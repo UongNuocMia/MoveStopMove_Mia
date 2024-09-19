@@ -7,8 +7,5 @@ using UnityEngine;
 public class HeadDataSO : ScriptableObject
 {
     public List<GameObject> headsList;
-    public GameObject GetHead(HeadType headType)
-    {
-        return headsList[(int)headType];
-    }
+    public GameObject GetHead(int id) => headsList[id];
 }

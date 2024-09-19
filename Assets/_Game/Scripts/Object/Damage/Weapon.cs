@@ -24,7 +24,7 @@ public class Weapon : GameUnit
     }
     public void Fire()
     {
-        OnHideVisual(true);
+        //OnHideVisual(true);
         if (bullet == null)
         {
             bullet = Instantiate(bulletPrefabs);
@@ -34,11 +34,6 @@ public class Weapon : GameUnit
         bullet.SetPosition(owner.ShootPoint.position);
         bullet.OnFire();
     }
-
-    public void OnOwnerDeath()
-    {
-
-    }
-    public void OnHideVisual(bool isHide) => weaponVisual.SetActive(!isHide);
+    //public void OnHideVisual(bool isHide) => weaponVisual.SetActive(!isHide);
 
 }

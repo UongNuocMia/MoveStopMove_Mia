@@ -10,6 +10,7 @@ public class Player : Character
         currentWeapon = GameManager.Ins.GetWeapon((WeaponType)UserData.Ins.GetWeapon());
         playerMovement = GetComponent<PlayerMovement>();
         SetUpWeapon();
+        SetUpAccessories();
     }
 
     private void Update()
@@ -20,13 +21,27 @@ public class Player : Character
             if (isMoving)
             {
                 ChangeAnim(Constants.RUN_ANIM);
-                isAttack = false;
+                isAttacked = false;
             }
             else
             {
-                OnStopMoving();
-                
+                if (!isDead)
+                    OnStopMoving();         
             }
+        }
+    }
+
+    protected void SetUpAccessories()
+    {
+        if (UserData.Ins.GetPant() > 0)
+        {
+            pantRenderer.material = GameManager.Ins.GetPantMaterials((PantType)UserData.Ins.GetPant());
+            attackRange += 5;
+        }
+        if (UserData.Ins.GetHead() > 0)
+        {
+            currentHeadGO = Instantiate(GameManager.Ins.GetHead((HeadType)UserData.Ins.GetHead()));
+            attackSpeed += 0.08f;
         }
     }
 

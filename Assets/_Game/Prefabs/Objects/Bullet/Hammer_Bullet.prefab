@@ -48,9 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 1
+  rb: {fileID: -2088207237248684269}
   bulletVisual: {fileID: 3757438512563960236}
   boxCollider: {fileID: -4158366512931642694}
-  rb: {fileID: -2088207237248684269}
 --- !u!65 &-4158366512931642694
 BoxCollider:
   m_ObjectHideFlags: 0

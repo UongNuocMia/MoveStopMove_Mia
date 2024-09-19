@@ -14,7 +14,7 @@ public class Bot : Character
     protected override void OnInit()
     {
         base.OnInit();
-        OnRandomColorAndWeapon();
+        OnRandom();
         walkRadius = 10f;
         ChangeState(new IdleState());
         SetUpWeapon();
@@ -54,18 +54,7 @@ public class Bot : Character
     protected override void OnDeath()
     {
         base.OnDeath();
-        StartCoroutine(OnBotDeath());
-    }
-
-    private IEnumerator OnBotDeath()
-    {
-        yield return new WaitForSeconds(2f);
-        OnHideVisual(true);
-        ChangeState(new IdleState());
-        yield return new WaitForSeconds(2f);
-        OnHideVisual(false);
-        isDead = false;
-        ChangeState(new MoveState());
+        ChangeState(new DeathState());
     }
     public override void OnStartGame()
     {
@@ -90,7 +79,7 @@ public class Bot : Character
         ChangeState(new IdleState());
     }
 
-    protected void OnHideVisual(bool isHide) => botVisual.SetActive(!isHide);
+    public void OnHideVisual(bool isHide) => botVisual.SetActive(!isHide);
 
     public Vector3 RandomPosition()
     {
@@ -108,17 +97,22 @@ public class Bot : Character
         return finalPosition;
     }
 
-    private void OnRevive()
+    public void OnRevive()
     {
-        OnRandomColorAndWeapon();
+        OnHideVisual(false);
+        isDead = false;
         Score = 0;
+        ChangeState(new MoveState());
     }
 
-    private void OnRandomColorAndWeapon()
+    private void OnRandom()
     {
         int randomColor = Random.Range(2, 13);
         colorRenderer.material = GameManager.Ins.GetColorMaterial((ColorEnum)randomColor);
         int randomWeapon = Random.Range(1, 10);
         currentWeapon = GameManager.Ins.GetWeapon((WeaponType)randomWeapon);
+        int randomHeadnPant = Random.Range(0, 9);
+        pantRenderer.material = GameManager.Ins.GetPantMaterials((PantType)randomHeadnPant);
+        currentHeadGO = Instantiate(GameManager.Ins.GetHead((HeadType)randomHeadnPant), headPoint);
     }
 }

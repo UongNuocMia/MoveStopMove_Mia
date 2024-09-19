@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
     //[SerializeField] CSVData csv;
     [SerializeField] private WeaponDataSO weaponDataSO;
     [SerializeField] private MaterialsDataSO colorDataSO;
+    [SerializeField] private MaterialsDataSO pantDataSO;
+    [SerializeField] private HeadDataSO headDataSO;
     [SerializeField] private DynamicJoystick dynamicJoystick;
     [SerializeField] private Player player;
     public Character Winner;
@@ -133,5 +135,15 @@ public class GameManager : Singleton<GameManager>
     public Material GetColorMaterial(ColorEnum colorEnum)
     {
         return colorDataSO.GetMaterials((int)colorEnum);
+    }
+
+    public Material GetPantMaterials(PantType pantType)
+    {
+        return pantDataSO.GetMaterials((int)pantType);
+    }
+
+    public GameObject GetHead(HeadType headType)
+    {
+        return headDataSO.GetHead((int)headType);
     }
 }

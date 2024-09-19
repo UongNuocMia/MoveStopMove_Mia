@@ -9,4 +9,6 @@ public class CharacterConfigSO : ScriptableObject
 {
     public float health;
     public float speed;
+    public float attackRange;
+    public float attackSpeed;
 }
