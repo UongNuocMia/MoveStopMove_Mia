@@ -1,36 +1,68 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Level : MonoBehaviour
 {
-    [SerializeField] private Transform endPoint;
-    [SerializeField] private Transform spawnCharacterPoint;
-    [SerializeField] private List<Transform> spawnBrickPointList;
-    [SerializeField] private List<Transform> stageTransformList;
-    public List<Vector3> GetSpawnCharacterPosition()
-    {
-        List<Vector3> transformList = new();
-        int characterSpacing = 4;
+    [SerializeField] private LevelDataSO levelDataSO;
 
-        for (int i = 0; i < LevelManager.Ins.CharacterNumb; i++)
-        {
-            transformList.Add(spawnCharacterPoint.position + new Vector3(i * characterSpacing, 0f, 0f));
-        }
-        return transformList;
-    }
-
-    public List<Transform> GetSpawnBrickPointList()
-    {
-        return spawnBrickPointList;
-    }
+    private ELevelType levelType;
+    private float time;
+    private float mapWidth;
+    private float mapHeight;
+    public int MaxCharacter { private set; get; }
+    public List<Vector3> RandomPositionList { private set; get; } = new();
+    public int MaxCharacterOnStage { private set; get; }
     
-    public Transform GetEndPointTransform()
+
+    public void OnInit()
     {
-        return endPoint;
+        levelType = levelDataSO.LevelType;
+        time = levelDataSO.Time;
+        MaxCharacter = levelDataSO.MaxCharacter;
+        mapWidth = levelDataSO.MapWidth;
+        mapHeight= levelDataSO.MapHeight;
+        MaxCharacterOnStage = 10;
+        RandomPosition();
+    }
+    public void RandomPosition()
+    {
+        while (RandomPositionList.Count < MaxCharacter)
+        {
+            Vector3 randomPosition = new Vector3(Random.Range(-mapWidth, mapWidth), 1, Random.Range(-mapHeight, mapHeight));
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPosition, out hit, 1f, NavMesh.AllAreas))
+            {
+                if (!RandomPositionList.Contains(hit.position) && IsPointFarEnoughFromOthers(hit.position))
+                    RandomPositionList.Add(hit.position);
+                if (RandomPositionList.Count >= MaxCharacterOnStage)
+                    return;
+            }
+        }
     }
 
-    public List<Transform> GetStageTransformList()
+    public Vector3 RandomPosition(Vector3 currentPosition)
     {
-        return stageTransformList;
+        Vector3 newPosition = new Vector3(currentPosition.x + Random.Range(-mapWidth, mapWidth),
+                                          0, currentPosition.z + Random.Range(-mapHeight, mapHeight));
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(newPosition, out hit, 1f, NavMesh.AllAreas))
+        {
+            RandomPositionList.Add(hit.position);
+        }
+        return newPosition;
+    }
+
+    bool IsPointFarEnoughFromOthers(Vector3 point)
+    {
+        float minDistance = 4f;
+        foreach (Vector3 existingPoint in RandomPositionList)
+        {
+            if (Vector3.Distance(point, existingPoint) < minDistance)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

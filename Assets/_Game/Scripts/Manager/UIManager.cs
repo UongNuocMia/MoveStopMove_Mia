@@ -197,7 +197,7 @@ public class UIManager : Singleton<UIManager>
 
     public void ShowNoti()
     {
-        
+        GetUI<GamePlay>().SetRemain();
     }
 
     #endregion

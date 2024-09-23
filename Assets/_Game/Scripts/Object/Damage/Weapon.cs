@@ -9,9 +9,9 @@ public class Weapon : GameUnit
     [SerializeField] private WeaponSO weaponSO;
     private Bullet bullet;
     private Character owner;
-    private WeaponType weaponEnum;
-    private float attackRange;
-    private float attackSpeed;
+    private EWeaponType weaponEnum;
+    public float AttackRange { private set; get; }
+    public float AttackSpeed { private set; get; }
 
     public void SetOwner(Character character)
     {
@@ -19,17 +19,21 @@ public class Weapon : GameUnit
     }
     public void OnInit()
     {
-        attackRange = weaponSO.attackRange;
-        attackSpeed = weaponSO.attackSpeed;
+        AttackRange = weaponSO.attackRange;
+        AttackSpeed = weaponSO.attackSpeed;
+    }
+
+    public void GetStats()
+    {
+
     }
     public void Fire()
     {
         //OnHideVisual(true);
         if (bullet == null)
         {
-            bullet = Instantiate(bulletPrefabs);
+            bullet = (Bullet)SimplePool.Spawn(bulletPrefabs, owner.ShootPoint.position, Quaternion.identity);
             bullet.SetOwner(owner);
-            bullet.SetStats(weaponSO.attackSpeed, weaponSO.attackRange);
         }       
         bullet.SetPosition(owner.ShootPoint.position);
         bullet.OnFire();

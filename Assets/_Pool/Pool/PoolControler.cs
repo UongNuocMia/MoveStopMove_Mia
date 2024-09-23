@@ -149,6 +149,18 @@ public enum PoolType
     Bot = 3,
     Pant = 4,
     Hat = 5,
+    //--------
+
+    Arrow_Bullet = 6,
+    Axe_0_Bullet = 7,
+    Axe_1_Bullet = 8,
+    Boomerang_Bullet = 9,
+    Candy_0_Bullet = 10,
+    Candy_1_Bullet = 11,
+    Candy_2_Bullet = 12,
+    Candy_4_Bullet = 13,
+    Hammer_Bullet = 14,
+    Knife_Bullet = 15,
 }
 
 

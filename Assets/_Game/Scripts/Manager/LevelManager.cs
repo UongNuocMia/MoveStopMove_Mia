@@ -9,33 +9,34 @@ using UnityEngine;
 public class LevelManager : Singleton<LevelManager>
 {
     [SerializeField] private List<Level> levelList;
-    [SerializeField] private Vector3 endPosition;
 
+    private int CharacterRemain;
     private Level currentMap = null;
 
-    public int totalLevelNumb => levelList.Count;
     public int CharacterNumb { private set; get; } = 0;
+    public int MaxCharacterOnStage { private set; get; }
     public List<Vector3> PositionList { private set; get; }
     public List<Character> CharacterList { private set; get; }
-    public List<Transform> RankTransformList { private set; get; }
-    public List<MeshRenderer> MeshRenderersList { private set; get; }
+
 
 
     public void OnLoadMap()
     {
-        //SetUpMap();
-        //GenarateObjects();
+        SetUpMap();
+        GenarateCharacters();
     }
 
     private void SetUpMap()
     {
-        CharacterNumb = 6;
-
         DestroyMap();
         int currentLevel = GameManager.Ins.Level;
         currentMap = Instantiate(levelList[currentLevel]);
+        currentMap.OnInit();
         currentMap.transform.position = Vector3.zero;
-        PositionList = currentMap.GetSpawnCharacterPosition();
+        MaxCharacterOnStage = currentMap.MaxCharacterOnStage;
+        PositionList = currentMap.RandomPositionList;
+        CharacterNumb = currentMap.MaxCharacter;
+        CharacterRemain = CharacterNumb;
     }
 
     private void DestroyMap()
@@ -45,9 +46,9 @@ public class LevelManager : Singleton<LevelManager>
         Destroy(currentMap.gameObject);
     }
 
-    private void GenarateObjects()
+    private void GenarateCharacters()
     {
-        int indexOfPlayer = Random.Range(0, 6);
+        int indexOfPlayer = Random.Range(0, MaxCharacterOnStage);
         Spawner.Ins.GenarateCharacter(PositionList, indexOfPlayer);
         CharacterList = Spawner.Ins.CharacterList;
     }
@@ -84,26 +85,31 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
-    public List<Character> GetTop3Characters()
+    public int GetCharacterOnGround()
     {
-        List<Character> top3Characters = new List<Character>();
-        Dictionary<Character, int> charactersScore = new Dictionary<Character, int>();
+        int numb = 0;
         for (int i = 0; i < CharacterList.Count; i++)
         {
-            if (CharacterList[i] == GameManager.Ins.Winner)
-                continue;
-            charactersScore.Add(CharacterList[i], CharacterList[i].Score);
+            if (!CharacterList[i].IsDead)
+            {
+                numb++;
+            }
         }
-        top3Characters.Add(GameManager.Ins.Winner);
-        top3Characters.AddRange(charactersScore.
-                                OrderByDescending(pair => pair.Value)
-                                .Take(2).Select(pair => pair.Key));
-        return top3Characters;
+        return numb;
+    }
+
+    public int GetCharacterRemain()
+    {
+        return CharacterRemain;
     }
 
     public void SetCharacterRemain()
     {
         //total character onstage = ??
-        
+        CharacterRemain -= 1;
+        if(CharacterRemain == 1)
+        {
+            GameManager.Ins.ChangeState(GameState.Finish);
+        }
     }
 }

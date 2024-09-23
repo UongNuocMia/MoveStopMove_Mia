@@ -19,29 +19,39 @@ public class UserData : Singleton<UserData>
         return PlayerPrefs.GetInt(lEVEL_KEY);
     }
 
-    public void SetWeapon(WeaponType weaponType)
+    public void SetWeapon(EWeaponType weaponType)
     {
         PlayerPrefs.SetInt(WEAPON_KEY, (int)weaponType);
     }
 
     public int GetWeapon()
     {
-       return PlayerPrefs.GetInt(WEAPON_KEY,(int)WeaponType.Hammer); //Change to candy
+       return PlayerPrefs.GetInt(WEAPON_KEY,(int)EWeaponType.Hammer); //Change to candy
     }
-    public void SetPant(PantType pantType)
+    public void SetPant(EPantType pantType)
     {
         PlayerPrefs.SetInt(WEAPON_KEY, (int)pantType);
     }
     public int GetPant()
     {
-        return PlayerPrefs.GetInt(PANT_KEY, (int)PantType.Chambi); // change to None
+        return PlayerPrefs.GetInt(PANT_KEY, (int)EPantType.Chambi); // change to None
     }
-    public void SetHead(HeadType headType)
+    public void SetHead(EHeadType headType)
     {
-        PlayerPrefs.SetInt(WEAPON_KEY, (int)headType);
+        PlayerPrefs.SetInt(HEAD_KEY, (int)headType);
     }
     public int GetHead()
     {
-        return PlayerPrefs.GetInt(PANT_KEY, (int)HeadType.Rau); // change to None
+        return PlayerPrefs.GetInt(HEAD_KEY, (int)EHeadType.Rau); // change to None
+    }
+
+    public void SetCoin(int coin)
+    {
+        PlayerPrefs.SetInt(COIN_KEY, coin);
+    }
+
+    public int GetCoin()
+    {
+        return PlayerPrefs.GetInt(COIN_KEY, 0);
     }
 }

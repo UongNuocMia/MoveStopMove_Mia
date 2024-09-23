@@ -14,7 +14,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private HeadDataSO headDataSO;
     [SerializeField] private DynamicJoystick dynamicJoystick;
     [SerializeField] private Player player;
-    public Character Winner;
+    public bool IsPlayerWin = true;
     public DynamicJoystick DynamicJoystick => dynamicJoystick;
 
     public int Level { private set; get; }
@@ -51,10 +51,10 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case GameState.MainMenu:
-                //PrepareLevel();
+                PrepareLevel();
                 break;
             case GameState.GamePlay:
-                //OnStartGame();
+                OnStartGame();
                 break;
             case GameState.Finish:
                 OnFinish();
@@ -94,10 +94,9 @@ public class GameManager : Singleton<GameManager>
     private void OnFinish()
     {
         LevelManager.Ins.CharactersOnEndGame();
-        List<Character> top3Characters = LevelManager.Ins.GetTop3Characters();
         PlayerScore = player.Score;
         UIManager.Ins.CloseUI<GamePlay>();
-        if (Winner is Bot)
+        if (!IsPlayerWin)
         {
             UIManager.Ins.OpenUI<Lose>();
         }
@@ -105,21 +104,18 @@ public class GameManager : Singleton<GameManager>
         {
             UIManager.Ins.OpenUI<Win>();
         }
-        //for (int i = 0; i < top3Characters.Count; i++)
-        //{
-        //    top3Characters[i].OnResult(LevelManager.Ins.RankTransformList[i], i);
-        //}
-        CameraFollow.FindCharacter(top3Characters[0].TF);
+        //CameraFollow.FindCharacter(top3Characters[0].TF);
     }
 
     public void OnNextLevel()
     {
-        Level = Level += 1;
-        if (Level >= LevelManager.Ins.totalLevelNumb)
-        {
-            IsMaxLevel = true;
-            Level = 0;
-        }
+        Level = 0;
+        //Level = Level += 1;
+        //if (Level >= LevelManager.Ins.totalLevelNumb)
+        //{
+        //    IsMaxLevel = true;
+        //    Level = 0;
+        //}
         UserData.Ins.SetLevel(Level);
         ChangeState(GameState.MainMenu);
     }
@@ -127,22 +123,22 @@ public class GameManager : Singleton<GameManager>
     public void IsPlayAgain(bool isPlayAgain) => IsMaxLevel = !isPlayAgain;
 
 
-    public Weapon GetWeapon(WeaponType weaponType)
+    public Weapon GetWeapon(EWeaponType weaponType)
     {
        return weaponDataSO.GetWeapon((int)weaponType);
     }
 
-    public Material GetColorMaterial(ColorEnum colorEnum)
+    public Material GetColorMaterial(EColor colorEnum)
     {
         return colorDataSO.GetMaterials((int)colorEnum);
     }
 
-    public Material GetPantMaterials(PantType pantType)
+    public Material GetPantMaterials(EPantType pantType)
     {
         return pantDataSO.GetMaterials((int)pantType);
     }
 
-    public GameObject GetHead(HeadType headType)
+    public GameObject GetHead(EHeadType headType)
     {
         return headDataSO.GetHead((int)headType);
     }

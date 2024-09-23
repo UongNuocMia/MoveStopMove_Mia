@@ -7,6 +7,6 @@ public class KingSpeedBooster : Booster
     protected override void OnInit()
     {
         base.OnInit();
-        booster = BoosterType.KingSpeed;
+        booster = EBoosterType.KingSpeed;
     }
 }

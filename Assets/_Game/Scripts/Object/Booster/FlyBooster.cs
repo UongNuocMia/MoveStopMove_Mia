@@ -7,6 +7,6 @@ public class FlyBooster : Booster
     protected override void OnInit()
     {
         base.OnInit();
-        booster = BoosterType.Fly;
+        booster = EBoosterType.Fly;
     }
 }

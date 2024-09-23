@@ -21,6 +21,8 @@ public class DeathState : IState<Bot>
         {
             bot.OnHideVisual(true);
             reviveTime -= Time.deltaTime;
+            if (LevelManager.Ins.GetCharacterRemain() <= LevelManager.Ins.GetCharacterOnGround())
+                return;
             if(reviveTime <= 0)
             {
                 bot.OnRevive();

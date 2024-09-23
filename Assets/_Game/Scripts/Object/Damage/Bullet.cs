@@ -12,16 +12,13 @@ public class Bullet : GameUnit, IInteractable
     private Character owner;
     private Vector3 distance;
     private float timeExist;
-    private float attackSpeed;
-    private float attackRange;
     private float distanceThreshold = 1f;
     private bool isSpawn;
+    private float attackSpeed;
 
     private void OnInit()
     {
-        timeExist = 4f;
-        attackSpeed = 3f; // deafult
-        attackRange = 10f;// deafult
+        timeExist = 2f;
         OnHideVisual(false);
         OnHideCollision(false);
     }
@@ -31,18 +28,11 @@ public class Bullet : GameUnit, IInteractable
         owner = character;
     }
 
-    public void SetStats(float attackSpeed,float attackRange)
-    {
-        this.attackSpeed += attackSpeed;
-        this.attackRange += attackRange;
-    }
-
     public void OnFire()
     {
         OnInit();
         isSpawn = true;
-        rb.velocity = owner.ShootPoint.transform.forward * attackSpeed;
-        distance = owner.ShootPoint.transform.forward * attackRange;
+        rb.velocity = owner.ShootPoint.transform.forward * 5;
     }
     private void OnDespawn()
     {
@@ -51,16 +41,16 @@ public class Bullet : GameUnit, IInteractable
         OnHideVisual(true);
         OnHideCollision(true);
         SetPosition(owner.TF.position);
-        Debug.Log("Run here");
     }
 
     private void Update()
     {
+        timeExist -= Time.deltaTime;
         if (isSpawn)
         {
             BulletRolling();
         }
-        if (isSpawn && Vector3.Distance(distance, TF.position) <= distanceThreshold)
+        if (isSpawn && timeExist <= 0)
         {
             OnDespawn();
         }

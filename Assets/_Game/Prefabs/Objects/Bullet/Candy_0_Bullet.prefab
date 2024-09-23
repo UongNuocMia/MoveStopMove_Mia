@@ -47,10 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f303b212493d74593d156a3d293d33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolType: 1
+  poolType: 10
+  rb: {fileID: -9060988531478264006}
   bulletVisual: {fileID: 5129280720509188407}
   boxCollider: {fileID: -4819912858264872201}
-  rb: {fileID: -9060988531478264006}
 --- !u!65 &-4819912858264872201
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ public class Booster : GameUnit, IInteractable
 {
     [SerializeField] protected GameObject boosterVisual;
     [SerializeField] protected BoxCollider boxCollider;
-    protected BoosterType booster;
+    protected EBoosterType booster;
     
 
     private void Start()

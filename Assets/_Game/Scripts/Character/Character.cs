@@ -12,7 +12,6 @@ public class Character : GameUnit
     [SerializeField] protected Transform weaponPoint;
     [SerializeField] protected CharacterConfigSO characterConfigSO;
     private string currentAnimName;
-    protected bool isDead;
     protected bool isMoving;
     protected bool isAttacked;
     protected bool isEndGame;
@@ -20,82 +19,81 @@ public class Character : GameUnit
     protected float health;
     protected float attackRange;
     protected float attackSpeed;
-    protected BoosterType currentBooster;
+    protected EBoosterType currentBooster;
     protected Weapon currentWeapon;
     protected GameObject currentHeadGO;
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
 
-
+    public bool IsDead { protected set; get; }
     public int Score { protected set; get; } = 0;
-    public Character target { private set; get; }
-    public List<Character> characterInAreaList { private set; get; } = new();
+    public Character Target { private set; get; }
+    public List<Character> CharacterInAreaList { private set; get; } = new();
     public Transform ShootPoint => shootPoint;
    
-
-    private void Start()
-    {
-        OnInit();
-    }
     protected virtual void OnInit()
     {
         Score = 0;
-        isDead = false;
-        speed = characterConfigSO.speed;
-        health = characterConfigSO.health;
-        currentBooster = BoosterType.None;
+        IsDead = false;
+        speed = characterConfigSO.Speed;
+        health = characterConfigSO.Health;
+        attackRange = characterConfigSO.AttackRange;
+        attackSpeed = characterConfigSO.AttackSpeed;
+        currentBooster = EBoosterType.None;
         agent = GetComponent<NavMeshAgent>();
     }
 
     protected void SetUpWeapon()
     {
-        Instantiate(currentWeapon, weaponPoint);
+        Weapon weapon = Instantiate(currentWeapon, weaponPoint);
+        currentWeapon = weapon;
         //currentWeapon.OnHideVisual(false);
         currentWeapon.SetOwner(this);
+        attackRange += currentWeapon.AttackRange;
+        attackSpeed += currentWeapon.AttackSpeed;
     }
 
     public void OnEnemyGetInArea(Character character)
     {
-        if (character.isDead)
+        if (character.IsDead)
             return;
         isAttacked = false;
-        characterInAreaList.Add(character);
+        CharacterInAreaList.Add(character);
     }
 
     public void OnEnemyGetOutArea(Character character)
     {
-        if (characterInAreaList.Contains(character))
+        if (CharacterInAreaList.Contains(character))
         {
-            characterInAreaList.Remove(character);
+            CharacterInAreaList.Remove(character);
         }
     }
 
-    protected void OnStopMoving()
+    protected virtual void SetUpAccessories()
     {
-        if (isCanAttack())
-            OnPrepareAttack();
+
     }
 
     public void OnPrepareAttack()
     {
-        TF.LookAt(target.TF);
+        TF.LookAt(Target.TF);
         Attack();
     }
 
     public bool isCanAttack()
     {
-        if (characterInAreaList.Count == 0 || isAttacked) return false;
-        target = FindNearstEnemy();
-        if (target == null) return false;
+        if (CharacterInAreaList.Count == 0 || isAttacked) return false;
+        Target = FindNearstEnemy();
+        if (Target == null) return false;
         return true;
     }
 
     private Character FindNearstEnemy()
     {
-        float distance = Vector3.Distance(TF.position, characterInAreaList[0].TF.position);
-        if (characterInAreaList.Count == 1)
-            return characterInAreaList[0];
+        float distance = Vector3.Distance(TF.position, CharacterInAreaList[0].TF.position);
+        if (CharacterInAreaList.Count == 1)
+            return CharacterInAreaList[0];
         Character character = null;
-        foreach (var characterNear in characterInAreaList)
+        foreach (var characterNear in CharacterInAreaList)
         {
             if (Vector3.Distance(TF.position, characterNear.TF.position) < distance)
                 character = characterNear;
@@ -111,9 +109,13 @@ public class Character : GameUnit
 
     protected virtual void OnDeath()
     {
-        Debug.Log("die");
         ChangeAnim(Constants.DEAD_ANIM);
-        isDead = true;
+        IsDead = true;
+        if(this is Player)
+        {
+            GameManager.Ins.IsPlayerWin = false;
+            GameManager.Ins.ChangeState(GameState.Finish);
+        }
     }
 
     private void Attack()
@@ -139,15 +141,15 @@ public class Character : GameUnit
         }
     }
 
-    public void GetBooster(BoosterType booster)
+    public void GetBooster(EBoosterType booster)
     {
         currentBooster = booster;
         OnGetBooster(currentBooster);
-        currentBooster = BoosterType.None;
+        currentBooster = EBoosterType.None;
     }
 
     #region Status
-    public void OnChangeColor(Material material, ColorEnum colorEnum)
+    public void OnChangeColor(Material material, EColor colorEnum)
     {
         colorRenderer.material = material;
     }
@@ -172,21 +174,21 @@ public class Character : GameUnit
     }
 
 
-    private void OnGetBooster(BoosterType boosterEnum)
+    private void OnGetBooster(EBoosterType boosterEnum)
     {
         switch (boosterEnum)
         {
-            case BoosterType.None:
+            case EBoosterType.None:
                 break;
-            case BoosterType.KingSpeed:
+            case EBoosterType.KingSpeed:
                 speed++;
                 break;
-            case BoosterType.Hulk:
+            case EBoosterType.Hulk:
                 SetScale(0.1f);
                 break;
-            case BoosterType.Fly:
+            case EBoosterType.Fly:
                 break;
-            case BoosterType.WeaponScale:
+            case EBoosterType.WeaponScale:
                 currentWeapon.SetScale(0.1f);
                 break;
             default:
@@ -209,7 +211,8 @@ public class Character : GameUnit
 
     public void OnKillSucess(Character character)
     {
-        characterInAreaList.Remove(character);
+        Score += 2;
+        CharacterInAreaList.Remove(character);
         LevelManager.Ins.SetCharacterRemain();
         UIManager.Ins.ShowNoti();
     }

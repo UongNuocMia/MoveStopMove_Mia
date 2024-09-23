@@ -1,5 +1,5 @@
 
-public enum BoosterType
+public enum EBoosterType
 {
     None = 0,
     KingSpeed = 1,
@@ -7,7 +7,7 @@ public enum BoosterType
     Fly = 3,
     WeaponScale = 4,
 }
-public enum WeaponType
+public enum EWeaponType
 {
     None = 0,
     Arrow = 1,
@@ -21,7 +21,7 @@ public enum WeaponType
     Hammer = 9,
     Knife = 10,
 }
-public enum PantType
+public enum EPantType
 {
     None = 0,
     Batman = 1,
@@ -35,7 +35,7 @@ public enum PantType
     Vantim = 9,
 }
 
-public enum HeadType
+public enum EHeadType
 {
     None = 0,
     Arrow = 1,
@@ -49,7 +49,7 @@ public enum HeadType
     Rau = 9,
 }
 
-public enum ColorEnum
+public enum EColor
 {
     None = 0,
     White = 1,
@@ -66,10 +66,18 @@ public enum ColorEnum
     Cyan = 13
 }
 
-public enum BuffType
+public enum EBuffType
 {
     None = 0,
     Range = 1,
     AttackSpeed = 2,
+}
+
+public enum ELevelType
+{
+    None = 0,
+    Normal = 1,
+    Time = 2,
+    Boss = 3,
 }
 

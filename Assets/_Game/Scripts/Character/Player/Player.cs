@@ -7,7 +7,7 @@ public class Player : Character
     protected override void OnInit()
     {
         base.OnInit();
-        currentWeapon = GameManager.Ins.GetWeapon((WeaponType)UserData.Ins.GetWeapon());
+        currentWeapon = GameManager.Ins.GetWeapon((EWeaponType)UserData.Ins.GetWeapon());
         playerMovement = GetComponent<PlayerMovement>();
         SetUpWeapon();
         SetUpAccessories();
@@ -16,7 +16,7 @@ public class Player : Character
     private void Update()
     {
         if (GameManager.IsState(GameState.GamePlay))
-        {
+        {            
             isMoving = playerMovement.IsRunning();
             if (isMoving)
             {
@@ -25,22 +25,22 @@ public class Player : Character
             }
             else
             {
-                if (!isDead)
+                if (!IsDead)
                     OnStopMoving();         
             }
         }
     }
 
-    protected void SetUpAccessories()
+    protected override void SetUpAccessories()
     {
         if (UserData.Ins.GetPant() > 0)
         {
-            pantRenderer.material = GameManager.Ins.GetPantMaterials((PantType)UserData.Ins.GetPant());
+            pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)UserData.Ins.GetPant());
             attackRange += 5;
         }
         if (UserData.Ins.GetHead() > 0)
         {
-            currentHeadGO = Instantiate(GameManager.Ins.GetHead((HeadType)UserData.Ins.GetHead()));
+            currentHeadGO = Instantiate(GameManager.Ins.GetHead((EHeadType)UserData.Ins.GetHead()), headPoint);
             attackSpeed += 0.08f;
         }
     }
@@ -52,6 +52,13 @@ public class Player : Character
 
     public void OnResult()
     {
-        ChangeAnim(Constants.DANCE_ANIM);
+        ChangeAnim(Constants.WIN_ANIM);
+    }
+    protected void OnStopMoving()
+    {
+        if (isCanAttack())
+            OnPrepareAttack();
+        else if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            ChangeAnim(Constants.IDLE_ANIM);
     }
 }

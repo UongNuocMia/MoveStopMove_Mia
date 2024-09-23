@@ -26,7 +26,7 @@ public class Spawner : Singleton<Spawner>
         }
         else
         {
-            for (int i = 0; i < LevelManager.Ins.CharacterNumb; i++)
+            for (int i = 0; i < positionList.Count; i++)
             {
                 Character character;
                 if (indexOfPlayer == i)

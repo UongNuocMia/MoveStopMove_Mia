@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4898984415278213563}
   - component: {fileID: 1843956951156186221}
+  - component: {fileID: 8264286981946043422}
   m_Layer: 0
   m_Name: Cup
   m_TagString: Obstacle
@@ -49,6 +50,22 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 7d5c443488a133c43a2c9872be7024ea, type: 2}
   - {fileID: 2100000, guid: 122c02c9f1709944d8954322fec378ee, type: 2}
   obstacleMeshRenderer: {fileID: 3298534060679514382}
+--- !u!114 &8264286981946043422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2392067813228465495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d07ce676d7afda4dabb3b0f7dd5e654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1001 &4181357927660443018
 PrefabInstance:
   m_ObjectHideFlags: 0

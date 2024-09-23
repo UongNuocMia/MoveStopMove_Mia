@@ -7,9 +7,11 @@ using UnityEngine.AI;
 public class Bot : Character
 { 
     [SerializeField] private GameObject botVisual;
-
+    [SerializeField] private GameObject targetSprite;
     private float walkRadius;
     private IState<Bot> currentState;
+
+    //Bot Type - Wanderer; Aggresive
 
     protected override void OnInit()
     {
@@ -80,39 +82,43 @@ public class Bot : Character
     }
 
     public void OnHideVisual(bool isHide) => botVisual.SetActive(!isHide);
+    public void OnHideTargetSprite(bool isHide) => targetSprite.SetActive(!isHide);
 
     public Vector3 RandomPosition()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * walkRadius;
-        randomDirection += transform.position;
+        Vector3 randomDirection = TF.position + Random.insideUnitSphere * walkRadius;
         NavMeshHit hit;
         Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1))
+        if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, NavMesh.AllAreas))
         {
             finalPosition = hit.position;
         }
-        else 
+        else
             RandomPosition();
-        
+
         return finalPosition;
     }
 
     public void OnRevive()
     {
         OnHideVisual(false);
-        isDead = false;
+        IsDead = false;
         Score = 0;
         ChangeState(new MoveState());
     }
-
+    protected override void SetUpAccessories()
+    {
+        base.SetUpAccessories();
+        int randomHeadnPant = Random.Range(0, 9);
+        pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)randomHeadnPant);
+        currentHeadGO = Instantiate(GameManager.Ins.GetHead((EHeadType)randomHeadnPant), headPoint);
+    }
     private void OnRandom()
     {
         int randomColor = Random.Range(2, 13);
-        colorRenderer.material = GameManager.Ins.GetColorMaterial((ColorEnum)randomColor);
+        colorRenderer.material = GameManager.Ins.GetColorMaterial((EColor)randomColor);
         int randomWeapon = Random.Range(1, 10);
-        currentWeapon = GameManager.Ins.GetWeapon((WeaponType)randomWeapon);
-        int randomHeadnPant = Random.Range(0, 9);
-        pantRenderer.material = GameManager.Ins.GetPantMaterials((PantType)randomHeadnPant);
-        currentHeadGO = Instantiate(GameManager.Ins.GetHead((HeadType)randomHeadnPant), headPoint);
+        currentWeapon = GameManager.Ins.GetWeapon((EWeaponType)randomWeapon);
+        SetUpAccessories();
     }
 }

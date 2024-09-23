@@ -15,16 +15,16 @@ public class ShopItemData<T> where T: Enum
     public Sprite sprIcon;
     public float price;
     public T type;
-    public BuffType buffType;
+    public EBuffType buffType;
     public float buffValue;
     public string buffDescription;
     public string GetBuffDescription()
     {
         switch (buffType)
         {
-            case BuffType.Range:
+            case EBuffType.Range:
                 return $"{buffValue}% Range";
-            case BuffType.AttackSpeed:
+            case EBuffType.AttackSpeed:
                 return $"{buffValue}% Attack Speed";
             default:
                 return "";

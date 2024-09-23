@@ -7,6 +7,6 @@ public class WeaponScaleBooster : Booster
     protected override void OnInit()
     {
         base.OnInit();
-        booster = BoosterType.WeaponScale;
+        booster = EBoosterType.WeaponScale;
     }
 }

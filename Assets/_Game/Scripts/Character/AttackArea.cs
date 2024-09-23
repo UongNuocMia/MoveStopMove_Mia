@@ -15,10 +15,12 @@ public class AttackArea : MonoBehaviour
         {
             Character enemy = other.GetComponent<Character>();
             character.OnEnemyGetInArea(enemy);
+            if (character is Player)
+                enemy.GetComponent<Bot>().OnHideTargetSprite(false);
+
         }
         if (character is Player && other.CompareTag(Constants.OBSTACLE_TAG))
         {
-            Debug.Log("here");
             Obstacle obstacle = other.GetComponentInParent<Obstacle>();
             obstacle.IsPlayerNear(true);
         }
@@ -29,10 +31,11 @@ public class AttackArea : MonoBehaviour
         {
             Character enemy = other.GetComponent<Character>();
             character.OnEnemyGetOutArea(enemy);
+            if (character is Player && !enemy.IsDead)
+                enemy.GetComponent<Bot>().OnHideTargetSprite(true);
         }
         if (character is Player && other.CompareTag(Constants.OBSTACLE_TAG))
         {
-            Debug.Log("here");
             Obstacle obstacle = other.GetComponentInParent<Obstacle>();
             obstacle.IsPlayerNear(false);
         }
