@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aec0b746efb0d84bbb5f4941c4ecead, type: 3}
   m_Name: Knife Weapon SO
   m_EditorClassIdentifier: 
-  attackRange: 0
-  attackSpeed: 5
+  Name: Knife
+  AttackRange: 0
+  AttackSpeed: 5
+  Icon: {fileID: 0}
+  type: 10

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f303b212493d74593d156a3d293d33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolType: 10
+  poolType: 9
   rb: {fileID: -2474533608559592290}
   bulletVisual: {fileID: 6545236185117120028}
   boxCollider: {fileID: -2992069450131966730}

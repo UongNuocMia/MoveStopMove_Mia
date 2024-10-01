@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054f794466768374f99bd36ee500c01c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolType: 0
+  poolType: 9
   weaponVisual: {fileID: 6545236185117120028}
   bulletPrefabs: {fileID: -2292933790059306536, guid: 59dd1ea3d89dd234f92e86a84b55f278, type: 3}
   weaponSO: {fileID: 11400000, guid: 4365f6e8b8aa5cf4ea549c98c7ff88fc, type: 2}

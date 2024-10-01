@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aec0b746efb0d84bbb5f4941c4ecead, type: 3}
   m_Name: Hammer Weapon SO
   m_EditorClassIdentifier: 
-  attackRange: 1
-  attackSpeed: 0
+  Name: Hammer
+  AttackRange: 1
+  AttackSpeed: 0
+  Icon: {fileID: 0}
+  type: 9

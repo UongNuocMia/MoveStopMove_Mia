@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aec0b746efb0d84bbb5f4941c4ecead, type: 3}
   m_Name: Candy 2 Weapon SO
   m_EditorClassIdentifier: 
-  attackRange: 0
-  attackSpeed: 15
+  Name: Ice Cream
+  AttackRange: 0
+  AttackSpeed: 15
+  Icon: {fileID: 0}
+  type: 7

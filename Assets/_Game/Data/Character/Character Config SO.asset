@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Character Config SO
   m_EditorClassIdentifier: 
   Health: 1
-  speed: 5
-  attackRange: 3.5
-  attackSpeed: 2
+  Speed: 5
+  AttackRange: 3
+  AttackSpeed: 3

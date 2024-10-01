@@ -12,7 +12,6 @@ public class Bullet : GameUnit, IInteractable
     private Character owner;
     private Vector3 distance;
     private float timeExist;
-    private float distanceThreshold = 1f;
     private bool isSpawn;
     private float attackSpeed;
 
@@ -27,12 +26,15 @@ public class Bullet : GameUnit, IInteractable
     {
         owner = character;
     }
-
+    public void SetAttackSpeed(float attackSpeed)
+    {
+        this.attackSpeed = attackSpeed;
+    }
     public void OnFire()
     {
         OnInit();
         isSpawn = true;
-        rb.velocity = owner.ShootPoint.transform.forward * 5;
+        rb.velocity = owner.ShootPoint.transform.forward * attackSpeed;
     }
     private void OnDespawn()
     {
@@ -55,7 +57,6 @@ public class Bullet : GameUnit, IInteractable
             OnDespawn();
         }
     }
-
     private void BulletRolling()
     {
         float radius = 1f;
@@ -64,12 +65,11 @@ public class Bullet : GameUnit, IInteractable
         float rotationAngle = rollSpeed * Time.deltaTime * 360f;
         TF.Rotate(Vector3.up, rotationAngle);
     }
-
     public void Interact(Character character)
     {
         if (owner == character)
             return;
-        owner.OnKillSucess(character);
+        owner.OnKillSuccess(character);
         character.TakeDamage();
         OnDespawn();
     }
