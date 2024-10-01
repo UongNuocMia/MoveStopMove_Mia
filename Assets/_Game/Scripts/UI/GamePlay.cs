@@ -17,6 +17,6 @@ public class GamePlay : UICanvas
 
     public void SetRemain()
     {
-        remainText.text = "Remain: " + LevelManager.Ins.GetCharacterRemain();
+        remainText.text = "Alive: " + LevelManager.Ins.GetCharacterRemain();
     }
 }

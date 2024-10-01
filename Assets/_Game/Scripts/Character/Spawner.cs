@@ -63,12 +63,12 @@ public class Spawner : Singleton<Spawner>
     }
     private Bot SetUpBot(Vector3 position)
     {
-        Bot bot = (Bot)SimplePool.Spawn(this.botPrefab, position, Quaternion.identity);
+        Bot bot = SimplePool.Spawn<Bot>(this.botPrefab, position, Quaternion.identity);
         return bot;
     }
     private Player SetUpPlayer(Vector3 position)
     {
-        Player player = (Player)SimplePool.Spawn(this.playerPrefab, position, Quaternion.identity);
+        Player player = SimplePool.Spawn<Player>(this.playerPrefab, position, Quaternion.identity);
         return player;
     }
 

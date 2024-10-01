@@ -9,13 +9,17 @@ public class AttackArea : MonoBehaviour
     {
         character = transform.parent.GetComponent<Character>();
     }
+    public void SetScale(float scale)
+    {
+        transform.localScale = new Vector3(scale, scale, scale);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(Constants.CHARACTER_TAG))
         {
             Character enemy = other.GetComponent<Character>();
             character.OnEnemyGetInArea(enemy);
-            if (character is Player)
+            if (character is Player && !enemy.IsDead)
                 enemy.GetComponent<Bot>().OnHideTargetSprite(false);
 
         }
@@ -31,7 +35,7 @@ public class AttackArea : MonoBehaviour
         {
             Character enemy = other.GetComponent<Character>();
             character.OnEnemyGetOutArea(enemy);
-            if (character is Player && !enemy.IsDead)
+            if (character is Player)
                 enemy.GetComponent<Bot>().OnHideTargetSprite(true);
         }
         if (character is Player && other.CompareTag(Constants.OBSTACLE_TAG))

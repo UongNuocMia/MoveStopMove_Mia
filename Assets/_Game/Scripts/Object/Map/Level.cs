@@ -23,10 +23,11 @@ public class Level : MonoBehaviour
         mapWidth = levelDataSO.MapWidth;
         mapHeight= levelDataSO.MapHeight;
         MaxCharacterOnStage = 10;
-        RandomPosition();
+        SetRandomPositionList();
     }
-    public void RandomPosition()
+    public void SetRandomPositionList()
     {
+        int max = 10;
         while (RandomPositionList.Count < MaxCharacter)
         {
             Vector3 randomPosition = new Vector3(Random.Range(-mapWidth, mapWidth), 1, Random.Range(-mapHeight, mapHeight));
@@ -38,6 +39,9 @@ public class Level : MonoBehaviour
                 if (RandomPositionList.Count >= MaxCharacterOnStage)
                     return;
             }
+            //max--;
+            //if (max <= 0)
+            //    break;
         }
     }
 

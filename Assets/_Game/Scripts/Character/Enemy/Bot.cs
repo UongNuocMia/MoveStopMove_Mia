@@ -8,6 +8,7 @@ public class Bot : Character
 { 
     [SerializeField] private GameObject botVisual;
     [SerializeField] private GameObject targetSprite;
+    [SerializeField] private CapsuleCollider botCollider;
     private float walkRadius;
     private IState<Bot> currentState;
 
@@ -20,6 +21,7 @@ public class Bot : Character
         walkRadius = 10f;
         ChangeState(new IdleState());
         SetUpWeapon();
+        attackArea.SetScale(attackRange);
     }
 
     // Update is called once per frame
@@ -61,6 +63,7 @@ public class Bot : Character
     public override void OnStartGame()
     {
         base.OnStartGame();
+        OnHideCollider(false);
         ChangeState(new MoveState());
     }
     public override void OnEndGame()
@@ -74,6 +77,7 @@ public class Bot : Character
     {
         base.OnPrepareGame();
         ChangeState(new IdleState());
+        OnHideVisual(false);
     }
     public override void OnSetting()
     {
@@ -82,6 +86,7 @@ public class Bot : Character
     }
 
     public void OnHideVisual(bool isHide) => botVisual.SetActive(!isHide);
+    public void OnHideCollider(bool isHide) => botCollider.enabled = !isHide;
     public void OnHideTargetSprite(bool isHide) => targetSprite.SetActive(!isHide);
 
     public Vector3 RandomPosition()
@@ -101,7 +106,9 @@ public class Bot : Character
 
     public void OnRevive()
     {
+        SetPosition(LevelManager.Ins.GetRandomPosition(TF.position));
         OnHideVisual(false);
+        OnHideCollider(false);
         IsDead = false;
         Score = 0;
         ChangeState(new MoveState());
@@ -109,16 +116,28 @@ public class Bot : Character
     protected override void SetUpAccessories()
     {
         base.SetUpAccessories();
-        int randomHeadnPant = Random.Range(0, 9);
+        int randomHeadnPant = Random.Range(1, 9);
         pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)randomHeadnPant);
-        currentHeadGO = Instantiate(GameManager.Ins.GetHead((EHeadType)randomHeadnPant), headPoint);
+        if (currentHead != null)
+        {
+            Debug.Log("here bro");
+            Destroy(currentHead);
+        }
+        GameObject headGO = Instantiate(GameManager.Ins.GetHead((EHeadType)randomHeadnPant), headPoint);
+        currentHead = headGO;
     }
     private void OnRandom()
     {
         int randomColor = Random.Range(2, 13);
         colorRenderer.material = GameManager.Ins.GetColorMaterial((EColor)randomColor);
         int randomWeapon = Random.Range(1, 10);
-        currentWeapon = GameManager.Ins.GetWeapon((EWeaponType)randomWeapon);
+        if (currentWeapon != null)
+        {
+            Debug.Log("here bro 2");
+            Destroy(currentWeapon.gameObject);
+        }
+        Weapon weapon = GameManager.Ins.GetWeapon((EWeaponType)randomWeapon);
+        currentWeaponPrefab = weapon;
         SetUpAccessories();
     }
 }

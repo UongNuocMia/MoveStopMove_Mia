@@ -170,8 +170,10 @@ MonoBehaviour:
   shootPoint: {fileID: 1849879444346131848}
   weaponPoint: {fileID: 8641066574078163068}
   characterConfigSO: {fileID: 11400000, guid: 87636a50f4fe2fe46a33c98d514dc4d0, type: 2}
+  attackArea: {fileID: 4471280666416161668}
   botVisual: {fileID: 2721299029809698605}
   targetSprite: {fileID: 5567141116716613627}
+  botCollider: {fileID: 1399940374758312473}
 --- !u!136 &1399940374758312473
 CapsuleCollider:
   m_ObjectHideFlags: 0

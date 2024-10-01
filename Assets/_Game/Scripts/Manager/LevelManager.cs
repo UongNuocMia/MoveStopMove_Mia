@@ -11,14 +11,12 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private List<Level> levelList;
 
     private int CharacterRemain;
-    private Level currentMap = null;
+    private Level currentLevel = null;
 
     public int CharacterNumb { private set; get; } = 0;
     public int MaxCharacterOnStage { private set; get; }
     public List<Vector3> PositionList { private set; get; }
     public List<Character> CharacterList { private set; get; }
-
-
 
     public void OnLoadMap()
     {
@@ -29,21 +27,21 @@ public class LevelManager : Singleton<LevelManager>
     private void SetUpMap()
     {
         DestroyMap();
-        int currentLevel = GameManager.Ins.Level;
-        currentMap = Instantiate(levelList[currentLevel]);
-        currentMap.OnInit();
-        currentMap.transform.position = Vector3.zero;
-        MaxCharacterOnStage = currentMap.MaxCharacterOnStage;
-        PositionList = currentMap.RandomPositionList;
-        CharacterNumb = currentMap.MaxCharacter;
+        int levelID = GameManager.Ins.Level;
+        currentLevel = Instantiate(levelList[levelID]);
+        currentLevel.OnInit();
+        currentLevel.transform.position = Vector3.zero;
+        MaxCharacterOnStage = currentLevel.MaxCharacterOnStage;
+        PositionList = currentLevel.RandomPositionList;
+        CharacterNumb = currentLevel.MaxCharacter;
         CharacterRemain = CharacterNumb;
     }
 
     private void DestroyMap()
     {
-        if (currentMap == null)
+        if (currentLevel == null)
             return;
-        Destroy(currentMap.gameObject);
+        Destroy(currentLevel.gameObject);
     }
 
     private void GenarateCharacters()
@@ -98,18 +96,20 @@ public class LevelManager : Singleton<LevelManager>
         return numb;
     }
 
-    public int GetCharacterRemain()
-    {
-        return CharacterRemain;
-    }
+    public int GetCharacterRemain() => CharacterRemain;
 
     public void SetCharacterRemain()
     {
         //total character onstage = ??
         CharacterRemain -= 1;
-        if(CharacterRemain == 1)
-        {
+        if (CharacterRemain == 1)
             GameManager.Ins.ChangeState(GameState.Finish);
-        }
+
+    }
+
+    public Vector3 GetRandomPosition(Vector3 currentPosition)
+    {
+        Vector3 newPosition = currentLevel.RandomPosition(currentPosition);
+        return newPosition;
     }
 }

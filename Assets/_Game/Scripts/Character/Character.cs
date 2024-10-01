@@ -11,21 +11,25 @@ public class Character : GameUnit
     [SerializeField] protected Transform shootPoint;
     [SerializeField] protected Transform weaponPoint;
     [SerializeField] protected CharacterConfigSO characterConfigSO;
+    [SerializeField] protected AttackArea attackArea;
     private string currentAnimName;
     protected bool isMoving;
-    protected bool isAttacked;
     protected bool isEndGame;
+    protected bool isAttacked;
+    protected bool isHadTarget;
     protected float speed;
     protected float health;
-    protected float attackRange;
-    protected float attackSpeed;
     protected EBoosterType currentBooster;
     protected Weapon currentWeapon;
-    protected GameObject currentHeadGO;
+    protected Weapon currentWeaponPrefab;
+    protected GameObject currentHead;
+    protected GameObject currentHeadPrefab;
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
 
     public bool IsDead { protected set; get; }
     public int Score { protected set; get; } = 0;
+    public float attackSpeed { protected set; get; }
+    public float attackRange { protected set; get; }
     public Character Target { private set; get; }
     public List<Character> CharacterInAreaList { private set; get; } = new();
     public Transform ShootPoint => shootPoint;
@@ -41,17 +45,16 @@ public class Character : GameUnit
         currentBooster = EBoosterType.None;
         agent = GetComponent<NavMeshAgent>();
     }
-
     protected void SetUpWeapon()
     {
-        Weapon weapon = Instantiate(currentWeapon, weaponPoint);
+        if (currentWeapon != null)
+            return;
+        Weapon weapon = Instantiate(currentWeaponPrefab,weaponPoint);
         currentWeapon = weapon;
-        //currentWeapon.OnHideVisual(false);
         currentWeapon.SetOwner(this);
         attackRange += currentWeapon.AttackRange;
         attackSpeed += currentWeapon.AttackSpeed;
     }
-
     public void OnEnemyGetInArea(Character character)
     {
         if (character.IsDead)
@@ -59,7 +62,6 @@ public class Character : GameUnit
         isAttacked = false;
         CharacterInAreaList.Add(character);
     }
-
     public void OnEnemyGetOutArea(Character character)
     {
         if (CharacterInAreaList.Contains(character))
@@ -67,18 +69,15 @@ public class Character : GameUnit
             CharacterInAreaList.Remove(character);
         }
     }
-
     protected virtual void SetUpAccessories()
     {
 
     }
-
     public void OnPrepareAttack()
     {
         TF.LookAt(Target.TF);
         Attack();
     }
-
     public bool isCanAttack()
     {
         if (CharacterInAreaList.Count == 0 || isAttacked) return false;
@@ -86,9 +85,10 @@ public class Character : GameUnit
         if (Target == null) return false;
         return true;
     }
-
     private Character FindNearstEnemy()
     {
+        if (Target != null && !Target.IsDead && CharacterInAreaList.Contains(Target))
+            return Target;
         float distance = Vector3.Distance(TF.position, CharacterInAreaList[0].TF.position);
         if (CharacterInAreaList.Count == 1)
             return CharacterInAreaList[0];
@@ -100,13 +100,12 @@ public class Character : GameUnit
         }
         return character;
     }
-
     public void TakeDamage()
     {
-        health = 0;
-        OnDeath();
+        health -= 1;
+        if (health <= 0)
+            OnDeath();
     }
-
     protected virtual void OnDeath()
     {
         ChangeAnim(Constants.DEAD_ANIM);
@@ -117,7 +116,6 @@ public class Character : GameUnit
             GameManager.Ins.ChangeState(GameState.Finish);
         }
     }
-
     private void Attack()
     {
         ChangeAnim(Constants.ATTACK_ANIM);
@@ -126,12 +124,10 @@ public class Character : GameUnit
         float time = Utilities.GetTimeCurrentAnim(anim, "Attack");
         Invoke(nameof(ChangeToIdle), time);
     }
-
     private void ChangeToIdle()
     {
         ChangeAnim(Constants.IDLE_ANIM);
     }
-
     private void OnTriggerEnter(Collider collider)
     {    
         if (collider.CompareTag(Constants.INTERACTABLE_TAG))
@@ -140,14 +136,12 @@ public class Character : GameUnit
             interactableObject.Interact(this);
         }
     }
-
     public void GetBooster(EBoosterType booster)
     {
         currentBooster = booster;
         OnGetBooster(currentBooster);
         currentBooster = EBoosterType.None;
     }
-
     #region Status
     public void OnChangeColor(Material material, EColor colorEnum)
     {
@@ -172,8 +166,6 @@ public class Character : GameUnit
     {
 
     }
-
-
     private void OnGetBooster(EBoosterType boosterEnum)
     {
         switch (boosterEnum)
@@ -197,8 +189,6 @@ public class Character : GameUnit
 
     }
     #endregion
-
-
     public void ChangeAnim(string animName)
     {
         if (currentAnimName != animName)
@@ -208,8 +198,7 @@ public class Character : GameUnit
             anim.SetTrigger(currentAnimName);
         }
     }
-
-    public void OnKillSucess(Character character)
+    public virtual void OnKillSuccess(Character character)
     {
         Score += 2;
         CharacterInAreaList.Remove(character);
