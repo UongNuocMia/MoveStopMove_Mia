@@ -120,7 +120,6 @@ public class Bot : Character
         pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)randomHeadnPant);
         if (currentHead != null)
         {
-            Debug.Log("here bro");
             Destroy(currentHead);
         }
         GameObject headGO = Instantiate(GameManager.Ins.GetHead((EHeadType)randomHeadnPant), headPoint);
@@ -133,7 +132,6 @@ public class Bot : Character
         int randomWeapon = Random.Range(1, 10);
         if (currentWeapon != null)
         {
-            Debug.Log("here bro 2");
             Destroy(currentWeapon.gameObject);
         }
         Weapon weapon = GameManager.Ins.GetWeapon((EWeaponType)randomWeapon);
