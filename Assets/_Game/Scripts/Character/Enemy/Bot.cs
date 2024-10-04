@@ -18,7 +18,7 @@ public class Bot : Character
     {
         base.OnInit();
         OnRandom();
-        walkRadius = 10f;
+        walkRadius = 5f;
         ChangeState(new IdleState());
         SetUpWeapon();
         attackArea.SetScale(attackRange);
@@ -38,7 +38,7 @@ public class Bot : Character
         agent.speed = speed;
         agent.SetDestination(destination);
         TF.forward = Vector3.Slerp(TF.forward, moveDirection, 0);
-        ChangeAnim(Constants.RUN_ANIM);
+        ChangeAnim(Constants.ISRUN_ANIM);
     }
     public void ChangeState(IState<Bot> newState)
     {
@@ -79,12 +79,7 @@ public class Bot : Character
         ChangeState(new IdleState());
         OnHideVisual(false);
     }
-    public override void OnSetting()
-    {
-        Move(TF.position);
-        ChangeState(new IdleState());
-    }
-
+    
     public void OnHideVisual(bool isHide) => botVisual.SetActive(!isHide);
     public void OnHideCollider(bool isHide) => botCollider.enabled = !isHide;
     public void OnHideTargetSprite(bool isHide) => targetSprite.SetActive(!isHide);
@@ -98,9 +93,6 @@ public class Bot : Character
         {
             finalPosition = hit.position;
         }
-        else
-            RandomPosition();
-
         return finalPosition;
     }
 

@@ -69,8 +69,9 @@ public class Bullet : GameUnit, IInteractable
     {
         if (owner == character)
             return;
-        owner.OnKillSuccess(character);
         character.TakeDamage();
+        if (character.IsDead)
+            owner.OnKillSuccess(character);
         OnDespawn();
     }
     protected void OnHideVisual(bool isHide) => bulletVisual.SetActive(!isHide);

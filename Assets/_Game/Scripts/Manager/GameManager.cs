@@ -14,11 +14,11 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private HeadDataSO headDataSO;
     [SerializeField] private DynamicJoystick dynamicJoystick;
     [SerializeField] private Player player;
-    public bool IsPlayerWin = true;
     public DynamicJoystick DynamicJoystick => dynamicJoystick;
 
     public int Level { private set; get; }
     public int PlayerScore { private set; get; }
+    public bool IsPlayerWin = true;
     public bool IsMaxLevel { private set; get; }
 
     private static GameState gameState = GameState.MainMenu;
@@ -60,7 +60,7 @@ public class GameManager : Singleton<GameManager>
                 OnFinish();
                 break;
             case GameState.Setting:
-                OnSetting();
+                //tam thoi khong dung
                 break;
             default:
                 break;
@@ -69,15 +69,17 @@ public class GameManager : Singleton<GameManager>
 
     private void PrepareLevel()
     {
-        Level = UserData.Ins.GetLevel();
+        Level = 3;//UserData.Ins.GetLevel();
         UIManager.Ins.OpenUI<MainMenu>();
         LevelManager.Ins.OnLoadMap();
         player = Spawner.Ins.GetPlayer();
         CameraFollow.FindCharacter(player.TF);
         LevelManager.Ins.CharacterOnPrepare();
+        AudioManager.Ins.PlayMusic(ESound.ThemeMusicOnMainMenu);
     }
     private void OnStartGame()
     {
+        AudioManager.Ins.PlayMusic(ESound.ThemeMusicOnBattle);
         LevelManager.Ins.CharactersOnStartGame();
     }
     public void OnPlayAgain()
@@ -86,42 +88,40 @@ public class GameManager : Singleton<GameManager>
         LevelManager.Ins.CharactersOnEndGame();
     }
 
-    private void OnSetting()
-    {
-        LevelManager.Ins.CharactersOnSetting();
-    }
-
     private void OnFinish()
     {
+        AudioManager.Ins.StopMusic();
+
         LevelManager.Ins.CharactersOnEndGame();
         PlayerScore = player.Score;
         UIManager.Ins.CloseUI<GamePlay>();
+        // cho panel hiện ra sau 2-3s 
         if (!IsPlayerWin)
         {
+            AudioManager.Ins.PlaySFX(ESound.Lose);
             UIManager.Ins.OpenUI<Lose>();
         }
         else
         {
+            AudioManager.Ins.PlaySFX(ESound.Win);
             UIManager.Ins.OpenUI<Win>();
         }
-        //CameraFollow.FindCharacter(top3Characters[0].TF);
     }
 
     public void OnNextLevel()
     {
-        Level = 0;
-        //Level = Level += 1;
-        //if (Level >= LevelManager.Ins.totalLevelNumb)
-        //{
-        //    IsMaxLevel = true;
-        //    Level = 0;
-        //}
+        Level = 3;
+        Level = Level += 1;
+        if (Level >= LevelManager.Ins.TotalLevelNum)
+        {
+            IsMaxLevel = true;
+            Level = 0;
+        }
         UserData.Ins.SetLevel(Level);
         ChangeState(GameState.MainMenu);
     }
 
     public void IsPlayAgain(bool isPlayAgain) => IsMaxLevel = !isPlayAgain;
-
 
     public Weapon GetWeapon(EWeaponType weaponType)
     {

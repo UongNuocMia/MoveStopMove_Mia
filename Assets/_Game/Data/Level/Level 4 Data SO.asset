@@ -15,6 +15,6 @@ MonoBehaviour:
   LevelID: 3
   LevelType: 2
   MaxCharacter: 35
-  Time: 300
-  MapWidth: 0
-  MapHeight: 0
+  Time: 20
+  MapWidth: 21.5
+  MapHeight: 18

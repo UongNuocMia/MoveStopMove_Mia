@@ -13,8 +13,11 @@ public class LevelManager : Singleton<LevelManager>
     private int CharacterRemain;
     private Level currentLevel = null;
 
+    public int TotalLevelNum => levelList.Count;
     public int CharacterNumb { private set; get; } = 0;
     public int MaxCharacterOnStage { private set; get; }
+    public float TimeRemain { private set; get; } = 0;
+    public ELevelType CurrentLevelType { private set; get; }
     public List<Vector3> PositionList { private set; get; }
     public List<Character> CharacterList { private set; get; }
 
@@ -34,6 +37,8 @@ public class LevelManager : Singleton<LevelManager>
         MaxCharacterOnStage = currentLevel.MaxCharacterOnStage;
         PositionList = currentLevel.RandomPositionList;
         CharacterNumb = currentLevel.MaxCharacter;
+        TimeRemain = currentLevel.time;
+        CurrentLevelType = currentLevel.levelType;
         CharacterRemain = CharacterNumb;
     }
 
@@ -64,14 +69,6 @@ public class LevelManager : Singleton<LevelManager>
         for (int i = 0; i < CharacterList.Count; i++)
         {
             CharacterList[i].OnEndGame();
-        }
-    }
-
-    public void CharactersOnSetting()
-    {
-        for (int i = 0; i < CharacterList.Count; i++)
-        {
-            CharacterList[i].OnSetting();
         }
     }
 

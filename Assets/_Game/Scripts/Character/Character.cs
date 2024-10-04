@@ -105,28 +105,29 @@ public class Character : GameUnit
         health -= 1;
         if (health <= 0)
             OnDeath();
+        else
+            AudioManager.Ins.PlaySFX(ESound.TargetHitted);
+
     }
     protected virtual void OnDeath()
     {
-        ChangeAnim(Constants.DEAD_ANIM);
+        ChangeAnim(Constants.ISDEAD_ANIM);
         IsDead = true;
-        if(this is Player)
-        {
-            GameManager.Ins.IsPlayerWin = false;
-            GameManager.Ins.ChangeState(GameState.Finish);
-        }
+        AudioManager.Ins.PlaySFX(ESound.TargetDie);
     }
     private void Attack()
     {
-        ChangeAnim(Constants.ATTACK_ANIM);
+        AudioManager.Ins.PlaySFX(ESound.ThrowWeapon);
+        ChangeAnim(Constants.ISATTACK_ANIM);
         currentWeapon.Fire();
         isAttacked = true;
-        float time = Utilities.GetTimeCurrentAnim(anim, "Attack");
+        float time = Utilities.GetTimeCurrentAnim(anim, Constants.ATTACK_ANIM);
         Invoke(nameof(ChangeToIdle), time);
     }
     private void ChangeToIdle()
     {
-        ChangeAnim(Constants.IDLE_ANIM);
+        if (IsDead) return;
+        ChangeAnim(Constants.ISIDLE_ANIM);
     }
     private void OnTriggerEnter(Collider collider)
     {    
@@ -155,16 +156,12 @@ public class Character : GameUnit
     public virtual void OnPrepareGame()
     {
         OnInit();
-        ChangeAnim(Constants.IDLE_ANIM);
+        ChangeAnim(Constants.ISIDLE_ANIM);
     }
     public virtual void OnEndGame()
     {
         isEndGame = true;
         agent.enabled = false;
-    }
-    public virtual void OnSetting()
-    {
-
     }
     private void OnGetBooster(EBoosterType boosterEnum)
     {

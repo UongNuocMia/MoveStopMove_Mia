@@ -80,4 +80,18 @@ public enum ELevelType
     Time = 2,
     Boss = 3,
 }
+public enum ESound
+{
+    None = 0,
+    ThemeMusicOnMainMenu = 1,
+    ThemeMusicOnBattle = 2,
+    ButtonClick = 3,
+    TargetHitted = 4,
+    TargetDie = 5,
+    ThrowWeapon = 6,
+    Win = 7,
+    Lose = 8,
+    SizeUp = 9,
+
+}
 

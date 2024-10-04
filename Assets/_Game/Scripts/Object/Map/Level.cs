@@ -6,13 +6,13 @@ public class Level : MonoBehaviour
 {
     [SerializeField] private LevelDataSO levelDataSO;
 
-    private ELevelType levelType;
-    private float time;
     private float mapWidth;
     private float mapHeight;
     public int MaxCharacter { private set; get; }
-    public List<Vector3> RandomPositionList { private set; get; } = new();
     public int MaxCharacterOnStage { private set; get; }
+    public float time{ private set; get; }
+    public ELevelType levelType { private set; get; }
+    public List<Vector3> RandomPositionList { private set; get; } = new();
     
 
     public void OnInit()
@@ -22,7 +22,9 @@ public class Level : MonoBehaviour
         MaxCharacter = levelDataSO.MaxCharacter;
         mapWidth = levelDataSO.MapWidth;
         mapHeight= levelDataSO.MapHeight;
-        MaxCharacterOnStage = 10;
+        MaxCharacterOnStage = levelDataSO.MaxCharacter;
+        if (MaxCharacterOnStage > 10)
+            MaxCharacterOnStage = 10;
         SetRandomPositionList();
     }
     public void SetRandomPositionList()
@@ -40,7 +42,6 @@ public class Level : MonoBehaviour
             }
         }
     }
-
     public Vector3 RandomPosition(Vector3 currentPosition)
     {
         Vector3 newPosition = new Vector3(currentPosition.x + Random.Range(-mapWidth, mapWidth),
@@ -52,7 +53,6 @@ public class Level : MonoBehaviour
         }
         return newPosition;
     }
-
     bool IsPointFarEnoughFromOthers(Vector3 point)
     {
         float minDistance = 4f;

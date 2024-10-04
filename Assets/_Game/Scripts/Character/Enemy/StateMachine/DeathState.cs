@@ -11,7 +11,7 @@ public class DeathState : IState<Bot>
         onGroundTime = 2f;
         reviveTime = 2f;
         bot.Move(bot.TF.position);
-        bot.ChangeAnim(Constants.DEAD_ANIM);
+        bot.ChangeAnim(Constants.ISDEAD_ANIM);
         bot.OnHideTargetSprite(true);
         bot.OnHideCollider(true);
     }

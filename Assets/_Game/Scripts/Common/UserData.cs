@@ -7,51 +7,48 @@ public class UserData : Singleton<UserData>
     private string WEAPON_KEY = "PlayerWeaponKey";
     private string PANT_KEY = "PlayerPantKey";
     private string HEAD_KEY = "PlayerHeadKey";
-
-    public int Level;
+    private string SFX_KEY = "PlayerSoundKey";
+    private string MUSIC_KEY = "PlayerMusicKey";
 
     public void SetLevel(int level)
     {
         PlayerPrefs.SetInt(lEVEL_KEY, level);
     }
-    public int GetLevel()
-    {
-        return PlayerPrefs.GetInt(lEVEL_KEY);
-    }
+    public int GetLevel()=> PlayerPrefs.GetInt(lEVEL_KEY);
 
     public void SetWeapon(EWeaponType weaponType)
     {
         PlayerPrefs.SetInt(WEAPON_KEY, (int)weaponType);
     }
+    public int GetWeapon() => PlayerPrefs.GetInt(WEAPON_KEY, (int)EWeaponType.Hammer); //Change to candy 
 
-    public int GetWeapon()
-    {
-       return PlayerPrefs.GetInt(WEAPON_KEY,(int)EWeaponType.Hammer); //Change to candy
-    }
     public void SetPant(EPantType pantType)
     {
         PlayerPrefs.SetInt(WEAPON_KEY, (int)pantType);
     }
-    public int GetPant()
-    {
-        return PlayerPrefs.GetInt(PANT_KEY, (int)EPantType.Chambi); // change to None
-    }
+    public int GetPant()=> PlayerPrefs.GetInt(PANT_KEY, (int)EPantType.Chambi); // change to None
+    
     public void SetHead(EHeadType headType)
     {
         PlayerPrefs.SetInt(HEAD_KEY, (int)headType);
     }
-    public int GetHead()
-    {
-        return PlayerPrefs.GetInt(HEAD_KEY, (int)EHeadType.Rau); // change to None
-    }
+    public int GetHead() => PlayerPrefs.GetInt(HEAD_KEY, (int)EHeadType.Rau); // change to None    
 
     public void SetCoin(int coin)
     {
         PlayerPrefs.SetInt(COIN_KEY, coin);
     }
+    public int GetCoin() => PlayerPrefs.GetInt(COIN_KEY, 0);
 
-    public int GetCoin()
+    public void SetSFXVolume(float soundVolume)
     {
-        return PlayerPrefs.GetInt(COIN_KEY, 0);
+        PlayerPrefs.SetFloat(SFX_KEY, soundVolume);
     }
+    public float GetSFXVolume() => PlayerPrefs.GetFloat(SFX_KEY, 1);
+
+    public void SetMusicVolume(float musicVolume)
+    {
+        PlayerPrefs.SetFloat(MUSIC_KEY, musicVolume);
+    }
+    public float GetMusicVolume() => PlayerPrefs.GetFloat(MUSIC_KEY, 1);
 }

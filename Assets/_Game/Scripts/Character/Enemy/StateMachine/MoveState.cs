@@ -19,7 +19,7 @@ public class MoveState : IState<Bot>
     {
         if(bot.TF.position == randomPosition)
         {
-            bot.ChangeAnim(Constants.IDLE_ANIM);
+            bot.ChangeAnim(Constants.ISIDLE_ANIM);
             if (bot.CharacterInAreaList.Count > 0)
             {
                 bot.ChangeState(new AttackState());

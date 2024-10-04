@@ -6,6 +6,7 @@ public class Lose : UICanvas
 
     public void MainMenuButton()
     {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         UIManager.Ins.OpenUI<MainMenu>();
         GameManager.Ins.ChangeState(GameState.MainMenu);
         Close(0);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Player : Character
@@ -26,7 +27,7 @@ public class Player : Character
             isMoving = playerMovement.IsRunning();
             if (isMoving)
             {
-                ChangeAnim(Constants.RUN_ANIM);
+                ChangeAnim(Constants.ISRUN_ANIM);
                 isAttacked = false;
             }
             else
@@ -57,16 +58,23 @@ public class Player : Character
     }
     public void OnResult()
     {
-        ChangeAnim(Constants.WIN_ANIM);
+        ChangeAnim(Constants.ISWIN_ANIM);
     }
     protected void OnStopMoving()
     {
         if (isCanAttack())
             OnPrepareAttack();
         else if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !IsDead)
-            ChangeAnim(Constants.IDLE_ANIM);
+            ChangeAnim(Constants.ISIDLE_ANIM);
     }
 
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+        float time = Utilities.GetTimeCurrentAnim(anim, Constants.DEAD_ANIM);
+        GameManager.Ins.IsPlayerWin = false;
+        GameManager.Ins.ChangeState(GameState.Finish); 
+    }
     public override void OnKillSuccess(Character character)
     {
         base.OnKillSuccess(character);

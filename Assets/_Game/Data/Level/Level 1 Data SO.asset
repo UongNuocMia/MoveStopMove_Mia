@@ -16,5 +16,5 @@ MonoBehaviour:
   LevelType: 1
   MaxCharacter: 15
   Time: -1
-  MapWidth: 23.75
-  MapHeight: 23.75
+  MapWidth: 21.5
+  MapHeight: 18

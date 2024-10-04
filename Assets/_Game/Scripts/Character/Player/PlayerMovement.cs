@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        if (!GameManager.IsState(GameState.GamePlay)|| dynamicJoystick.Direction == Vector2.zero)
+        if (!GameManager.IsState(GameState.GamePlay)|| dynamicJoystick.Direction == Vector2.zero || player.IsDead)
         {
             isRunning = false;
             return;
