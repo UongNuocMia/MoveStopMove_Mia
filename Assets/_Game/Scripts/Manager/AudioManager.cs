@@ -18,7 +18,7 @@ public class AudioManager : Singleton<AudioManager>
 
         if (sound == null)
             return;
-        musicSource.volume = 1f;
+        musicSource.volume = UserData.Ins.GetMusicVolume();
         musicSource.clip = sound.clip;
         musicSource.Play();
     }
@@ -37,6 +37,7 @@ public class AudioManager : Singleton<AudioManager>
         }
         else
         {
+            sfxSource.volume = UserData.Ins.GetSFXVolume();
             sfxSource.PlayOneShot(s.clip);
         }
     }

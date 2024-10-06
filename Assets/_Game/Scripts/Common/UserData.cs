@@ -9,6 +9,7 @@ public class UserData : Singleton<UserData>
     private string HEAD_KEY = "PlayerHeadKey";
     private string SFX_KEY = "PlayerSoundKey";
     private string MUSIC_KEY = "PlayerMusicKey";
+    private string VIBRATION_KEY = "PlayerVibrationKey";
 
     public void SetLevel(int level)
     {
@@ -51,4 +52,15 @@ public class UserData : Singleton<UserData>
         PlayerPrefs.SetFloat(MUSIC_KEY, musicVolume);
     }
     public float GetMusicVolume() => PlayerPrefs.GetFloat(MUSIC_KEY, 1);
+
+    public void SetVibration(bool isOn)
+    {
+        PlayerPrefs.SetInt(VIBRATION_KEY, isOn ? 1 : 0);
+    }
+
+    public bool GetVibration()
+    {
+        bool isOn = PlayerPrefs.GetInt(VIBRATION_KEY, 1) == 1 ? true : false;
+        return isOn;
+    }
 }
