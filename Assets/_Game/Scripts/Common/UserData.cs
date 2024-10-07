@@ -11,6 +11,8 @@ public class UserData : Singleton<UserData>
     private string MUSIC_KEY = "PlayerMusicKey";
     private string VIBRATION_KEY = "PlayerVibrationKey";
 
+    public bool IsHaveThisItem;
+
     public void SetLevel(int level)
     {
         PlayerPrefs.SetInt(lEVEL_KEY, level);

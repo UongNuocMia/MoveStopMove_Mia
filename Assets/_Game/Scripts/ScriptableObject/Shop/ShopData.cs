@@ -6,15 +6,17 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Data/ShopData")]
 public class ShopData : ScriptableObject
 {
-    public ShopItemsData<EPantType> panstData;
-    public ShopItemsData<EWeaponType> weaponData;
+    public ShopItemsData<EPantType> PanstData;
+    public ShopItemsData<EWeaponType> WeaponData;
+    public ShopItemsData<EHeadType> HeadData;
 
     public ShopItemData<EPantType> GetPantData(EPantType type)
     {
-        for (int i = 0; i < panstData.itemsData.Count; i++)
+        for (int i = 0; i < PanstData.itemsData.Count; i++)
         {
-            if (panstData.itemsData[i].type == type) return panstData.itemsData[i];
+            if (PanstData.itemsData[i].type == type) return PanstData.itemsData[i];
         }
         return null;
     }
+
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GamePlay : UICanvas
+public class GamePlayUI : UICanvas
 {
     [SerializeField] private Text remainCharacterText;
     [SerializeField] private Text remainTimeText;
@@ -11,7 +11,7 @@ public class GamePlay : UICanvas
     public void SettingButton()
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
-        UIManager.Ins.OpenUI<Setting>();
+        UIManager.Ins.OpenUI<SettingUI>();
         GameManager.Ins.ChangeState(GameState.Setting);
     }
     private void OnEnable()

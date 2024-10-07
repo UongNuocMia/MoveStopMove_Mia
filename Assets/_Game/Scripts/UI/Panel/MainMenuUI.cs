@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-public class MainMenu : UICanvas
+public class MainMenuUI : UICanvas
 {
     [SerializeField] private RectTransform gameOverPanel;
     [SerializeField] private Text levelText;
@@ -29,13 +29,13 @@ public class MainMenu : UICanvas
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         GameManager.Ins.ChangeState(GameState.GamePlay);
-        UIManager.Ins.OpenUI<GamePlay>();
+        UIManager.Ins.OpenUI<GamePlayUI>();
         Close(0);
     }
     public void SettingButton()
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
-        UIManager.Ins.OpenUI<Setting>();
+        UIManager.Ins.OpenUI<SettingUI>();
         GameManager.Ins.ChangeState(GameState.Setting);
     }
 }

@@ -12,12 +12,12 @@ public enum EWeaponType
     None = 0,
     Arrow = 1,
     Axe_0 = 2,
-    Axe_1 = 3,
+    Axe_1 = 3, //Battle Axe
     Boomerang = 4,
-    Candy_0 = 5,
-    Candy_1 = 6,
-    Candy_2 = 7,
-    Candy_4 = 8,
+    Candy_0 = 5, //Lollipop
+    Candy_1 = 6, //Candy Cane
+    Candy_2 = 7, //Ice Cream
+    Candy_4 = 8, //Swirly Pop
     Hammer = 9,
     Knife = 10,
 }
@@ -71,6 +71,7 @@ public enum EBuffType
     None = 0,
     Range = 1,
     AttackSpeed = 2,
+    MoveSpeed = 3,
 }
 
 public enum ELevelType
@@ -92,6 +93,13 @@ public enum ESound
     Win = 7,
     Lose = 8,
     SizeUp = 9,
+}
 
+public enum EShopType
+{
+    None = 0,
+    Weapon = 1,
+    Pants = 2,
+    Hats = 3,
 }
 

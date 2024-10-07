@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Setting : UICanvas
+public class SettingUI : UICanvas
 {
     [SerializeField] private List<Sprite> soundSpriteList;
     [SerializeField] private List<Sprite> musicSpriteList;

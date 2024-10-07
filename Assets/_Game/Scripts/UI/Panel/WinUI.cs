@@ -1,6 +1,6 @@
 using UnityEngine.UI;
 
-public class Win : UICanvas
+public class WinUI : UICanvas
 {
     public Text score;
 

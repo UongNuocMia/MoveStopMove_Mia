@@ -10,7 +10,7 @@ public class ShopItemsData<T> where T: Enum
     public List<ShopItemData<T>> itemsData;
 }
 [Serializable]
-public class ShopItemData<T> where T: Enum
+public class ShopItemData<T> where T : Enum
 {
     public Sprite sprIcon;
     public float price;
@@ -18,6 +18,7 @@ public class ShopItemData<T> where T: Enum
     public EBuffType buffType;
     public float buffValue;
     public string buffDescription;
+
     public string GetBuffDescription()
     {
         switch (buffType)
@@ -26,6 +27,8 @@ public class ShopItemData<T> where T: Enum
                 return $"{buffValue}% Range";
             case EBuffType.AttackSpeed:
                 return $"{buffValue}% Attack Speed";
+            case EBuffType.MoveSpeed:
+                return $"{buffValue}% Move Speed";
             default:
                 return "";
         }

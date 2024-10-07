@@ -40,7 +40,7 @@ public class GameManager : Singleton<GameManager>
 
         //csv.OnInit();
         //userData?.OnInitData();
-        UIManager.Ins.OpenUI<MainMenu>();
+        UIManager.Ins.OpenUI<MainMenuUI>();
         ChangeState(GameState.MainMenu);
         //CameraFollow.FindCharacter(player.transform);
 
@@ -70,7 +70,7 @@ public class GameManager : Singleton<GameManager>
     private void PrepareLevel()
     {
         Level = 3;//UserData.Ins.GetLevel();
-        UIManager.Ins.OpenUI<MainMenu>();
+        UIManager.Ins.OpenUI<MainMenuUI>();
         LevelManager.Ins.OnLoadMap();
         player = Spawner.Ins.GetPlayer();
         CameraFollow.FindCharacter(player.TF);
@@ -94,17 +94,17 @@ public class GameManager : Singleton<GameManager>
 
         LevelManager.Ins.CharactersOnEndGame();
         PlayerScore = player.Score;
-        UIManager.Ins.CloseUI<GamePlay>();
+        UIManager.Ins.CloseUI<GamePlayUI>();
         // cho panel hiện ra sau 2-3s 
         if (!IsPlayerWin)
         {
             AudioManager.Ins.PlaySFX(ESound.Lose);
-            UIManager.Ins.OpenUI<Lose>();
+            UIManager.Ins.OpenUI<LoseUI>();
         }
         else
         {
             AudioManager.Ins.PlaySFX(ESound.Win);
-            UIManager.Ins.OpenUI<Win>();
+            UIManager.Ins.OpenUI<WinUI>();
         }
     }
 
