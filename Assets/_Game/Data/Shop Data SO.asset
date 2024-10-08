@@ -9,22 +9,186 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d949f4e08c2f14d9a4c2a4fe9f79c7, type: 3}
+  m_Script: {fileID: 11500000, guid: d0cef4463292c6e42ae7577a275ec4e4, type: 3}
   m_Name: Shop Data SO
   m_EditorClassIdentifier: 
-  panstData:
+  PanstData:
     itemsData:
-    - sprIcon: {fileID: 0}
-      price: 0
+    - sprIcon: {fileID: 21300000, guid: 6a4497357083aab4e8acb976b0801096, type: 3}
+      price: 500
       type: 1
-      buffType: 1
-      buffValue: 0
+      buffType: 3
+      buffValue: 8
       buffDescription: 
-  weaponData:
+    - sprIcon: {fileID: 21300000, guid: bf8d93c60e5a55f4eba20f15953dddf2, type: 3}
+      price: 500
+      type: 2
+      buffType: 3
+      buffValue: 8
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 8d38e8008eb789b42ba2ee84303e2a20, type: 3}
+      price: 500
+      type: 3
+      buffType: 3
+      buffValue: 8
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 76c340efd487665429a6f68337d5ed4e, type: 3}
+      price: 500
+      type: 4
+      buffType: 3
+      buffValue: 8
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: b7a5890a36d715b419758cda5edc6d86, type: 3}
+      price: 500
+      type: 5
+      buffType: 3
+      buffValue: 8
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 86471d1dbaf71904f9589cc60771fa04, type: 3}
+      price: 500
+      type: 6
+      buffType: 3
+      buffValue: 8
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: c8d5e5ea841fc474db0fa394665c6a79, type: 3}
+      price: 500
+      type: 7
+      buffType: 3
+      buffValue: 8
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: fc2a99cf0b275794b91756273d3a3c9e, type: 3}
+      price: 500
+      type: 8
+      buffType: 3
+      buffValue: 8
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 1580190a12bf37646a4844580cbe6bc2, type: 3}
+      price: 500
+      type: 9
+      buffType: 3
+      buffValue: 8
+      buffDescription: 
+  WeaponData:
     itemsData:
     - sprIcon: {fileID: 0}
       price: 0
-      type: 1
+      type: 0
       buffType: 0
       buffValue: 0
+      buffDescription: 
+    - sprIcon: {fileID: 0}
+      price: 0
+      type: 0
+      buffType: 0
+      buffValue: 0
+      buffDescription: 
+    - sprIcon: {fileID: 0}
+      price: 0
+      type: 0
+      buffType: 0
+      buffValue: 0
+      buffDescription: 
+    - sprIcon: {fileID: 0}
+      price: 0
+      type: 0
+      buffType: 0
+      buffValue: 0
+      buffDescription: 
+    - sprIcon: {fileID: 0}
+      price: 0
+      type: 0
+      buffType: 0
+      buffValue: 0
+      buffDescription: 
+    - sprIcon: {fileID: 0}
+      price: 0
+      type: 0
+      buffType: 0
+      buffValue: 0
+      buffDescription: 
+    - sprIcon: {fileID: 0}
+      price: 0
+      type: 0
+      buffType: 0
+      buffValue: 0
+      buffDescription: 
+    - sprIcon: {fileID: 0}
+      price: 0
+      type: 0
+      buffType: 0
+      buffValue: 0
+      buffDescription: 
+    - sprIcon: {fileID: 0}
+      price: 0
+      type: 0
+      buffType: 0
+      buffValue: 0
+      buffDescription: 
+    - sprIcon: {fileID: 0}
+      price: 0
+      type: 0
+      buffType: 0
+      buffValue: 0
+      buffDescription: 
+  HeadData:
+    itemsData:
+    - sprIcon: {fileID: 21300000, guid: 73b497eb58db4514aa7ff99a590019ca, type: 3}
+      price: 500
+      type: 1
+      buffType: 1
+      buffValue: 5
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 8164eb45bfe4c844984f3c498febf7e0, type: 3}
+      price: 500
+      type: 2
+      buffType: 1
+      buffValue: 5
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 54e3231965686a043b3f1c1d717c42dc, type: 3}
+      price: 500
+      type: 3
+      buffType: 1
+      buffValue: 5
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 1e1312395bebe164589c83cff7ec42e5, type: 3}
+      price: 500
+      type: 4
+      buffType: 1
+      buffValue: 5
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 41b63a79a8b9690428e68155b969d182, type: 3}
+      price: 500
+      type: 5
+      buffType: 1
+      buffValue: 5
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 27b6ecb901deba147a03709314c9e158, type: 3}
+      price: 500
+      type: 6
+      buffType: 1
+      buffValue: 5
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: c4bfe29a450829f46bef39f9efdad81d, type: 3}
+      price: 500
+      type: 7
+      buffType: 1
+      buffValue: 5
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: b5adc0ecb6ee89d40ba0743c19d2a981, type: 3}
+      price: 500
+      type: 8
+      buffType: 1
+      buffValue: 5
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: 57f25b86b669e534faf662eb2f68264c, type: 3}
+      price: 500
+      type: 9
+      buffType: 1
+      buffValue: 5
+      buffDescription: 
+    - sprIcon: {fileID: 21300000, guid: fc31713c246643b4f8da0896136319f8, type: 3}
+      price: 500
+      type: 10
+      buffType: 1
+      buffValue: 5
       buffDescription: 

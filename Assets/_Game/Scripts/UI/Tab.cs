@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChangeTab : MonoBehaviour
+public class Tab : MonoBehaviour
 {
     [SerializeField] private Sprite unActiveSprite, activeSprite;
     [SerializeField] private GameObject forcus;

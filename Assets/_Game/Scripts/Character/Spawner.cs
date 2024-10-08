@@ -11,7 +11,6 @@ public class Spawner : Singleton<Spawner>
     [SerializeField] private Player playerPrefab;
 
     private Player player;
-    private List<Vector3> randomPositionList = new();
     public List<Bot> BotList { private set; get; } = new();
     public List<Character> CharacterList { private set; get; } = new();
 

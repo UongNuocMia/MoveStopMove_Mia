@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class SettingUI : UICanvas
 {
-    [SerializeField] private List<Sprite> soundSpriteList;
+    [SerializeField] private List<Sprite> soundSpriteList; // 0 - mute, 1 - not mute
     [SerializeField] private List<Sprite> musicSpriteList;
     [SerializeField] private Image musicImage;
     [SerializeField] private Image soundImage;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "Data/ShopData")]
-public class ShopData : ScriptableObject
+public class ShopDataSO : ScriptableObject
 {
     public ShopItemsData<EPantType> PanstData;
     public ShopItemsData<EWeaponType> WeaponData;

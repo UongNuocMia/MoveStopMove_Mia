@@ -46,7 +46,8 @@ public enum EHeadType
     Hat_Cap = 6,
     Hat_Yellow = 7,
     Headphone = 8,
-    Rau = 9,
+    Horn = 9,
+    Rau = 10,
 }
 
 public enum EColor

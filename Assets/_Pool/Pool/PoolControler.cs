@@ -149,6 +149,7 @@ public enum PoolType
     Bot = 3,
     Pant = 4,
     Hat = 5,
+    
     //--------
 
     Arrow_Bullet = 6,
@@ -162,18 +163,9 @@ public enum PoolType
     Hammer_Bullet = 14,
     Knife_Bullet = 15,
 
-    ////--------
+    //--------
 
-    //Arrow_Weapon = 6,
-    //Axe_0_Weapon = 7,
-    //Axe_1_Weapon = 8,
-    //Boomerang_Weapon = 9,
-    //Candy_0_Weapon = 10,
-    //Candy_1_Weapon = 11,
-    //Candy_2_Weapon = 12,
-    //Candy_4_Weapon = 13,
-    //Hammer_Weapon = 14,
-    //Knife_Weapon = 15,
+    ShopItem = 16,
 }
 
 

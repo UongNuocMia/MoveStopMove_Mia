@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bullet : GameUnit, IInteractable
@@ -10,7 +6,6 @@ public class Bullet : GameUnit, IInteractable
     [SerializeField] private GameObject bulletVisual;
     [SerializeField] private BoxCollider boxCollider;
     private Character owner;
-    private Vector3 distance;
     private float timeExist;
     private bool isSpawn;
     private float attackSpeed;
