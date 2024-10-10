@@ -8,6 +8,7 @@ public class LoseUI : UICanvas
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         UIManager.Ins.OpenUI<MainMenuUI>();
+        GameManager.Ins.IsNewGame = true;
         GameManager.Ins.ChangeState(GameState.MainMenu);
         Close(0);
     }

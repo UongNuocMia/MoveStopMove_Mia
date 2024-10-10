@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum GameState { MainMenu, GamePlay, Finish, Setting }
+public enum GameState { MainMenu, GamePlay, Finish, Setting, Shop }
 
 public class GameManager : Singleton<GameManager>
 {
@@ -24,6 +25,8 @@ public class GameManager : Singleton<GameManager>
     private static GameState gameState = GameState.MainMenu;
     public static bool IsState(GameState state) => gameState == state;
 
+    public bool IsNewGame = true;
+
     protected void Awake()
     {
         //base.Awake();
@@ -37,13 +40,8 @@ public class GameManager : Singleton<GameManager>
         {
             Screen.SetResolution(Mathf.RoundToInt(ratio * (float)maxScreenHeight), maxScreenHeight, true);
         }
-
-        //csv.OnInit();
-        //userData?.OnInitData();
         UIManager.Ins.OpenUI<MainMenuUI>();
         ChangeState(GameState.MainMenu);
-        //CameraFollow.FindCharacter(player.transform);
-
     }
     public void ChangeState(GameState state)
     {
@@ -51,7 +49,7 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case GameState.MainMenu:
-                PrepareLevel();
+                OnMainMenu();
                 break;
             case GameState.GamePlay:
                 OnStartGame();
@@ -62,36 +60,47 @@ public class GameManager : Singleton<GameManager>
             case GameState.Setting:
                 //tam thoi khong dung
                 break;
+            case GameState.Shop:
+                OnShopping();
+                break;
             default:
                 break;
         }
     }
 
+    private void OnMainMenu()
+    {
+        UIManager.Ins.OpenUI<MainMenuUI>();
+        AudioManager.Ins.PlayMusic(ESound.ThemeMusicOnMainMenu);
+        if (IsNewGame)
+            PrepareLevel();
+        CameraFollow.Ins.OnChangeOffSet(gameState);
+        player.ChangeAnim(Constants.ISIDLE_ANIM);
+    }
+
     private void PrepareLevel()
     {
         Level = 3;//UserData.Ins.GetLevel();
-        UIManager.Ins.OpenUI<MainMenuUI>();
         LevelManager.Ins.OnLoadMap();
         player = Spawner.Ins.GetPlayer();
-        CameraFollow.FindCharacter(player.TF);
+        CameraFollow.Ins.FindCharacter(player.TF);
         LevelManager.Ins.CharacterOnPrepare();
-        AudioManager.Ins.PlayMusic(ESound.ThemeMusicOnMainMenu);
     }
     private void OnStartGame()
     {
+        CameraFollow.Ins.OnChangeOffSet(gameState);
         AudioManager.Ins.PlayMusic(ESound.ThemeMusicOnBattle);
         LevelManager.Ins.CharactersOnStartGame();
     }
     public void OnPlayAgain()
     {
+        IsNewGame = true;
         ChangeState(GameState.MainMenu);
         LevelManager.Ins.CharactersOnEndGame();
     }
-
     private void OnFinish()
     {
         AudioManager.Ins.StopMusic();
-
         LevelManager.Ins.CharactersOnEndGame();
         PlayerScore = player.Score;
         UIManager.Ins.CloseUI<GamePlayUI>();
@@ -103,11 +112,11 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
+            player.ChangeAnim(Constants.ISWIN_ANIM);
             AudioManager.Ins.PlaySFX(ESound.Win);
             UIManager.Ins.OpenUI<WinUI>();
         }
     }
-
     public void OnNextLevel()
     {
         Level = 3;
@@ -118,26 +127,27 @@ public class GameManager : Singleton<GameManager>
             Level = 0;
         }
         UserData.Ins.SetLevel(Level);
+        IsNewGame = true;
         ChangeState(GameState.MainMenu);
     }
-
+    private void OnShopping()
+    {
+        CameraFollow.Ins.OnChangeOffSet(gameState);
+        player.ChangeAnim(Constants.ISDANCE_ANIM);
+    }
     public void IsPlayAgain(bool isPlayAgain) => IsMaxLevel = !isPlayAgain;
-
     public Weapon GetWeapon(EWeaponType weaponType)
     {
        return weaponDataSO.GetWeapon((int)weaponType);
     }
-
     public Material GetColorMaterial(EColor colorEnum)
     {
         return colorDataSO.GetMaterials((int)colorEnum);
     }
-
     public Material GetPantMaterials(EPantType pantType)
     {
         return pantDataSO.GetMaterials((int)pantType);
     }
-
     public GameObject GetHead(EHeadType headType)
     {
         return headDataSO.GetHead((int)headType);

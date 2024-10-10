@@ -5,11 +5,9 @@ using UnityEngine.UI;
 public class MainMenuUI : UICanvas
 {
     [SerializeField] private RectTransform gameOverPanel;
-    [SerializeField] private Text levelText;
     [SerializeField] private Text tapToPlay;
     private void OnEnable()
     {
-        levelText.text = "Level: " + (GameManager.Ins.Level + 1).ToString();
         if (GameManager.Ins.IsMaxLevel)
         {
             gameOverPanel.gameObject.SetActive(true);
@@ -37,5 +35,13 @@ public class MainMenuUI : UICanvas
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         UIManager.Ins.OpenUI<SettingUI>();
         GameManager.Ins.ChangeState(GameState.Setting);
+    }
+    
+    public void ShopButton()
+    {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
+        UIManager.Ins.OpenUI<ShopUI>();
+        GameManager.Ins.ChangeState(GameState.Shop);
+        Close(0);
     }
 }

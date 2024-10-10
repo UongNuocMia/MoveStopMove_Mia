@@ -7,10 +7,6 @@ public class Tab : MonoBehaviour
     [SerializeField] private GameObject forcus;
     [SerializeField] private Image handleImage;
 
-    private void Start()
-    {
-        OnDeActivityTab();
-    }
     public void OnActivityTab()
     {
         forcus.SetActive(true);
