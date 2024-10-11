@@ -14,11 +14,11 @@ public class Player : Character
     protected override void OnInit()
     {
         base.OnInit();
-        currentWeaponPrefab = GameManager.Ins.GetWeapon((EWeaponType)UserData.Ins.GetWeapon());
+        currentWeaponPrefab = GameManager.Ins.GetWeapon((EWeaponType)UserDataManager.Ins.GetWeapon());
         playerMovement = GetComponent<PlayerMovement>();
         SetUpWeapon();
         SetUpAccessories();
-        attackArea.SetScale(attackRange);
+        attackArea.SetScale(AttackRange);
     }
     private void Update()
     {
@@ -39,17 +39,17 @@ public class Player : Character
     }
     protected override void SetUpAccessories()
     {
-        if (UserData.Ins.GetPant() > 0)
+        if (UserDataManager.Ins.GetPant() > 0)
         {
-            pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)UserData.Ins.GetPant());
-            attackRange += 2;
+            pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)UserDataManager.Ins.GetPant());
+            AttackRange += 2;
         }
-        if (UserData.Ins.GetHead() > 0 && currentHead != null)
+        if (UserDataManager.Ins.GetHat() > 0 && currentHat != null)
         {
-            currentHeadPrefab = GameManager.Ins.GetHead((EHeadType)UserData.Ins.GetHead());
-            GameObject headGO = Instantiate(currentHeadPrefab, headPoint);
-            currentHead = headGO;
-            attackSpeed += 0.08f;
+            currentHatPrefab = GameManager.Ins.GetHat((EHatType)UserDataManager.Ins.GetHat());
+            GameObject hatGO = Instantiate(currentHatPrefab, hatPoint);
+            currentHat = hatGO;
+            AttackSpeed += 0.08f;
         }
     }
     public float GetPlayerSpeed()
@@ -62,12 +62,11 @@ public class Player : Character
     }
     protected void OnStopMoving()
     {
-        if (isCanAttack())
+        if (IsCanAttack())
             OnPrepareAttack();
         else if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !IsDead)
             ChangeAnim(Constants.ISIDLE_ANIM);
     }
-
     protected override void OnDeath()
     {
         base.OnDeath();
@@ -84,4 +83,8 @@ public class Player : Character
         });
     }
 
+    public void OnShopping()
+    {
+
+    }
 }

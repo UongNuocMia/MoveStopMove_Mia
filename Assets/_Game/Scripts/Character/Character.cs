@@ -7,7 +7,7 @@ public class Character : GameUnit
     [SerializeField] protected SkinnedMeshRenderer colorRenderer;
     [SerializeField] protected SkinnedMeshRenderer pantRenderer;
     [SerializeField] protected Animator anim;
-    [SerializeField] protected Transform headPoint;
+    [SerializeField] protected Transform hatPoint;
     [SerializeField] protected Transform shootPoint;
     [SerializeField] protected Transform weaponPoint;
     [SerializeField] protected CharacterConfigSO characterConfigSO;
@@ -22,14 +22,14 @@ public class Character : GameUnit
     protected EBoosterType currentBooster;
     protected Weapon currentWeapon;
     protected Weapon currentWeaponPrefab;
-    protected GameObject currentHead;
-    protected GameObject currentHeadPrefab;
+    protected GameObject currentHat;
+    protected GameObject currentHatPrefab;
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
 
     public bool IsDead { protected set; get; }
     public int Score { protected set; get; } = 0;
-    public float attackSpeed { protected set; get; }
-    public float attackRange { protected set; get; }
+    public float AttackSpeed { protected set; get; }
+    public float AttackRange { protected set; get; }
     public Character Target { private set; get; }
     public List<Character> CharacterInAreaList { private set; get; } = new();
     public Transform ShootPoint => shootPoint;
@@ -40,8 +40,8 @@ public class Character : GameUnit
         IsDead = false;
         speed = characterConfigSO.Speed;
         health = characterConfigSO.Health;
-        attackRange = characterConfigSO.AttackRange;
-        attackSpeed = characterConfigSO.AttackSpeed;
+        AttackRange = characterConfigSO.AttackRange;
+        AttackSpeed = characterConfigSO.AttackSpeed;
         currentBooster = EBoosterType.None;
         agent = GetComponent<NavMeshAgent>();
     }
@@ -52,8 +52,8 @@ public class Character : GameUnit
         Weapon weapon = Instantiate(currentWeaponPrefab,weaponPoint);
         currentWeapon = weapon;
         currentWeapon.SetOwner(this);
-        attackRange += currentWeapon.AttackRange;
-        attackSpeed += currentWeapon.AttackSpeed;
+        AttackRange += currentWeapon.AttackRange;
+        AttackSpeed += currentWeapon.AttackSpeed;
     }
     public void OnEnemyGetInArea(Character character)
     {
@@ -78,7 +78,7 @@ public class Character : GameUnit
         TF.LookAt(Target.TF);
         Attack();
     }
-    public bool isCanAttack()
+    public bool IsCanAttack()
     {
         if (CharacterInAreaList.Count == 0 || isAttacked) return false;
         Target = FindNearstEnemy();

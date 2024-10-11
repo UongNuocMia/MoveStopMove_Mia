@@ -12,7 +12,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private WeaponDataSO weaponDataSO;
     [SerializeField] private MaterialsDataSO colorDataSO;
     [SerializeField] private MaterialsDataSO pantDataSO;
-    [SerializeField] private HeadDataSO headDataSO;
+    [SerializeField] private HatDataSO hatDataSO;
     [SerializeField] private DynamicJoystick dynamicJoystick;
     [SerializeField] private Player player;
     public DynamicJoystick DynamicJoystick => dynamicJoystick;
@@ -126,7 +126,7 @@ public class GameManager : Singleton<GameManager>
             IsMaxLevel = true;
             Level = 0;
         }
-        UserData.Ins.SetLevel(Level);
+        UserDataManager.Ins.SetLevel(Level);
         IsNewGame = true;
         ChangeState(GameState.MainMenu);
     }
@@ -148,8 +148,8 @@ public class GameManager : Singleton<GameManager>
     {
         return pantDataSO.GetMaterials((int)pantType);
     }
-    public GameObject GetHead(EHeadType headType)
+    public GameObject GetHat(EHatType hatType)
     {
-        return headDataSO.GetHead((int)headType);
+        return hatDataSO.GetHat((int)hatType);
     }
 }

@@ -21,7 +21,7 @@ public class Bot : Character
         walkRadius = 5f;
         ChangeState(new IdleState());
         SetUpWeapon();
-        attackArea.SetScale(attackRange);
+        attackArea.SetScale(AttackRange);
     }
 
     // Update is called once per frame
@@ -108,14 +108,14 @@ public class Bot : Character
     protected override void SetUpAccessories()
     {
         base.SetUpAccessories();
-        int randomHeadnPant = Random.Range(1, 9);
-        pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)randomHeadnPant);
-        if (currentHead != null)
+        int randomHatnPant = Random.Range(1, 9);
+        pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)randomHatnPant);
+        if (currentHat != null)
         {
-            Destroy(currentHead);
+            Destroy(currentHat);
         }
-        GameObject headGO = Instantiate(GameManager.Ins.GetHead((EHeadType)randomHeadnPant), headPoint);
-        currentHead = headGO;
+        GameObject hatGO = Instantiate(GameManager.Ins.GetHat((EHatType)randomHatnPant), hatPoint);
+        currentHat = hatGO;
     }
     private void OnRandom()
     {

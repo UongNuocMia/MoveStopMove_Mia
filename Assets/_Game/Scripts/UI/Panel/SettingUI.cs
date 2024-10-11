@@ -16,39 +16,39 @@ public class SettingUI : UICanvas
 
     private void OnEnable()
     {
-        soundSlider.value = UserData.Ins.GetSFXVolume();
-        musicSlider.value = UserData.Ins.GetMusicVolume();
+        soundSlider.value = UserDataManager.Ins.GetSFXVolume();
+        musicSlider.value = UserDataManager.Ins.GetMusicVolume();
 
-        isMuteSound = UserData.Ins.GetSFXVolume() > 0 ? false : true;
-        isMuteMusic = UserData.Ins.GetMusicVolume() > 0 ? false : true;
+        isMuteSound = UserDataManager.Ins.GetSFXVolume() > 0 ? false : true;
+        isMuteMusic = UserDataManager.Ins.GetMusicVolume() > 0 ? false : true;
 
         soundImage.sprite = isMuteSound ? soundSpriteList[0] : soundSpriteList[1];
         musicImage.sprite = isMuteMusic ? musicSpriteList[0] : musicSpriteList[1];
 
-        vibrationToggle.isOn = UserData.Ins.GetVibration();
+        vibrationToggle.isOn = UserDataManager.Ins.GetVibration();
 
         vibrationToggle.onValueChanged.AddListener(OnSwitchVibrationToggle);
     }
 
     public void OnSwitchVibrationToggle(bool isOn)
     {
-        UserData.Ins.SetVibration(vibrationToggle.isOn);
+        UserDataManager.Ins.SetVibration(vibrationToggle.isOn);
     }
-    public void OnClickSoundButton()
+    public void OnSoundButtonClick()
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         isMuteSound = !isMuteSound;
         soundImage.sprite = isMuteSound ? soundSpriteList[0] : soundSpriteList[1];
         soundSlider.value = isMuteSound ? 0 : 1;
-        UserData.Ins.SetSFXVolume(soundSlider.value);
+        UserDataManager.Ins.SetSFXVolume(soundSlider.value);
     }
-    public void OnClickMusicButton()
+    public void OnMusicButtonClick()
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         isMuteMusic = !isMuteMusic;
         musicImage.sprite = isMuteMusic ? musicSpriteList[0] : musicSpriteList[1];
         musicSlider.value = isMuteMusic ? 0 : 1;
-        UserData.Ins.SetMusicVolume(musicSlider.value);
+        UserDataManager.Ins.SetMusicVolume(musicSlider.value);
 
     }
     public void SFXVolume()
@@ -56,19 +56,19 @@ public class SettingUI : UICanvas
         isMuteSound = soundSlider.value == 0 ? true : false;
         soundImage.sprite = isMuteSound ? soundSpriteList[0] : soundSpriteList[1];
         AudioManager.Ins.SetSFXVolume(soundSlider.value);
-        UserData.Ins.SetSFXVolume(soundSlider.value);
+        UserDataManager.Ins.SetSFXVolume(soundSlider.value);
     }
     public void MusicVolume()
     {
         isMuteMusic = musicSlider.value == 0 ? true : false;
         musicImage.sprite = isMuteMusic ? musicSpriteList[0] : musicSpriteList[1];
         AudioManager.Ins.SetMusicVolume(musicSlider.value);
-        UserData.Ins.SetMusicVolume(musicSlider.value);
+        UserDataManager.Ins.SetMusicVolume(musicSlider.value);
     }
     public void VibrationToggle()
     {
         vibrationToggle.isOn = !vibrationToggle.isOn;
-        UserData.Ins.SetVibration(vibrationToggle.isOn);
+        UserDataManager.Ins.SetVibration(vibrationToggle.isOn);
     }
     public void ContinueButton()
     {

@@ -166,7 +166,7 @@ MonoBehaviour:
   colorRenderer: {fileID: 961418925958701076}
   pantRenderer: {fileID: 8265997460625532279}
   anim: {fileID: 2441501143559319710}
-  headPoint: {fileID: 4707181086541641110}
+  hatPoint: {fileID: 2564575200894459973}
   shootPoint: {fileID: 1849879444346131848}
   weaponPoint: {fileID: 8641066574078163068}
   characterConfigSO: {fileID: 11400000, guid: 87636a50f4fe2fe46a33c98d514dc4d0, type: 2}
@@ -420,7 +420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2564575200894459973}
   m_Layer: 0
-  m_Name: Hair
+  m_Name: HatPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

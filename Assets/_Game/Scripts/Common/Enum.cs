@@ -35,7 +35,7 @@ public enum EPantType
     Vantim = 9,
 }
 
-public enum EHeadType
+public enum EHatType
 {
     None = 0,
     Arrow = 1,
@@ -101,6 +101,6 @@ public enum EShopType
     None = 0,
     Weapon = 1,
     Pants = 2,
-    Hats = 3,
+    Hat = 3,
 }
 

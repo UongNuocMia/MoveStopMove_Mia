@@ -16,7 +16,7 @@ public class AttackState : IState<Bot>
         timeToAttack -= Time.deltaTime;
         if (timeToAttack <= 0)
         {
-            if (bot.isCanAttack())
+            if (bot.IsCanAttack())
                 bot.OnPrepareAttack();
             timeToDoNext-= Time.deltaTime;
             if (timeToDoNext <= 0)

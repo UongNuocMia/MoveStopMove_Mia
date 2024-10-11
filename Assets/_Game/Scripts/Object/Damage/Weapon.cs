@@ -28,7 +28,7 @@ public class Weapon : GameUnit
         {
             bullet = SimplePool.Spawn<Bullet>(bulletPrefabs, owner.ShootPoint.position, Quaternion.identity);
             bullet.SetOwner(owner);
-            bullet.SetAttackSpeed(owner.attackSpeed);
+            bullet.SetAttackSpeed(owner.AttackSpeed);
         }       
         bullet.SetPosition(owner.ShootPoint.position);
         bullet.OnFire();
