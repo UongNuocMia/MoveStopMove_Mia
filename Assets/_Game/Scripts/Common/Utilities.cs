@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,5 +29,13 @@ public static class Utilities
             }
         }
         return animTime;
+    }
+
+    public static T RandomEnumValue<T>()
+    {
+        var values = Enum.GetValues(typeof(T));
+        int random = UnityEngine.Random.Range(1, values.Length);
+        Debug.Log((T)values.GetValue(random));
+        return (T)values.GetValue(random);
     }
 }

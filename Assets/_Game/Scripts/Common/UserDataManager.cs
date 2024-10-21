@@ -1,9 +1,12 @@
+using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UserDataManager : Singleton<UserDataManager>
 {
-    private static string SAVE_DATA_KEY = "SaveData";
+    private static string SAVE_DATA_KEY = "SaveData_";
     private static string COIN_KEY = "PlayerCoinKey";
     private static string lEVEL_KEY = "PlayerLevelKey";
     private static string WEAPON_KEY = "PlayerWeaponKey";
@@ -13,7 +16,7 @@ public class UserDataManager : Singleton<UserDataManager>
     private static string MUSIC_KEY = "PlayerMusicKey";
     private static string VIBRATION_KEY = "PlayerVibrationKey";
 
-    private SaveItemHatData saveItemHatData;
+    private SaveItemShopData saveItemHatData;
 
     private void Awake()
     {
@@ -23,7 +26,7 @@ public class UserDataManager : Singleton<UserDataManager>
         }
         else
         {
-            saveItemHatData = JsonUtility.FromJson<SaveItemHatData>(PlayerPrefs.GetString(SAVE_DATA_KEY));
+            saveItemHatData = JsonUtility.FromJson<SaveItemShopData>(PlayerPrefs.GetString(SAVE_DATA_KEY));
         }
     }
 
@@ -37,19 +40,31 @@ public class UserDataManager : Singleton<UserDataManager>
     {
         PlayerPrefs.SetInt(WEAPON_KEY, (int)weaponType);
     }
-    public int GetWeapon() => PlayerPrefs.GetInt(WEAPON_KEY, (int)EWeaponType.Hammer); //Change to candy 
+    public EWeaponType GetWeapon()
+    {
+        EWeaponType weaponType = (EWeaponType)PlayerPrefs.GetInt(WEAPON_KEY, (int)EWeaponType.Hammer);
+        return weaponType;
+    }
 
     public void SetPant(EPantType pantType)
     {
-        PlayerPrefs.SetInt(WEAPON_KEY, (int)pantType);
+        PlayerPrefs.SetInt(PANT_KEY, (int)pantType);
     }
-    public int GetPant()=> PlayerPrefs.GetInt(PANT_KEY, (int)EPantType.Chambi); // change to None
+    public EPantType GetPant()
+    {
+        EPantType pantType = (EPantType)PlayerPrefs.GetInt(PANT_KEY, (int)EPantType.None);
+        return pantType;
+    }
     
     public void SetHat(EHatType hatType)
     {
         PlayerPrefs.SetInt(HAT_KEY, (int)hatType);
     }
-    public int GetHat() => PlayerPrefs.GetInt(HAT_KEY, (int)EHatType.Rau); // change to None    
+    public EHatType GetHat()
+    {
+        EHatType hatType = (EHatType)PlayerPrefs.GetInt(HAT_KEY, (int)EHatType.None);
+        return hatType;
+    }   
 
     public void SetCoin(int coin)
     {
@@ -85,6 +100,33 @@ public class UserDataManager : Singleton<UserDataManager>
         saveItemHatData.purchaseHats.Add(hatType);
     }
 
+    public void SetPurchaseWeapon(EWeaponType weaponType)
+    {
+        if (saveItemHatData.purchaseWeapon.Contains(weaponType)) return;
+        saveItemHatData.purchaseWeapon.Add(weaponType);
+    }
+
+    public void SetPurchasePant(EPantType pantType)
+    {
+        if (saveItemHatData.purchasePants.Contains(pantType)) return;
+        saveItemHatData.purchasePants.Add(pantType);
+    }
+
+    public List<EHatType> GetPurchaseHatList()
+    {
+        return saveItemHatData.purchaseHats;
+    }
+
+    public List<EPantType> GetPurchasePantList()
+    {
+        return saveItemHatData.purchasePants;
+    }
+
+    public List<EWeaponType> GetPurchaseWeaponList()
+    {
+        return saveItemHatData.purchaseWeapon;
+    }
+
     public void SaveData()
     {
         string userData = JsonUtility.ToJson(saveItemHatData);
@@ -92,15 +134,29 @@ public class UserDataManager : Singleton<UserDataManager>
     }
 }
 
-public class SaveItemHatData
+[Serializable]
+
+public class SaveItemShopData
 {
     public List<EHatType> purchaseHats;
+    public List<EPantType> purchasePants;
+    public List<EWeaponType> purchaseWeapon;
 
-    public SaveItemHatData()
+    public SaveItemShopData()
     {
         purchaseHats = new()
         {
             EHatType.None
+        };
+
+        purchasePants = new()
+        {
+            EPantType.None
+        };
+
+        purchaseWeapon = new()
+        {
+            EWeaponType.Hammer
         };
     }
 }

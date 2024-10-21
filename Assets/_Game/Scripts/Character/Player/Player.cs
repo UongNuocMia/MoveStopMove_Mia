@@ -14,10 +14,9 @@ public class Player : Character
     protected override void OnInit()
     {
         base.OnInit();
-        currentWeaponPrefab = GameManager.Ins.GetWeapon((EWeaponType)UserDataManager.Ins.GetWeapon());
+        SetUpAccessories();
         playerMovement = GetComponent<PlayerMovement>();
         SetUpWeapon();
-        SetUpAccessories();
         attackArea.SetScale(AttackRange);
     }
     private void Update()
@@ -39,19 +38,58 @@ public class Player : Character
     }
     protected override void SetUpAccessories()
     {
-        if (UserDataManager.Ins.GetPant() > 0)
+        currentWeaponPrefab = GameManager.Ins.GetWeapon(UserDataManager.Ins.GetWeapon());
+
+        SetUpPant(UserDataManager.Ins.GetPant());
+        //AttackRange += 2; cho vào hàm buff
+        SetUpHat(UserDataManager.Ins.GetHat());
+        //AttackSpeed += 0.08f; cho vào hàm buff
+    }
+    public void OnShopping(EShopType shopType, Enum type)
+    {
+        switch (shopType)
         {
-            pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)UserDataManager.Ins.GetPant());
-            AttackRange += 2;
-        }
-        if (UserDataManager.Ins.GetHat() > 0 && currentHat != null)
-        {
-            currentHatPrefab = GameManager.Ins.GetHat((EHatType)UserDataManager.Ins.GetHat());
-            GameObject hatGO = Instantiate(currentHatPrefab, hatPoint);
-            currentHat = hatGO;
-            AttackSpeed += 0.08f;
+            case EShopType.Weapon:
+                currentWeaponPrefab = GameManager.Ins.GetWeapon((EWeaponType)type);
+                SetUpWeapon();
+                break;
+            case EShopType.Pant:
+                SetUpPant((EPantType)type);
+                break;
+            case EShopType.Hat:
+                SetUpHat((EHatType)type);
+                break;
         }
     }
+    public void OnRefresh()
+    {
+        OnInit();
+    }
+    protected void SetUpPant(EPantType pantType)
+    {
+        if (pantType == EPantType.None)
+            pantRenderer.gameObject.SetActive(false);
+        else
+            pantRenderer.gameObject.SetActive(true);
+        pantRenderer.material = GameManager.Ins.GetPantMaterials(pantType);
+    }
+    protected void SetUpHat(EHatType hatType)
+    {
+        if (currentHat != null)
+            Destroy(currentHat.gameObject);
+        if (hatType == EHatType.None)
+            return;
+        currentHatPrefab = GameManager.Ins.GetHat(hatType);
+        Hat hat = Instantiate(currentHatPrefab, hatPoint);
+        currentHat = hat;
+    }
+
+    private void OnApplyBuff()
+    {
+        if (currentHat != null)
+            AttackRange = currentHat.GetBuff();
+    }
+
     public float GetPlayerSpeed()
     {
         return speed;
@@ -70,7 +108,6 @@ public class Player : Character
     protected override void OnDeath()
     {
         base.OnDeath();
-        float time = Utilities.GetTimeCurrentAnim(anim, Constants.DEAD_ANIM);
         GameManager.Ins.IsPlayerWin = false;
         GameManager.Ins.ChangeState(GameState.Finish); 
     }
@@ -83,8 +120,4 @@ public class Player : Character
         });
     }
 
-    public void OnShopping()
-    {
-
-    }
 }

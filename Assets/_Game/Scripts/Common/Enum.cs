@@ -100,7 +100,7 @@ public enum EShopType
 {
     None = 0,
     Weapon = 1,
-    Pants = 2,
+    Pant = 2,
     Hat = 3,
 }
 

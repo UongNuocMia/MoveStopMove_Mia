@@ -10,15 +10,15 @@ public class Level : MonoBehaviour
     private float mapHeight;
     public int MaxCharacter { private set; get; }
     public int MaxCharacterOnStage { private set; get; }
-    public float time{ private set; get; }
-    public ELevelType levelType { private set; get; }
+    public float Time{ private set; get; }
+    public ELevelType LevelType { private set; get; }
     public List<Vector3> RandomPositionList { private set; get; } = new();
     
 
     public void OnInit()
     {
-        levelType = levelDataSO.LevelType;
-        time = levelDataSO.Time;
+        LevelType = levelDataSO.LevelType;
+        Time = levelDataSO.Time;
         MaxCharacter = levelDataSO.MaxCharacter;
         mapWidth = levelDataSO.MapWidth;
         mapHeight= levelDataSO.MapHeight;
@@ -31,9 +31,8 @@ public class Level : MonoBehaviour
     {
         while (RandomPositionList.Count < MaxCharacter)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(-mapWidth, mapWidth), 1, Random.Range(-mapHeight, mapHeight));
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPosition, out hit, 1f, NavMesh.AllAreas))
+            Vector3 randomPosition = new (Random.Range(-mapWidth, mapWidth), 1, Random.Range(-mapHeight, mapHeight));
+            if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, 1f, NavMesh.AllAreas))
             {
                 if (!RandomPositionList.Contains(hit.position) && IsPointFarEnoughFromOthers(hit.position))
                     RandomPositionList.Add(hit.position);
@@ -44,10 +43,9 @@ public class Level : MonoBehaviour
     }
     public Vector3 RandomPosition(Vector3 currentPosition)
     {
-        Vector3 newPosition = new Vector3(currentPosition.x + Random.Range(-mapWidth, mapWidth),
+        Vector3 newPosition = new (currentPosition.x + Random.Range(-mapWidth, mapWidth),
                                           0, currentPosition.z + Random.Range(-mapHeight, mapHeight));
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(newPosition, out hit, 1f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
             RandomPositionList.Add(hit.position);
         }

@@ -37,8 +37,8 @@ public class LevelManager : Singleton<LevelManager>
         MaxCharacterOnStage = currentLevel.MaxCharacterOnStage;
         PositionList = currentLevel.RandomPositionList;
         CharacterNumb = currentLevel.MaxCharacter;
-        TimeRemain = currentLevel.time;
-        CurrentLevelType = currentLevel.levelType;
+        TimeRemain = currentLevel.Time;
+        CurrentLevelType = currentLevel.LevelType;
         CharacterRemain = CharacterNumb;
     }
 

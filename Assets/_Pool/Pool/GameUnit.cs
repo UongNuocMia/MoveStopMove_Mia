@@ -22,8 +22,7 @@ public class GameUnit : MonoBehaviour
 
     public void SetPositionAndRotation(Vector3 pos, Quaternion rot)
     {
-        tf.position = pos;
-        tf.rotation = rot;
+        tf.SetPositionAndRotation(pos, rot);
     }
 
     public void SetPosition(Vector3 pos)

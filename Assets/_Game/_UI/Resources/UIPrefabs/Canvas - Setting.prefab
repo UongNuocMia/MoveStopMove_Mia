@@ -3426,16 +3426,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
   soundSpriteList:
-  - {fileID: 21300000, guid: b1f42bbbfffc44202b66381ab8b622ee, type: 3}
-  - {fileID: 21300000, guid: eb165af05aa2e4ab2bcad217611774b8, type: 3}
-  musicSpriteList:
   - {fileID: 21300000, guid: 78757b0623f3b4309b7cc69c4769ae37, type: 3}
   - {fileID: 21300000, guid: 901d64fc6ad9d44799c2ad0fd4f182d2, type: 3}
+  musicSpriteList:
+  - {fileID: 21300000, guid: b1f42bbbfffc44202b66381ab8b622ee, type: 3}
+  - {fileID: 21300000, guid: eb165af05aa2e4ab2bcad217611774b8, type: 3}
   musicImage: {fileID: 252340531041776737}
   soundImage: {fileID: 5561793995923073607}
+  musicButton: {fileID: 5801932347925105627}
+  soundButton: {fileID: 4030306887909210009}
+  vibrationToggle: {fileID: 6335980820861839092}
   musicSlider: {fileID: 8169846203930500729}
   soundSlider: {fileID: 3708814692097854762}
-  vibrationToggle: {fileID: 6335980820861839092}
 --- !u!1 &3920323803731766218
 GameObject:
   m_ObjectHideFlags: 0

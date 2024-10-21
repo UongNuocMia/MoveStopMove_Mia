@@ -6,6 +6,6 @@ using UnityEngine;
 
 public class HatDataSO : ScriptableObject
 {
-    public List<GameObject> hatsList;
-    public GameObject GetHat(int id) => hatsList[id];
+    public List<Hat> hatsList;
+    public Hat GetHat(int id) => hatsList[id];
 }

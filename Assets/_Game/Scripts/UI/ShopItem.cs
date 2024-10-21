@@ -5,52 +5,58 @@ using UnityEngine.UI;
 public class ShopItem : GameUnit
 {
     [SerializeField] private Image itemIcon;
-    [SerializeField] private GameObject lockGO, equippedGO;
-    private float price;
+    [SerializeField] private GameObject lockGO, equippedGO, selectGO;
+    private int price;
     private string buffDescription;
 
-
-    public EShopType shopType = EShopType.Weapon;
-    public EHeadType headType { private get; set; } = EHeadType.None;
-    public EPantType pantType { private get; set; } = EPantType.None; 
-    public EWeaponType weaponType { private get; set; } = EWeaponType.None;
+    private Enum type;
 
     public event Action<OnItemClickEventArgs> OnItemClick;
     public class OnItemClickEventArgs : EventArgs
     {
-        public float price;
+        public int price;
         public string buffDescription;
-        public EShopType shopType = EShopType.Weapon;
-        public EHeadType headType = EHeadType.None;
-        public EPantType pantType = EPantType.None;
-        public EWeaponType weaponType = EWeaponType.None;
+        public Enum Type;
+        public ShopItem shopItem;
     }
 
-    private void OnInit()
+    public void Setup<T>(ShopItemData<T> itemData, Action<OnItemClickEventArgs> onChangeItem) where T : Enum
     {
-        lockGO.SetActive(true);
-        if (UserData.Ins.IsHaveThisItem)
-        {
-            lockGO.SetActive(false);
-        }
-       //if() UserData.Ins.GetWeapon()
-    }
-
-    public void SetData(Sprite icon, float price, string buffDescription, Action<OnItemClickEventArgs> onChangeItem)
-    {
-        itemIcon.sprite = icon;
-        this.price = price;
-        this.buffDescription = buffDescription;
+        itemIcon.sprite = itemData.sprIcon;
+        price = itemData.price;
+        buffDescription = itemData.buffDescription;
+        type = itemData.type;
         OnItemClick += onChangeItem;
+        SetStatus();
     }
-    
-    public void SetEnum(EShopType shopType, EWeaponType weaponType = EWeaponType.None, EPantType pantType = EPantType.None, EHeadType headType = EHeadType.None)
+
+
+    public void SetStatus()
     {
-        this.shopType = shopType;
-        this.weaponType = weaponType;
-        this.pantType = pantType;
-        this.headType = headType;
+        bool isEquipped = false;
+        bool isPurchased = false;
+
+        if(type is EWeaponType weaponType)
+        {
+            isEquipped = UserDataManager.Ins.GetWeapon() == weaponType;
+            isPurchased = UserDataManager.Ins.GetPurchaseWeaponList().Contains(weaponType);
+        }
+        else if (type is EPantType pantType)
+        {
+            isEquipped = UserDataManager.Ins.GetPant() == pantType;
+            isPurchased = UserDataManager.Ins.GetPurchasePantList().Contains(pantType);
+        }
+        else if (type is EHatType hatType)
+        {
+            isEquipped = UserDataManager.Ins.GetHat() == hatType;
+            isPurchased = UserDataManager.Ins.GetPurchaseHatList().Contains(hatType);
+        }
+        lockGO.SetActive(!isEquipped && !isPurchased);
+        equippedGO.SetActive(isEquipped);
+        IsClickThisItem(false);
     }
+
+    public void IsClickThisItem(bool isClick) => selectGO.SetActive(isClick);
 
     public void OnShopItemClick()
     {
@@ -58,12 +64,11 @@ public class ShopItem : GameUnit
         {
             price = price,
             buffDescription = buffDescription,
-            headType = headType,
-            pantType = pantType,
-            weaponType = weaponType,
-            shopType = shopType
+            Type = type,
+            shopItem = this,
         });
     }
 
     public void OnHideItem(bool isHide) => gameObject.SetActive(!isHide);
+
 }

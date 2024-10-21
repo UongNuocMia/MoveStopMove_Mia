@@ -7,30 +7,33 @@ using UnityEngine;
 [Serializable]
 public class ShopItemsData<T> where T: Enum
 {
-    public List<ShopItemData<T>> itemsData;
+    public List<ShopItemData<T>> ItemDataList;
 }
+
 [Serializable]
-public class ShopItemData<T> where T : Enum
+public class ShopItemData<T> : ShopItemData where T : Enum
+{
+    public T type;
+
+}
+
+[Serializable]
+public class ShopItemData
 {
     public Sprite sprIcon;
-    public float price;
-    public T type;
+    public int price;
     public EBuffType buffType;
     public float buffValue;
     public string buffDescription;
 
     public string GetBuffDescription()
     {
-        switch (buffType)
+        return buffType switch
         {
-            case EBuffType.Range:
-                return $"{buffValue}% Range";
-            case EBuffType.AttackSpeed:
-                return $"{buffValue}% Attack Speed";
-            case EBuffType.MoveSpeed:
-                return $"{buffValue}% Move Speed";
-            default:
-                return "";
-        }
+            EBuffType.Range => $"{buffValue}% Range",
+            EBuffType.AttackSpeed => $"{buffValue}% Attack Speed",
+            EBuffType.MoveSpeed => $"{buffValue}% Move Speed",
+            _ => "",
+        };
     }
 }

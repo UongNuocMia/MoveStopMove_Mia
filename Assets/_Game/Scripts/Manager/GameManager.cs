@@ -14,18 +14,18 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private MaterialsDataSO pantDataSO;
     [SerializeField] private HatDataSO hatDataSO;
     [SerializeField] private DynamicJoystick dynamicJoystick;
-    [SerializeField] private Player player;
-    public DynamicJoystick DynamicJoystick => dynamicJoystick;
-
-    public int Level { private set; get; }
-    public int PlayerScore { private set; get; }
-    public bool IsPlayerWin = true;
-    public bool IsMaxLevel { private set; get; }
 
     private static GameState gameState = GameState.MainMenu;
-    public static bool IsState(GameState state) => gameState == state;
 
     public bool IsNewGame = true;
+    public bool IsPlayerWin = true;
+    public int Level { private set; get; }
+    public int PlayerScore { private set; get; }
+    public bool IsMaxLevel { private set; get; }
+    public Player Player { private set; get; }
+    public DynamicJoystick DynamicJoystick => dynamicJoystick;
+
+    public static bool IsState(GameState state) => gameState == state;
 
     protected void Awake()
     {
@@ -75,15 +75,15 @@ public class GameManager : Singleton<GameManager>
         if (IsNewGame)
             PrepareLevel();
         CameraFollow.Ins.OnChangeOffSet(gameState);
-        player.ChangeAnim(Constants.ISIDLE_ANIM);
+        Player.ChangeAnim(Constants.ISIDLE_ANIM);
     }
 
     private void PrepareLevel()
     {
         Level = 3;//UserData.Ins.GetLevel();
         LevelManager.Ins.OnLoadMap();
-        player = Spawner.Ins.GetPlayer();
-        CameraFollow.Ins.FindCharacter(player.TF);
+        Player = Spawner.Ins.GetPlayer();
+        CameraFollow.Ins.FindCharacter(Player.TF);
         LevelManager.Ins.CharacterOnPrepare();
     }
     private void OnStartGame()
@@ -102,7 +102,7 @@ public class GameManager : Singleton<GameManager>
     {
         AudioManager.Ins.StopMusic();
         LevelManager.Ins.CharactersOnEndGame();
-        PlayerScore = player.Score;
+        PlayerScore = Player.Score;
         UIManager.Ins.CloseUI<GamePlayUI>();
         // cho panel hiện ra sau 2-3s 
         if (!IsPlayerWin)
@@ -112,7 +112,7 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            player.ChangeAnim(Constants.ISWIN_ANIM);
+            Player.ChangeAnim(Constants.ISWIN_ANIM);
             AudioManager.Ins.PlaySFX(ESound.Win);
             UIManager.Ins.OpenUI<WinUI>();
         }
@@ -133,7 +133,7 @@ public class GameManager : Singleton<GameManager>
     private void OnShopping()
     {
         CameraFollow.Ins.OnChangeOffSet(gameState);
-        player.ChangeAnim(Constants.ISDANCE_ANIM);
+        Player.ChangeAnim(Constants.ISDANCE_ANIM);
     }
     public void IsPlayAgain(bool isPlayAgain) => IsMaxLevel = !isPlayAgain;
     public Weapon GetWeapon(EWeaponType weaponType)
@@ -148,8 +148,33 @@ public class GameManager : Singleton<GameManager>
     {
         return pantDataSO.GetMaterials((int)pantType);
     }
-    public GameObject GetHat(EHatType hatType)
+    public Hat GetHat(EHatType hatType)
     {
         return hatDataSO.GetHat((int)hatType);
     }
+
+    public Weapon GetRandomWeapon()
+    {
+        EWeaponType randomWeapon = Utilities.RandomEnumValue<EWeaponType>();
+        return GetWeapon(randomWeapon);
+    }
+
+    public Hat GetRandomHat()
+    {
+        EHatType randomWeapon = Utilities.RandomEnumValue<EHatType>();
+        return GetHat(randomWeapon);
+    }
+
+    public Material GetRandomPant()
+    {
+        EPantType randomWeapon = Utilities.RandomEnumValue<EPantType>();
+        return GetPantMaterials(randomWeapon);
+    }
+
+    public Material GetRandomColor()
+    {
+        EColor randomColor = Utilities.RandomEnumValue<EColor>();
+        return GetColorMaterial(randomColor);
+    }
+   
 }

@@ -17,7 +17,7 @@ public class Bot : Character
     protected override void OnInit()
     {
         base.OnInit();
-        OnRandom();
+        OnRandomItem();
         walkRadius = 5f;
         ChangeState(new IdleState());
         SetUpWeapon();
@@ -27,13 +27,12 @@ public class Bot : Character
     // Update is called once per frame
     private void Update()
     {
-        if (currentState != null)
-            currentState.OnExecute(this);
+        currentState?.OnExecute(this);
     }
     public void Move(Vector3 target)
     {
         if (!agent.isOnNavMesh) return;
-        Vector3 moveDirection = new Vector3(target.x, target.y, target.z);
+        Vector3 moveDirection = new(target.x, target.y, target.z);
         Vector3 destination = moveDirection; 
         agent.speed = speed;
         agent.SetDestination(destination);
@@ -42,17 +41,11 @@ public class Bot : Character
     }
     public void ChangeState(IState<Bot> newState)
     {
-        if (currentState != null)
-        {
-            currentState.OnExit(this);
-        }
+        currentState?.OnExit(this);
 
         currentState = newState;
 
-        if (currentState != null)
-        {
-            currentState.OnEnter(this);
-        }
+        currentState?.OnEnter(this);
     }
 
     protected override void OnDeath()
@@ -87,9 +80,8 @@ public class Bot : Character
     public Vector3 RandomPosition()
     {
         Vector3 randomDirection = TF.position + Random.insideUnitSphere * walkRadius;
-        NavMeshHit hit;
         Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, walkRadius, NavMesh.AllAreas))
         {
             finalPosition = hit.position;
         }
@@ -108,25 +100,23 @@ public class Bot : Character
     protected override void SetUpAccessories()
     {
         base.SetUpAccessories();
-        int randomHatnPant = Random.Range(1, 9);
-        pantRenderer.material = GameManager.Ins.GetPantMaterials((EPantType)randomHatnPant);
+        pantRenderer.material = GameManager.Ins.GetRandomPant();
         if (currentHat != null)
         {
-            Destroy(currentHat);
+            Destroy(currentHat.gameObject);
         }
-        GameObject hatGO = Instantiate(GameManager.Ins.GetHat((EHatType)randomHatnPant), hatPoint);
-        currentHat = hatGO;
+        currentHatPrefab = GameManager.Ins.GetRandomHat();
+        Hat hat = Instantiate(currentHatPrefab, hatPoint);
+        currentHat = hat;
     }
-    private void OnRandom()
+    private void OnRandomItem()
     {
-        int randomColor = Random.Range(2, 13);
-        colorRenderer.material = GameManager.Ins.GetColorMaterial((EColor)randomColor);
-        int randomWeapon = Random.Range(1, 10);
+        colorRenderer.material = GameManager.Ins.GetRandomColor();
         if (currentWeapon != null)
         {
             Destroy(currentWeapon.gameObject);
         }
-        Weapon weapon = GameManager.Ins.GetWeapon((EWeaponType)randomWeapon);
+        Weapon weapon = GameManager.Ins.GetRandomWeapon();
         currentWeaponPrefab = weapon;
         SetUpAccessories();
     }

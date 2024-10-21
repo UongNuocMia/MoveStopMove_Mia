@@ -22,8 +22,8 @@ public class Character : GameUnit
     protected EBoosterType currentBooster;
     protected Weapon currentWeapon;
     protected Weapon currentWeaponPrefab;
-    protected GameObject currentHat;
-    protected GameObject currentHatPrefab;
+    protected Hat currentHat;
+    protected Hat currentHatPrefab;
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
 
     public bool IsDead { protected set; get; }
@@ -45,16 +45,7 @@ public class Character : GameUnit
         currentBooster = EBoosterType.None;
         agent = GetComponent<NavMeshAgent>();
     }
-    protected void SetUpWeapon()
-    {
-        if (currentWeapon != null)
-            return;
-        Weapon weapon = Instantiate(currentWeaponPrefab,weaponPoint);
-        currentWeapon = weapon;
-        currentWeapon.SetOwner(this);
-        AttackRange += currentWeapon.AttackRange;
-        AttackSpeed += currentWeapon.AttackSpeed;
-    }
+   
     public void OnEnemyGetInArea(Character character)
     {
         if (character.IsDead)
@@ -73,6 +64,19 @@ public class Character : GameUnit
     {
 
     }
+    protected void SetUpWeapon()
+    {
+        if (currentWeapon != null)
+        {
+            Destroy(currentWeapon.gameObject);
+        }
+        Weapon weapon = Instantiate(currentWeaponPrefab, weaponPoint);
+        currentWeapon = weapon;
+        currentWeapon.SetOwner(this);
+        AttackRange += currentWeapon.AttackRange;
+        AttackSpeed += currentWeapon.AttackSpeed;
+    }
+
     public void OnPrepareAttack()
     {
         TF.LookAt(Target.TF);

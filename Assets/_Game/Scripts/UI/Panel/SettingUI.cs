@@ -6,10 +6,10 @@ public class SettingUI : UICanvas
 {
     [SerializeField] private List<Sprite> soundSpriteList; // 0 - mute, 1 - not mute
     [SerializeField] private List<Sprite> musicSpriteList;
-    [SerializeField] private Image musicImage;
-    [SerializeField] private Image soundImage;
-    [SerializeField] private Slider musicSlider, soundSlider;
+    [SerializeField] private Image musicImage, soundImage;
+    [SerializeField] private Button musicButton, soundButton;
     [SerializeField] private Toggle vibrationToggle;
+    [SerializeField] private Slider musicSlider, soundSlider;
 
     private bool isMuteSound;
     private bool isMuteMusic;
@@ -18,9 +18,8 @@ public class SettingUI : UICanvas
     {
         soundSlider.value = UserDataManager.Ins.GetSFXVolume();
         musicSlider.value = UserDataManager.Ins.GetMusicVolume();
-
-        isMuteSound = UserDataManager.Ins.GetSFXVolume() > 0 ? false : true;
-        isMuteMusic = UserDataManager.Ins.GetMusicVolume() > 0 ? false : true;
+        isMuteSound = UserDataManager.Ins.GetSFXVolume() <= 0;
+        isMuteMusic = UserDataManager.Ins.GetMusicVolume() <= 0;
 
         soundImage.sprite = isMuteSound ? soundSpriteList[0] : soundSpriteList[1];
         musicImage.sprite = isMuteMusic ? musicSpriteList[0] : musicSpriteList[1];
@@ -53,14 +52,14 @@ public class SettingUI : UICanvas
     }
     public void SFXVolume()
     {
-        isMuteSound = soundSlider.value == 0 ? true : false;
+        isMuteSound = soundSlider.value == 0;
         soundImage.sprite = isMuteSound ? soundSpriteList[0] : soundSpriteList[1];
         AudioManager.Ins.SetSFXVolume(soundSlider.value);
         UserDataManager.Ins.SetSFXVolume(soundSlider.value);
     }
     public void MusicVolume()
     {
-        isMuteMusic = musicSlider.value == 0 ? true : false;
+        isMuteMusic = musicSlider.value == 0;
         musicImage.sprite = isMuteMusic ? musicSpriteList[0] : musicSpriteList[1];
         AudioManager.Ins.SetMusicVolume(musicSlider.value);
         UserDataManager.Ins.SetMusicVolume(musicSlider.value);

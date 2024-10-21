@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
             isRunning = false;
             return;
         }
-        Vector3 moveDirection = new Vector3(dynamicJoystick.Direction.x, 0f, dynamicJoystick.Direction.y);
+        Vector3 moveDirection = new (dynamicJoystick.Direction.x, 0f, dynamicJoystick.Direction.y);
         float rotateSpeed = 5f;
         transform.position += moveDirection.normalized * player.GetPlayerSpeed() * Time.deltaTime;
         isRunning = moveDirection != Vector3.zero;
