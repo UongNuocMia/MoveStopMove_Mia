@@ -16,29 +16,17 @@ public class SwitchToggle : MonoBehaviour
     private void Start()
     {
         toggle = GetComponent<Toggle>();
-
         handlePosition = uiHandleRectTransform.anchoredPosition;
         toggle.onValueChanged.AddListener(OnSwitch);
-        if (toggle.isOn)
-        {
-            OnSwitch(true);
-            backGroundImage.sprite = backgroundActiveSprite;
-        }
+        OnSwitch(toggle.isOn);
     }
 
     private void OnSwitch( bool isOn)
     {
         Vector2 newPosition = isOn ? new Vector2(handlePosition.x * -1, handlePosition.y) :
-                                                    handlePosition;
-        uiHandleRectTransform.DOAnchorPos(newPosition, 0.5f);
-
+                                                   handlePosition;
+        //uiHandleRectTransform.DOAnchorPos(newPosition, 0.5f);
+        uiHandleRectTransform.anchoredPosition = newPosition;
         backGroundImage.sprite = isOn ? backgroundActiveSprite : backgroundUnactiveSprite;
-
     }
-
-    private void OnDestroy()
-    {
-        toggle.onValueChanged.RemoveListener(OnSwitch);
-    }
-
 }

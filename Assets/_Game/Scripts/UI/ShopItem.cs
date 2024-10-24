@@ -24,12 +24,11 @@ public class ShopItem : GameUnit
     {
         itemIcon.sprite = itemData.sprIcon;
         price = itemData.price;
-        buffDescription = itemData.buffDescription;
+        buffDescription = itemData.GetBuffDescription();
         type = itemData.type;
         OnItemClick += onChangeItem;
         SetStatus();
     }
-
 
     public void SetStatus()
     {
@@ -53,10 +52,9 @@ public class ShopItem : GameUnit
         }
         lockGO.SetActive(!isEquipped && !isPurchased);
         equippedGO.SetActive(isEquipped);
-        IsClickThisItem(false);
+        OnSelectThisItem(false);
     }
 
-    public void IsClickThisItem(bool isClick) => selectGO.SetActive(isClick);
 
     public void OnShopItemClick()
     {
@@ -69,6 +67,8 @@ public class ShopItem : GameUnit
         });
     }
 
+    public void OnEquipItem(bool isEquipped) => equippedGO.SetActive(isEquipped);
+    public void OnSelectThisItem(bool isClick) => selectGO.SetActive(isClick);
     public void OnHideItem(bool isHide) => gameObject.SetActive(!isHide);
 
 }

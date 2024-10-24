@@ -18,6 +18,8 @@ public class Player : Character
         playerMovement = GetComponent<PlayerMovement>();
         SetUpWeapon();
         attackArea.SetScale(AttackRange);
+        characterName = "You";
+        SetName();
     }
     private void Update()
     {

@@ -7,14 +7,20 @@ public class SettingUI : UICanvas
     [SerializeField] private List<Sprite> soundSpriteList; // 0 - mute, 1 - not mute
     [SerializeField] private List<Sprite> musicSpriteList;
     [SerializeField] private Image musicImage, soundImage;
-    [SerializeField] private Button musicButton, soundButton;
+    [SerializeField] private Button musicButton, soundButton,vibrationButton;
     [SerializeField] private Toggle vibrationToggle;
     [SerializeField] private Slider musicSlider, soundSlider;
+    [SerializeField] private GameObject buttonGroup;
 
     private bool isMuteSound;
     private bool isMuteMusic;
 
-    private void OnEnable()
+    private void Awake()
+    {
+        Init();
+    }
+
+    private void Init()
     {
         soundSlider.value = UserDataManager.Ins.GetSFXVolume();
         musicSlider.value = UserDataManager.Ins.GetMusicVolume();
@@ -27,12 +33,15 @@ public class SettingUI : UICanvas
         vibrationToggle.isOn = UserDataManager.Ins.GetVibration();
 
         vibrationToggle.onValueChanged.AddListener(OnSwitchVibrationToggle);
+
+        buttonGroup.SetActive(GameManager.IsState(GameState.GamePlay));
+
+        musicButton.onClick.AddListener(OnMusicButtonClick);
+        soundButton.onClick.AddListener(OnSoundButtonClick);
+        vibrationButton.onClick.AddListener(VibrationToggle);
+
     }
 
-    public void OnSwitchVibrationToggle(bool isOn)
-    {
-        UserDataManager.Ins.SetVibration(vibrationToggle.isOn);
-    }
     public void OnSoundButtonClick()
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
@@ -69,6 +78,11 @@ public class SettingUI : UICanvas
         vibrationToggle.isOn = !vibrationToggle.isOn;
         UserDataManager.Ins.SetVibration(vibrationToggle.isOn);
     }
+    public void OnSwitchVibrationToggle(bool isOn)
+    {
+        UserDataManager.Ins.SetVibration(vibrationToggle.isOn);
+    }
+
     public void ContinueButton()
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);

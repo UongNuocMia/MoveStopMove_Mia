@@ -9,12 +9,16 @@ public class GameManager : Singleton<GameManager>
 {
     //[SerializeField] UserData userData;
     //[SerializeField] CSVData csv;
+    [SerializeField] private Camera cameraUI;
+    [SerializeField] private DynamicJoystick dynamicJoystick;
+
+    [SerializeField] private HatDataSO hatDataSO;
     [SerializeField] private WeaponDataSO weaponDataSO;
     [SerializeField] private MaterialsDataSO colorDataSO;
     [SerializeField] private MaterialsDataSO pantDataSO;
-    [SerializeField] private HatDataSO hatDataSO;
-    [SerializeField] private DynamicJoystick dynamicJoystick;
+    [SerializeField] private CharacterNameDataSO characterNameDataSO;
 
+    private List<string> nameList = new();
     private static GameState gameState = GameState.MainMenu;
 
     public bool IsNewGame = true;
@@ -23,7 +27,9 @@ public class GameManager : Singleton<GameManager>
     public int PlayerScore { private set; get; }
     public bool IsMaxLevel { private set; get; }
     public Player Player { private set; get; }
+    public Camera CameraUI => cameraUI;
     public DynamicJoystick DynamicJoystick => dynamicJoystick;
+
 
     public static bool IsState(GameState state) => gameState == state;
 
@@ -176,5 +182,33 @@ public class GameManager : Singleton<GameManager>
         EColor randomColor = Utilities.RandomEnumValue<EColor>();
         return GetColorMaterial(randomColor);
     }
-   
+
+    public string GetRandomName()
+    {
+
+        List<string> availableNames = characterNameDataSO.NameList.Where(name => !nameList.Contains(name)).ToList();
+
+        if (availableNames.Count == 0)
+        {
+            Debug.Log("Không còn tên nào có sẵn");
+            return "F";         
+        }
+
+        int id = UnityEngine.Random.Range(0, availableNames.Count);
+        string charName = availableNames[id];
+
+        nameList.Add(charName);
+        return charName;
+    }
+
+    public void RemoveName(string characterName)
+    {
+        if (nameList.Contains(characterName))
+            nameList.Remove(characterName);
+    }
+
+    public void RemoveAllName()
+    {
+        nameList.Clear();
+    }
 }

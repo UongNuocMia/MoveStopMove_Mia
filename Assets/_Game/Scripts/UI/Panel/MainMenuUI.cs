@@ -1,12 +1,14 @@
 
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class MainMenuUI : UICanvas
 {
+    [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private RectTransform gameOverPanel;
     [SerializeField] private Text tapToPlay;
-    private void OnEnable()
+    private void Start()
     {
         if (GameManager.Ins.IsMaxLevel)
         {
@@ -15,6 +17,7 @@ public class MainMenuUI : UICanvas
         tapToPlay.rectTransform.DOScale(1.3f, 1f).
                         SetEase(Ease.InOutSine).
                         SetLoops(-1, LoopType.Yoyo);
+        coinText.SetText($"{UserDataManager.Ins.GetCoin()}");
     }
 
 

@@ -19,12 +19,14 @@ public class LevelManager : Singleton<LevelManager>
     public float TimeRemain { private set; get; } = 0;
     public ELevelType CurrentLevelType { private set; get; }
     public List<Vector3> PositionList { private set; get; }
+    public List<Bot> BotList { private set; get; }
     public List<Character> CharacterList { private set; get; }
 
     public void OnLoadMap()
     {
         SetUpMap();
         GenarateCharacters();
+        BotList = GetListBot();
     }
 
     private void SetUpMap()
@@ -108,5 +110,18 @@ public class LevelManager : Singleton<LevelManager>
     {
         Vector3 newPosition = currentLevel.RandomPosition(currentPosition);
         return newPosition;
+    }
+
+    public List<Bot> GetListBot()
+    {
+        List<Bot> botList = new();
+        for (int i = 0; i < CharacterList.Count; i++)
+        {
+            if (CharacterList[i] is Bot)
+            {
+                botList.Add((Bot)CharacterList[i]);
+            }
+        }
+        return botList;
     }
 }

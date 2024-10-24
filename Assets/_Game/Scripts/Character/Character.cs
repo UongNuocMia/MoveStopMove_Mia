@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 public class Character : GameUnit
@@ -10,8 +11,12 @@ public class Character : GameUnit
     [SerializeField] protected Transform hatPoint;
     [SerializeField] protected Transform shootPoint;
     [SerializeField] protected Transform weaponPoint;
-    [SerializeField] protected CharacterConfigSO characterConfigSO;
+    [SerializeField] protected GameObject nameGO;
     [SerializeField] protected AttackArea attackArea;
+    [SerializeField] protected CharacterConfigSO characterConfigSO;
+    [SerializeField] protected TextMeshProUGUI nameText;
+
+    private float timer = 0.3f;
     private string currentAnimName;
     protected bool isMoving;
     protected bool isEndGame;
@@ -19,11 +24,12 @@ public class Character : GameUnit
     protected bool isHadTarget;
     protected float speed;
     protected float health;
+    protected string characterName;
     protected EBoosterType currentBooster;
-    protected Weapon currentWeapon;
-    protected Weapon currentWeaponPrefab;
     protected Hat currentHat;
     protected Hat currentHatPrefab;
+    protected Weapon currentWeapon;
+    protected Weapon currentWeaponPrefab;
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
 
     public bool IsDead { protected set; get; }
@@ -44,50 +50,74 @@ public class Character : GameUnit
         AttackSpeed = characterConfigSO.AttackSpeed;
         currentBooster = EBoosterType.None;
         agent = GetComponent<NavMeshAgent>();
-    }
-   
-    public void OnEnemyGetInArea(Character character)
-    {
-        if (character.IsDead)
-            return;
-        isAttacked = false;
-        CharacterInAreaList.Add(character);
-    }
-    public void OnEnemyGetOutArea(Character character)
-    {
-        if (CharacterInAreaList.Contains(character))
-        {
-            CharacterInAreaList.Remove(character);
-        }
+        OnRandomAppearance();
     }
     protected virtual void SetUpAccessories()
     {
 
     }
-    protected void SetUpWeapon()
+    protected virtual void OnRandomAppearance()
     {
-        if (currentWeapon != null)
-        {
-            Destroy(currentWeapon.gameObject);
-        }
-        Weapon weapon = Instantiate(currentWeaponPrefab, weaponPoint);
-        currentWeapon = weapon;
-        currentWeapon.SetOwner(this);
-        AttackRange += currentWeapon.AttackRange;
-        AttackSpeed += currentWeapon.AttackSpeed;
+        colorRenderer.material = GameManager.Ins.GetRandomColor();
+    }
+    protected virtual void OnDeath()
+    {
+        ChangeAnim(Constants.ISDEAD_ANIM);
+        IsDead = true;
+        AudioManager.Ins.PlaySFX(ESound.TargetDie);
     }
 
-    public void OnPrepareAttack()
+    protected virtual void SetName()
     {
-        TF.LookAt(Target.TF);
-        Attack();
+        nameText.SetText(characterName);
+        nameText.color = colorRenderer.material.color;
     }
-    public bool IsCanAttack()
+
+    public virtual void OnStartGame()
     {
-        if (CharacterInAreaList.Count == 0 || isAttacked) return false;
-        Target = FindNearstEnemy();
-        if (Target == null) return false;
-        return true;
+        agent.enabled = true;
+        isEndGame = false;
+        nameGO.SetActive(true);
+    }
+    public virtual void OnPrepareGame()
+    {
+        OnInit();
+        ChangeAnim(Constants.ISIDLE_ANIM);
+    }
+    public virtual void OnEndGame()
+    {
+        isEndGame = true;
+        agent.enabled = false;
+        nameGO.SetActive(false);
+    }
+    public virtual void OnKillSuccess(Character character)
+    {
+        Score += 2;
+        CharacterInAreaList.Remove(character);
+        LevelManager.Ins.SetCharacterRemain();
+        UIManager.Ins.ShowNoti();
+    }
+
+    private void Attack()
+    {
+        timer -= Time.deltaTime;
+
+        ChangeAnim(Constants.ISATTACK_ANIM);
+        if (timer <= 0)
+        {
+            isAttacked = true;
+            AudioManager.Ins.PlaySFX(ESound.ThrowWeapon);
+            currentWeapon.Fire();
+            float time = Utilities.GetTimeCurrentAnim(anim, Constants.ATTACK_ANIM);
+            Invoke(nameof(ChangeToIdle), time); //change to couroutine
+            timer = 0.3f;
+        }
+
+    }
+    private void ChangeToIdle()
+    {
+        if (IsDead) return;
+        ChangeAnim(Constants.ISIDLE_ANIM);
     }
     private Character FindNearstEnemy()
     {
@@ -103,69 +133,6 @@ public class Character : GameUnit
                 character = characterNear;
         }
         return character;
-    }
-    public void TakeDamage()
-    {
-        health -= 1;
-        if (health <= 0)
-            OnDeath();
-        else
-            AudioManager.Ins.PlaySFX(ESound.TargetHitted);
-
-    }
-    protected virtual void OnDeath()
-    {
-        ChangeAnim(Constants.ISDEAD_ANIM);
-        IsDead = true;
-        AudioManager.Ins.PlaySFX(ESound.TargetDie);
-    }
-    private void Attack()
-    {
-        AudioManager.Ins.PlaySFX(ESound.ThrowWeapon);
-        ChangeAnim(Constants.ISATTACK_ANIM);
-        currentWeapon.Fire();
-        isAttacked = true;
-        float time = Utilities.GetTimeCurrentAnim(anim, Constants.ATTACK_ANIM);
-        Invoke(nameof(ChangeToIdle), time);
-    }
-    private void ChangeToIdle()
-    {
-        if (IsDead) return;
-        ChangeAnim(Constants.ISIDLE_ANIM);
-    }
-    private void OnTriggerEnter(Collider collider)
-    {    
-        if (collider.CompareTag(Constants.INTERACTABLE_TAG))
-        {
-            IInteractable interactableObject = collider.GetComponent<IInteractable>();
-            interactableObject.Interact(this);
-        }
-    }
-    public void GetBooster(EBoosterType booster)
-    {
-        currentBooster = booster;
-        OnGetBooster(currentBooster);
-        currentBooster = EBoosterType.None;
-    }
-    #region Status
-    public void OnChangeColor(Material material, EColor colorEnum)
-    {
-        colorRenderer.material = material;
-    }
-    public virtual void OnStartGame()
-    {
-        agent.enabled = true;
-        isEndGame = false;
-    }
-    public virtual void OnPrepareGame()
-    {
-        OnInit();
-        ChangeAnim(Constants.ISIDLE_ANIM);
-    }
-    public virtual void OnEndGame()
-    {
-        isEndGame = true;
-        agent.enabled = false;
     }
     private void OnGetBooster(EBoosterType boosterEnum)
     {
@@ -189,7 +156,62 @@ public class Character : GameUnit
         }
 
     }
-    #endregion
+
+    protected void SetUpWeapon()
+    {
+        if (currentWeapon != null)
+        {
+            Destroy(currentWeapon.gameObject);
+        }
+        Weapon weapon = Instantiate(currentWeaponPrefab, weaponPoint);
+        currentWeapon = weapon;
+        currentWeapon.SetOwner(this);
+        AttackRange += currentWeapon.AttackRange;
+        AttackSpeed += currentWeapon.AttackSpeed;
+    }
+
+    public void OnEnemyGetInArea(Character character)
+    {
+        if (character.IsDead)
+            return;
+        isAttacked = false;
+        CharacterInAreaList.Add(character);
+    }
+    public void OnEnemyGetOutArea(Character character)
+    {
+        if (CharacterInAreaList.Contains(character))
+        {
+            CharacterInAreaList.Remove(character);
+        }
+    }
+    public void OnPrepareAttack()
+    {
+        TF.LookAt(Target.TF);
+        Attack();
+    }
+    public bool IsCanAttack()
+    {
+        if (CharacterInAreaList.Count == 0 || isAttacked) return false;
+        Target = FindNearstEnemy();
+        if (Target == null) return false;
+        return true;
+    }
+    public void TakeDamage()
+    {
+        health -= 1;
+        if (health <= 0)
+            OnDeath();
+        else
+            AudioManager.Ins.PlaySFX(ESound.TargetHitted);
+
+    }
+
+    public void GetBooster(EBoosterType booster)
+    {
+        currentBooster = booster;
+        OnGetBooster(currentBooster);
+        currentBooster = EBoosterType.None;
+    }
     public void ChangeAnim(string animName)
     {
         if (currentAnimName != animName)
@@ -199,11 +221,15 @@ public class Character : GameUnit
             anim.SetTrigger(currentAnimName);
         }
     }
-    public virtual void OnKillSuccess(Character character)
+
+
+    private void OnTriggerEnter(Collider collider)
     {
-        Score += 2;
-        CharacterInAreaList.Remove(character);
-        LevelManager.Ins.SetCharacterRemain();
-        UIManager.Ins.ShowNoti();
+        if (collider.CompareTag(Constants.INTERACTABLE_TAG))
+        {
+            IInteractable interactableObject = collider.GetComponent<IInteractable>();
+            interactableObject.Interact(this);
+        }
     }
+
 }

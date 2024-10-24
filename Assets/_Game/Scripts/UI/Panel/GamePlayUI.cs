@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,14 +9,10 @@ public class GamePlayUI : UICanvas
     [SerializeField] private Text remainTimeText;
     [SerializeField] private GameObject remainTimeGO;
     private float remainTime;
-    public void SettingButton()
+
+    private void Start()
     {
-        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
-        UIManager.Ins.OpenUI<SettingUI>();
-        GameManager.Ins.ChangeState(GameState.Setting);
-    }
-    private void OnEnable()
-    {
+
         SetRemain();
         remainTimeGO.SetActive(false);
         if (LevelManager.Ins.CurrentLevelType == ELevelType.Time)
@@ -23,9 +20,7 @@ public class GamePlayUI : UICanvas
             remainTimeGO.SetActive(true);
             remainTime = LevelManager.Ins.TimeRemain;
         }
-
     }
-
     private void Update()
     {
         if (LevelManager.Ins.CurrentLevelType == ELevelType.Time && GameManager.IsState(GameState.GamePlay))
@@ -41,7 +36,12 @@ public class GamePlayUI : UICanvas
             }
         }
     }
-
+    public void SettingButton()
+    {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
+        UIManager.Ins.OpenUI<SettingUI>();
+        GameManager.Ins.ChangeState(GameState.Setting);
+    }
     public void SetRemain()
     {
         remainCharacterText.text = "" + LevelManager.Ins.GetCharacterRemain();
