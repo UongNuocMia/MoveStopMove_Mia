@@ -56,6 +56,7 @@ public class LevelManager : Singleton<LevelManager>
         int indexOfPlayer = Random.Range(0, MaxCharacterOnStage);
         Spawner.Ins.GenarateCharacter(PositionList, indexOfPlayer);
         CharacterList = Spawner.Ins.CharacterList;
+        BotList = Spawner.Ins.BotList;
     }
 
     public void CharactersOnStartGame()
@@ -114,14 +115,6 @@ public class LevelManager : Singleton<LevelManager>
 
     public List<Bot> GetListBot()
     {
-        List<Bot> botList = new();
-        for (int i = 0; i < CharacterList.Count; i++)
-        {
-            if (CharacterList[i] is Bot)
-            {
-                botList.Add((Bot)CharacterList[i]);
-            }
-        }
-        return botList;
+        return BotList;
     }
 }

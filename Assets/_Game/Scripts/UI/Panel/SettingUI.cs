@@ -92,6 +92,7 @@ public class SettingUI : UICanvas
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         GameManager.Ins.OnPlayAgain();
+        UIManager.Ins.GetUI<GamePlayUI>().Close(0);
         Close(0);
     }
 }

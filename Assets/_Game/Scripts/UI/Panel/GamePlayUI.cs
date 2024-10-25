@@ -10,7 +10,7 @@ public class GamePlayUI : UICanvas
     [SerializeField] private GameObject remainTimeGO;
     private float remainTime;
 
-    private void Start()
+    private void OnEnable()
     {
 
         SetRemain();

@@ -1,4 +1,5 @@
 
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -24,7 +25,6 @@ public class Character : GameUnit
     protected bool isHadTarget;
     protected float speed;
     protected float health;
-    protected string characterName;
     protected EBoosterType currentBooster;
     protected Hat currentHat;
     protected Hat currentHatPrefab;
@@ -36,7 +36,10 @@ public class Character : GameUnit
     public int Score { protected set; get; } = 0;
     public float AttackSpeed { protected set; get; }
     public float AttackRange { protected set; get; }
+    public string CharacterName{ protected set; get; }
+
     public Character Target { private set; get; }
+    public Character Killer { private set; get; }
     public List<Character> CharacterInAreaList { private set; get; } = new();
     public Transform ShootPoint => shootPoint;
    
@@ -60,8 +63,9 @@ public class Character : GameUnit
     {
         colorRenderer.material = GameManager.Ins.GetRandomColor();
     }
-    protected virtual void OnDeath()
+    protected virtual void OnDeath(Character killer)
     {
+        Killer = killer;
         ChangeAnim(Constants.ISDEAD_ANIM);
         IsDead = true;
         AudioManager.Ins.PlaySFX(ESound.TargetDie);
@@ -69,8 +73,8 @@ public class Character : GameUnit
 
     protected virtual void SetName()
     {
-        nameText.SetText(characterName);
-        nameText.color = colorRenderer.material.color;
+        nameText.SetText(CharacterName);
+        nameText.color = GetCharacterColor();
     }
 
     public virtual void OnStartGame()
@@ -109,15 +113,15 @@ public class Character : GameUnit
             AudioManager.Ins.PlaySFX(ESound.ThrowWeapon);
             currentWeapon.Fire();
             float time = Utilities.GetTimeCurrentAnim(anim, Constants.ATTACK_ANIM);
-            Invoke(nameof(ChangeToIdle), time); //change to couroutine
+            StartCoroutine(ChangeToIdle(time));
             timer = 0.3f;
         }
-
     }
-    private void ChangeToIdle()
+    private IEnumerator ChangeToIdle(float time)
     {
-        if (IsDead) return;
-        ChangeAnim(Constants.ISIDLE_ANIM);
+        yield return new WaitForSeconds(time);
+        if (!IsDead || !isMoving)
+            ChangeAnim(Constants.ISIDLE_ANIM);
     }
     private Character FindNearstEnemy()
     {
@@ -191,16 +195,16 @@ public class Character : GameUnit
     }
     public bool IsCanAttack()
     {
-        if (CharacterInAreaList.Count == 0 || isAttacked) return false;
+        if (CharacterInAreaList.Count == 0 || isAttacked || IsDead) return false;
         Target = FindNearstEnemy();
         if (Target == null) return false;
         return true;
     }
-    public void TakeDamage()
+    public void TakeDamage(Character killer)
     {
         health -= 1;
         if (health <= 0)
-            OnDeath();
+            OnDeath(killer);
         else
             AudioManager.Ins.PlaySFX(ESound.TargetHitted);
 
@@ -222,6 +226,10 @@ public class Character : GameUnit
         }
     }
 
+    public Color GetCharacterColor()
+    {
+        return colorRenderer.material.color;
+    }
 
     private void OnTriggerEnter(Collider collider)
     {

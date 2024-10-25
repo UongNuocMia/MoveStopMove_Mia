@@ -42,24 +42,6 @@ public class Spawner : Singleton<Spawner>
             }
         }
     }
-
-    public List<Vector3> RandomPosition(Transform startPoint)
-    {
-        List<Vector3> randomList = new();
-        int rows = 12;
-        int columns = 9;
-        float spacing = 2f;
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                Vector3 newPosition = startPoint.position - new Vector3(-(i * spacing), 0, j * spacing);
-                randomList.Add(newPosition);
-            }
-        }
-        Utilities.Shuffle(randomList);
-        return randomList;
-    }
     private Bot SetUpBot(Vector3 position)
     {
         Bot bot = SimplePool.Spawn<Bot>(this.botPrefab, position, Quaternion.identity);
@@ -70,12 +52,10 @@ public class Spawner : Singleton<Spawner>
         Player player = SimplePool.Spawn<Player>(this.playerPrefab, position, Quaternion.identity);
         return player;
     }
-
     public Player GetPlayer()
     {
         return player;
     }
-
     public List<Bot> GetListBot()
     {
         return BotList;

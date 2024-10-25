@@ -10,28 +10,25 @@ public class Bot : Character
     [SerializeField] private GameObject targetSprite;
     [SerializeField] private CapsuleCollider botCollider;
     [SerializeField] private Waypoint_Indicator waypoint_Indicator;
-    private float walkRadius;
+    private float walkRadius = 5f;
     private IState<Bot> currentState;
-
-    private string botName;
 
     //Bot Type - Wanderer; Aggresive
 
     protected override void OnInit()
     {
         base.OnInit();
-        walkRadius = 5f;
         ChangeState(new IdleState());
         SetUpWeapon();
         attackArea.SetScale(AttackRange);
         SetName();
         WaypointSetting();
     }
-    protected override void OnDeath()
+    protected override void OnDeath(Character character)
     {
-        base.OnDeath();
+        base.OnDeath(character);
         ChangeState(new DeathState());
-        GameManager.Ins.RemoveName(characterName);
+        GameManager.Ins.RemoveName(CharacterName);
         waypoint_Indicator.enabled = false;
         nameGO.SetActive(false);
     }
@@ -57,7 +54,7 @@ public class Bot : Character
         Weapon weapon = GameManager.Ins.GetRandomWeapon();
         currentWeaponPrefab = weapon;
         SetUpAccessories();
-        characterName = GameManager.Ins.GetRandomName();
+        CharacterName = GameManager.Ins.GetRandomName();
     }
     public override void OnStartGame()
     {
@@ -94,14 +91,15 @@ public class Bot : Character
 
     private void WaypointSetting()
     {
-        waypoint_Indicator.textColor = colorRenderer.material.color;
-        waypoint_Indicator.onScreenSpriteColor = colorRenderer.material.color;
-        waypoint_Indicator.offScreenSpriteColor = colorRenderer.material.color;
+        waypoint_Indicator.textColor = GetCharacterColor();
+        waypoint_Indicator.onScreenSpriteColor = GetCharacterColor();
+        waypoint_Indicator.offScreenSpriteColor = GetCharacterColor();
         waypoint_Indicator.textDescription = Score.ToString();
     }
     public void Move(Vector3 target)
     {
         if (!agent.isOnNavMesh) return;
+        isMoving = true;
         Vector3 moveDirection = new(target.x, target.y, target.z);
         Vector3 destination = moveDirection; 
         agent.speed = speed;
@@ -122,16 +120,22 @@ public class Bot : Character
     public void OnHideTargetSprite(bool isHide) => targetSprite.SetActive(!isHide);
     public Vector3 RandomPosition()
     {
-        Vector3 randomDirection = TF.position + Random.insideUnitSphere * walkRadius;
+        int maxAttempts = 10;
         Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, walkRadius, NavMesh.AllAreas))
+        for (int i = 0; i < maxAttempts; i++)
         {
-            finalPosition = hit.position;
+            Vector3 randomDirection = TF.position + Random.insideUnitSphere * walkRadius;
+            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, walkRadius, NavMesh.AllAreas))
+            {
+                finalPosition = hit.position;
+                break;
+            }
         }
         return finalPosition;
     }
     public void OnRevive()
     {
+        health = characterConfigSO.Health;
         SetPosition(LevelManager.Ins.GetRandomPosition(TF.position));
         OnHideVisual(false);
         OnHideCollider(false);
@@ -140,8 +144,13 @@ public class Bot : Character
         ChangeState(new MoveState());
         waypoint_Indicator.enabled = true;
         nameGO.SetActive(true);
-        characterName = GameManager.Ins.GetRandomName();
+        CharacterName = GameManager.Ins.GetRandomName();
         SetName();
+    }
+
+    public void SetMoving(bool isBotMoving)
+    {
+        isMoving = isBotMoving;
     }
 
 }

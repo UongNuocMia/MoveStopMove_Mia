@@ -8,7 +8,7 @@ public class MainMenuUI : UICanvas
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private RectTransform gameOverPanel;
     [SerializeField] private Text tapToPlay;
-    private void Start()
+    private void OnEnable()
     {
         if (GameManager.Ins.IsMaxLevel)
         {

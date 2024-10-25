@@ -18,7 +18,7 @@ public class Player : Character
         playerMovement = GetComponent<PlayerMovement>();
         SetUpWeapon();
         attackArea.SetScale(AttackRange);
-        characterName = "You";
+        CharacterName = "You";
         SetName();
     }
     private void Update()
@@ -107,9 +107,9 @@ public class Player : Character
         else if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !IsDead)
             ChangeAnim(Constants.ISIDLE_ANIM);
     }
-    protected override void OnDeath()
+    protected override void OnDeath(Character character)
     {
-        base.OnDeath();
+        base.OnDeath(character);
         GameManager.Ins.IsPlayerWin = false;
         GameManager.Ins.ChangeState(GameState.Finish); 
     }

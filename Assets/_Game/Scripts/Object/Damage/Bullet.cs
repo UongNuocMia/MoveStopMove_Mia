@@ -64,7 +64,7 @@ public class Bullet : GameUnit, IInteractable
     {
         if (owner == character)
             return;
-        character.TakeDamage();
+        character.TakeDamage(owner);
         if (character.IsDead)
             owner.OnKillSuccess(character);
         OnDespawn();
