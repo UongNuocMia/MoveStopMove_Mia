@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,12 +13,14 @@ public class Character : GameUnit
     [SerializeField] protected Transform hatPoint;
     [SerializeField] protected Transform shootPoint;
     [SerializeField] protected Transform weaponPoint;
-    [SerializeField] protected GameObject nameGO;
+    [SerializeField] protected Transform characterVisual;
     [SerializeField] protected AttackArea attackArea;
-    [SerializeField] protected CharacterConfigSO characterConfigSO;
     [SerializeField] protected TextMeshProUGUI nameText;
+    [SerializeField] protected CharacterConfigSO characterConfigSO;
+    [SerializeField] protected Waypoint_Indicator waypoint_Indicator;
 
-    private float timer = 0.3f;
+    private float timer = 0.13f;
+    private float upSize = 0;
     private string currentAnimName;
     protected bool isMoving;
     protected bool isEndGame;
@@ -32,6 +35,8 @@ public class Character : GameUnit
     protected Weapon currentWeaponPrefab;
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
 
+    public event Action OnScaleUp;
+
     public bool IsDead { protected set; get; }
     public int Score { protected set; get; } = 0;
     public float AttackSpeed { protected set; get; }
@@ -42,7 +47,9 @@ public class Character : GameUnit
     public Character Killer { private set; get; }
     public List<Character> CharacterInAreaList { private set; get; } = new();
     public Transform ShootPoint => shootPoint;
-   
+    public Transform CharacterVisual => characterVisual;
+
+
     protected virtual void OnInit()
     {
         Score = 0;
@@ -54,6 +61,8 @@ public class Character : GameUnit
         currentBooster = EBoosterType.None;
         agent = GetComponent<NavMeshAgent>();
         OnRandomAppearance();
+        WaypointSetting();
+        nameText.SetText("");
     }
     protected virtual void SetUpAccessories()
     {
@@ -65,10 +74,11 @@ public class Character : GameUnit
     }
     protected virtual void OnDeath(Character killer)
     {
+        IsDead = true;
         Killer = killer;
         ChangeAnim(Constants.ISDEAD_ANIM);
-        IsDead = true;
         AudioManager.Ins.PlaySFX(ESound.TargetDie);
+        waypoint_Indicator.enabled = false;
     }
 
     protected virtual void SetName()
@@ -81,7 +91,8 @@ public class Character : GameUnit
     {
         agent.enabled = true;
         isEndGame = false;
-        nameGO.SetActive(true);
+        waypoint_Indicator.enabled = true;
+        SetName();
     }
     public virtual void OnPrepareGame()
     {
@@ -92,14 +103,22 @@ public class Character : GameUnit
     {
         isEndGame = true;
         agent.enabled = false;
-        nameGO.SetActive(false);
+        nameText.SetText("");
+        CharacterInAreaList.Clear();
+        waypoint_Indicator.enabled = false;
     }
     public virtual void OnKillSuccess(Character character)
     {
         Score += 2;
+        waypoint_Indicator.textDescription = Score.ToString();
         CharacterInAreaList.Remove(character);
         LevelManager.Ins.SetCharacterRemain();
         UIManager.Ins.ShowNoti();
+        if(UnityEngine.Random.Range(0, 10) < 4)
+        {
+            OnScaleUp?.Invoke();
+            CharacterSizeUp();
+        }
     }
 
     private void Attack()
@@ -109,18 +128,22 @@ public class Character : GameUnit
         ChangeAnim(Constants.ISATTACK_ANIM);
         if (timer <= 0)
         {
+            currentWeapon.OnHideVisual(true);
             isAttacked = true;
             AudioManager.Ins.PlaySFX(ESound.ThrowWeapon);
             currentWeapon.Fire();
-            float time = Utilities.GetTimeCurrentAnim(anim, Constants.ATTACK_ANIM);
-            StartCoroutine(ChangeToIdle(time));
-            timer = 0.3f;
+            float resetAnimTime = 0.8f;
+            Debug.Log("time___" + resetAnimTime);
+            StartCoroutine(ChangeToIdle(resetAnimTime));
+            timer = 0.13f;
         }
     }
     private IEnumerator ChangeToIdle(float time)
     {
         yield return new WaitForSeconds(time);
-        if (!IsDead || !isMoving)
+        currentWeapon.OnHideVisual(false);
+
+        if (!IsDead || GameManager.IsState(GameState.GamePlay) && !isMoving)
             ChangeAnim(Constants.ISIDLE_ANIM);
     }
     private Character FindNearstEnemy()
@@ -161,6 +184,19 @@ public class Character : GameUnit
 
     }
 
+    private void CharacterSizeUp()
+    {
+        upSize += 0.1f;
+
+        characterVisual.localScale = new Vector3(characterVisual.localScale.x + upSize, 
+            characterVisual.localScale.y + upSize, characterVisual.localScale.y + upSize);
+
+        attackArea.transform.localScale = new Vector3(attackArea.transform.localScale.x + upSize,
+            attackArea.transform.localScale.y + upSize, attackArea.transform.localScale.z + upSize);
+
+        shootPoint.position = new Vector3(shootPoint.position.x, shootPoint.position.y, upSize);
+    }
+
     protected void SetUpWeapon()
     {
         if (currentWeapon != null)
@@ -173,6 +209,15 @@ public class Character : GameUnit
         AttackRange += currentWeapon.AttackRange;
         AttackSpeed += currentWeapon.AttackSpeed;
     }
+
+    protected void WaypointSetting()
+    {
+        waypoint_Indicator.textColor = GetCharacterColor();
+        waypoint_Indicator.onScreenSpriteColor = GetCharacterColor();
+        waypoint_Indicator.offScreenSpriteColor = GetCharacterColor();
+        waypoint_Indicator.textDescription = Score.ToString();
+    }
+
 
     public void OnEnemyGetInArea(Character character)
     {

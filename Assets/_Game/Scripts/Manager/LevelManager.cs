@@ -14,7 +14,7 @@ public class LevelManager : Singleton<LevelManager>
     private Level currentLevel = null;
 
     public int TotalLevelNum => levelList.Count;
-    public int CharacterNumb { private set; get; } = 0;
+    public int CharacterNumbOfThisLevel { private set; get; } = 0;
     public int MaxCharacterOnStage { private set; get; }
     public float TimeRemain { private set; get; } = 0;
     public ELevelType CurrentLevelType { private set; get; }
@@ -38,10 +38,10 @@ public class LevelManager : Singleton<LevelManager>
         currentLevel.transform.position = Vector3.zero;
         MaxCharacterOnStage = currentLevel.MaxCharacterOnStage;
         PositionList = currentLevel.RandomPositionList;
-        CharacterNumb = currentLevel.MaxCharacter;
+        CharacterNumbOfThisLevel = currentLevel.MaxCharacter;
         TimeRemain = currentLevel.Time;
         CurrentLevelType = currentLevel.LevelType;
-        CharacterRemain = CharacterNumb;
+        CharacterRemain = CharacterNumbOfThisLevel;
     }
 
     private void DestroyMap()

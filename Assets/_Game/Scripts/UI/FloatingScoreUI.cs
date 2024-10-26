@@ -18,6 +18,7 @@ public class FloatingScoreUI : MonoBehaviour
         scoreText.text = e.score.ToString();
         scoreText.transform.DOMove(newPosition, 1.2f).OnComplete(OnComplete);
     }
+
     public void OnComplete()
     {
         scoreText.text = "";

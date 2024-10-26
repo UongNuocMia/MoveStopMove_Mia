@@ -5,9 +5,10 @@ public class Bullet : GameUnit, IInteractable
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject bulletVisual;
     [SerializeField] private BoxCollider boxCollider;
+
     private Character owner;
-    private float timeExist;
     private bool isSpawn;
+    private float timeExist;
     private float attackSpeed;
 
     private void OnInit()

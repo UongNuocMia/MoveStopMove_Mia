@@ -19,7 +19,7 @@ public class AttackArea : MonoBehaviour
         {
             Character enemy = other.GetComponent<Character>();
             character.OnEnemyGetInArea(enemy);
-            if (character is Player && !enemy.IsDead)
+            if (character is Player && GameManager.IsState(GameState.GamePlay) && !enemy.IsDead)
                 enemy.GetComponent<Bot>().OnHideTargetSprite(false);
 
         }

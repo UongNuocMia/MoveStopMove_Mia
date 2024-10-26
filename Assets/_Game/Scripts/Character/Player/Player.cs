@@ -19,7 +19,6 @@ public class Player : Character
         SetUpWeapon();
         attackArea.SetScale(AttackRange);
         CharacterName = "You";
-        SetName();
     }
     private void Update()
     {

@@ -24,7 +24,8 @@ public class GameManager : Singleton<GameManager>
     public bool IsNewGame = true;
     public bool IsPlayerWin = true;
     public int Level { private set; get; }
-    public int PlayerScore { private set; get; }
+    public int Coin { private set; get; }
+
     public bool IsMaxLevel { private set; get; }
     public Player Player { private set; get; }
     public Camera CameraUI => cameraUI;
@@ -83,13 +84,12 @@ public class GameManager : Singleton<GameManager>
         CameraFollow.Ins.OnChangeOffSet(gameState);
         Player.ChangeAnim(Constants.ISIDLE_ANIM);
     }
-
     private void PrepareLevel()
     {
         Level = 3;//UserData.Ins.GetLevel();
         LevelManager.Ins.OnLoadMap();
         Player = Spawner.Ins.GetPlayer();
-        CameraFollow.Ins.FindCharacter(Player.TF);
+        CameraFollow.Ins.FindCharacter(Player.CharacterVisual);
         LevelManager.Ins.CharacterOnPrepare();
     }
     private void OnStartGame()
@@ -108,7 +108,8 @@ public class GameManager : Singleton<GameManager>
     {
         AudioManager.Ins.StopMusic();
         LevelManager.Ins.CharactersOnEndGame();
-        PlayerScore = Player.Score;
+        Coin = CalculateGoldReceive(Player.Score, LevelManager.Ins.GetCharacterRemain());
+        UserDataManager.Ins.SetCoin(Coin);
         UIManager.Ins.CloseUI<GamePlayUI>();
         // cho panel hiện ra sau 2-3s 
         if (!IsPlayerWin)
@@ -210,5 +211,14 @@ public class GameManager : Singleton<GameManager>
     public void RemoveAllName()
     {
         nameList.Clear();
+    }
+
+    public int CalculateGoldReceive(float score, int rank )
+    {
+        int totalCharacters = LevelManager.Ins.CharacterNumbOfThisLevel;
+        float percentage = 30f * (totalCharacters - rank) / totalCharacters;
+        rank = (int)(rank <= 5 ? 50 : percentage);
+        float total = score / 2 + rank;
+        return Mathf.RoundToInt(total);
     }
 }

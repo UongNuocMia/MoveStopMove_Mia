@@ -33,6 +33,6 @@ public class Weapon : GameUnit
         bullet.SetPosition(owner.ShootPoint.position);
         bullet.OnFire();
     }
-    //public void OnHideVisual(bool isHide) => weaponVisual.SetActive(!isHide);
+    public void OnHideVisual(bool isHide) => weaponVisual.SetActive(!isHide);
 
 }

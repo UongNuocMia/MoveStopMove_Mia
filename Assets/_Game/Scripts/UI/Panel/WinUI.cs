@@ -1,22 +1,46 @@
 using UnityEngine.UI;
+using UnityEngine;
+using TMPro;
+using DG.Tweening;
 
 public class WinUI : UICanvas
 {
-    public Text score;
+    [SerializeField] private Button continueButton;
+    [SerializeField] private RectTransform touchToCotinue, backgroundPanel;
+    [SerializeField] private TextMeshProUGUI coinText;
+    private float defaultSize = 1;
 
-    public void MainMenuButton()
+    private void OnEnable()
+    {
+        Init();
+        AnimSetup();
+    }
+
+    private void OnDisable()
+    {
+        backgroundPanel.localScale = new Vector3(backgroundPanel.localScale.x, 0);
+    }
+
+    private void Init()
+    {
+        backgroundPanel.localScale = new Vector3(backgroundPanel.localScale.x, 0);
+
+        coinText.SetText($"{GameManager.Ins.Coin}");
+        continueButton.onClick.AddListener(ContinueButton);
+
+    }
+    public void ContinueButton()
     {
         GameManager.Ins.OnNextLevel();
         Close(0);
     }
 
-    public void TryAgainButton()
+    private void AnimSetup()
     {
-        GameManager.Ins.OnPlayAgain();
-        Close(0);
-    }
-    private void OnEnable()
-    {
-        score.text = GameManager.Ins.PlayerScore.ToString();
+        touchToCotinue.DOScale(1.3f, 1f).
+                SetEase(Ease.InOutSine).
+                SetLoops(-1, LoopType.Yoyo);
+
+        backgroundPanel.DOScale(new Vector3(backgroundPanel.localScale.x, defaultSize), 0.5f);
     }
 }
