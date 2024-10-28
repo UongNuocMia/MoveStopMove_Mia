@@ -24,7 +24,7 @@ public class GameManager : Singleton<GameManager>
     public bool IsNewGame = true;
     public bool IsPlayerWin = true;
     public int Level { private set; get; }
-    public int Coin { private set; get; }
+    public int CoinReceive { private set; get; }
 
     public bool IsMaxLevel { private set; get; }
     public Player Player { private set; get; }
@@ -108,8 +108,9 @@ public class GameManager : Singleton<GameManager>
     {
         AudioManager.Ins.StopMusic();
         LevelManager.Ins.CharactersOnEndGame();
-        Coin = CalculateGoldReceive(Player.Score, LevelManager.Ins.GetCharacterRemain());
-        UserDataManager.Ins.SetCoin(Coin);
+        CoinReceive = CalculateGoldReceive(Player.Score, LevelManager.Ins.GetCharacterRemain());
+        int totalCoin = CoinReceive + UserDataManager.Ins.GetCoin();
+        UserDataManager.Ins.SetCoin(totalCoin);
         UIManager.Ins.CloseUI<GamePlayUI>();
         // cho panel hiện ra sau 2-3s 
         if (!IsPlayerWin)
@@ -119,7 +120,6 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            Player.ChangeAnim(Constants.ISWIN_ANIM);
             AudioManager.Ins.PlaySFX(ESound.Win);
             UIManager.Ins.OpenUI<WinUI>();
         }

@@ -37,7 +37,6 @@ public class MainMenuUI : UICanvas
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         UIManager.Ins.OpenUI<SettingUI>();
-        GameManager.Ins.ChangeState(GameState.Setting);
     }
     
     public void ShopButton()

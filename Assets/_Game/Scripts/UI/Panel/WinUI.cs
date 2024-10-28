@@ -25,7 +25,7 @@ public class WinUI : UICanvas
     {
         backgroundPanel.localScale = new Vector3(backgroundPanel.localScale.x, 0);
 
-        coinText.SetText($"{GameManager.Ins.Coin}");
+        coinText.SetText($"{GameManager.Ins.CoinReceive}");
         continueButton.onClick.AddListener(ContinueButton);
 
     }

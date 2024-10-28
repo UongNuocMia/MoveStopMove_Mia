@@ -20,7 +20,6 @@ public class Character : GameUnit
     [SerializeField] protected Waypoint_Indicator waypoint_Indicator;
 
     private float timer = 0.13f;
-    private float upSize = 0;
     private string currentAnimName;
     protected bool isMoving;
     protected bool isEndGame;
@@ -33,6 +32,7 @@ public class Character : GameUnit
     protected Hat currentHatPrefab;
     protected Weapon currentWeapon;
     protected Weapon currentWeaponPrefab;
+    protected EPantType pantType;
     protected NavMeshAgent agent; // player cung dung de tranh truong hop bay ra ngoai
 
     public event Action OnScaleUp;
@@ -48,7 +48,6 @@ public class Character : GameUnit
     public List<Character> CharacterInAreaList { private set; get; } = new();
     public Transform ShootPoint => shootPoint;
     public Transform CharacterVisual => characterVisual;
-
 
     protected virtual void OnInit()
     {
@@ -93,11 +92,15 @@ public class Character : GameUnit
         isEndGame = false;
         waypoint_Indicator.enabled = true;
         SetName();
+        attackArea.gameObject.SetActive(true);
     }
     public virtual void OnPrepareGame()
     {
         OnInit();
         ChangeAnim(Constants.ISIDLE_ANIM);
+        ResetSize();
+        ApplyBuff();
+        attackArea.gameObject.SetActive(false);
     }
     public virtual void OnEndGame()
     {
@@ -106,6 +109,8 @@ public class Character : GameUnit
         nameText.SetText("");
         CharacterInAreaList.Clear();
         waypoint_Indicator.enabled = false;
+        upSize = 0;
+        attackArea.gameObject.SetActive(false);
     }
     public virtual void OnKillSuccess(Character character)
     {
@@ -133,7 +138,6 @@ public class Character : GameUnit
             AudioManager.Ins.PlaySFX(ESound.ThrowWeapon);
             currentWeapon.Fire();
             float resetAnimTime = 0.8f;
-            Debug.Log("time___" + resetAnimTime);
             StartCoroutine(ChangeToIdle(resetAnimTime));
             timer = 0.13f;
         }
@@ -142,9 +146,11 @@ public class Character : GameUnit
     {
         yield return new WaitForSeconds(time);
         currentWeapon.OnHideVisual(false);
-
-        if (!IsDead || GameManager.IsState(GameState.GamePlay) && !isMoving)
-            ChangeAnim(Constants.ISIDLE_ANIM);
+        if (GameManager.IsState(GameState.GamePlay))
+        {
+            if (!IsDead && !isMoving)
+                ChangeAnim(Constants.ISIDLE_ANIM);
+        }
     }
     private Character FindNearstEnemy()
     {
@@ -184,17 +190,22 @@ public class Character : GameUnit
 
     }
 
-    private void CharacterSizeUp()
+    private void CharacterSizeUp(float upSize = 0.2f)
     {
-        upSize += 0.1f;
-
-        characterVisual.localScale = new Vector3(characterVisual.localScale.x + upSize, 
+        characterVisual.localScale = new Vector3(characterVisual.localScale.x + upSize,
             characterVisual.localScale.y + upSize, characterVisual.localScale.y + upSize);
 
         attackArea.transform.localScale = new Vector3(attackArea.transform.localScale.x + upSize,
             attackArea.transform.localScale.y + upSize, attackArea.transform.localScale.z + upSize);
 
-        shootPoint.position = new Vector3(shootPoint.position.x, shootPoint.position.y, upSize);
+        shootPoint.localPosition = new Vector3(shootPoint.localPosition.x, shootPoint.localPosition.y, upSize);
+    }
+
+    protected void ResetSize()
+    {
+        characterVisual.localScale = new Vector3(1, 1, 1);
+        attackArea.transform.localScale = new Vector3(1, 1, 1);
+        shootPoint.localPosition = new Vector3(1, 1, 1);
     }
 
     protected void SetUpWeapon()
@@ -206,8 +217,6 @@ public class Character : GameUnit
         Weapon weapon = Instantiate(currentWeaponPrefab, weaponPoint);
         currentWeapon = weapon;
         currentWeapon.SetOwner(this);
-        AttackRange += currentWeapon.AttackRange;
-        AttackSpeed += currentWeapon.AttackSpeed;
     }
 
     protected void WaypointSetting()
@@ -217,7 +226,13 @@ public class Character : GameUnit
         waypoint_Indicator.offScreenSpriteColor = GetCharacterColor();
         waypoint_Indicator.textDescription = Score.ToString();
     }
-
+    
+    protected void ApplyBuff()
+    {
+        AttackRange = AttackRange + currentWeapon.AttackRange + (currentHat != null ? Utilities.GetValuePercent(AttackRange, currentHat.GetRangeBuff()) : 0);
+        AttackSpeed = AttackSpeed + currentWeapon.AttackSpeed;
+        speed = speed + (pantType != EPantType.None ? Utilities.GetValuePercent(speed, 8) : 0); // 8%
+    }
 
     public void OnEnemyGetInArea(Character character)
     {
@@ -274,6 +289,11 @@ public class Character : GameUnit
     public Color GetCharacterColor()
     {
         return colorRenderer.material.color;
+    }
+
+    public float GetCharacterSize()
+    {
+        return characterVisual.localScale.x;
     }
 
     private void OnTriggerEnter(Collider collider)

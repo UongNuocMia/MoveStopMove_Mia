@@ -50,6 +50,7 @@ public class CameraFollow : Singleton<CameraFollow>
         {
             tf.SetPositionAndRotation(Vector3.Lerp(tf.position, target.position + offset, Time.deltaTime * speed),
                 Quaternion.Lerp(tf.rotation, Quaternion.Euler(rotation), Time.deltaTime * speed));
+            Camera.main.fieldOfView = 60 + (tf.localScale.x - 1) * 10;
         }
     }
 }

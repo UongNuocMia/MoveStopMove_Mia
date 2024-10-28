@@ -15,7 +15,7 @@ public class SettingUI : UICanvas
     private bool isMuteSound;
     private bool isMuteMusic;
 
-    private void Awake()
+    private void OnEnable()
     {
         Init();
     }

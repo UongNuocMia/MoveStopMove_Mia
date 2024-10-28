@@ -15,4 +15,4 @@ MonoBehaviour:
   Health: 1
   Speed: 5
   AttackRange: 3
-  AttackSpeed: 3
+  AttackSpeed: 4

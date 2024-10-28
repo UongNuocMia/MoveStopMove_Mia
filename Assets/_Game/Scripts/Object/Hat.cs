@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class Hat : MonoBehaviour
 {
-    private int buff;
-    public int GetBuff()
+    [SerializeField] private float rangeBuff;
+
+    public float GetRangeBuff()
     {
-        return buff;
+        return rangeBuff;
     }
 
 }

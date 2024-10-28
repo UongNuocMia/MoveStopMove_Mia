@@ -65,6 +65,7 @@ public class Player : Character
     public void OnRefresh()
     {
         OnInit();
+        ApplyBuff();
     }
     protected void SetUpPant(EPantType pantType)
     {
@@ -73,6 +74,13 @@ public class Player : Character
         else
             pantRenderer.gameObject.SetActive(true);
         pantRenderer.material = GameManager.Ins.GetPantMaterials(pantType);
+    }
+
+    public override void OnEndGame()
+    {
+        base.OnEndGame();
+        if(!IsDead)
+            ChangeAnim(Constants.ISWIN_ANIM);
     }
     protected void SetUpHat(EHatType hatType)
     {
@@ -85,19 +93,9 @@ public class Player : Character
         currentHat = hat;
     }
 
-    private void OnApplyBuff()
-    {
-        if (currentHat != null)
-            AttackRange = currentHat.GetBuff();
-    }
-
     public float GetPlayerSpeed()
     {
         return speed;
-    }
-    public void OnResult()
-    {
-        ChangeAnim(Constants.ISWIN_ANIM);
     }
     protected void OnStopMoving()
     {

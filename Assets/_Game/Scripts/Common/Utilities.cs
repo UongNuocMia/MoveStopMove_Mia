@@ -37,4 +37,10 @@ public static class Utilities
         int random = UnityEngine.Random.Range(1, values.Length);
         return (T)values.GetValue(random);
     }
+
+    public static float GetValuePercent(float value, float percent)
+    {
+        float result = value * percent / 100;
+        return result;
+    }
 }

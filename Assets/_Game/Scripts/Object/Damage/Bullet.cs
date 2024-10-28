@@ -16,6 +16,7 @@ public class Bullet : GameUnit, IInteractable
         timeExist = 2f;
         OnHideVisual(false);
         OnHideCollision(false);
+
     }
 
     public void SetOwner(Character character)
@@ -31,6 +32,7 @@ public class Bullet : GameUnit, IInteractable
         OnInit();
         isSpawn = true;
         rb.velocity = owner.ShootPoint.transform.forward * attackSpeed;
+        SetScale(owner.GetCharacterSize());
     }
     private void OnDespawn()
     {
@@ -48,7 +50,7 @@ public class Bullet : GameUnit, IInteractable
         {
             BulletRolling();
         }
-        if (isSpawn && timeExist <= 0)
+        if (isSpawn && timeExist <= 0 || !GameManager.IsState(GameState.GamePlay))
         {
             OnDespawn();
         }
@@ -63,7 +65,7 @@ public class Bullet : GameUnit, IInteractable
     }
     public void Interact(Character character)
     {
-        if (owner == character)
+        if (owner == character || !GameManager.IsState(GameState.GamePlay))
             return;
         character.TakeDamage(owner);
         if (character.IsDead)

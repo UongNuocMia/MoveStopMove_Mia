@@ -119,6 +119,7 @@ public class Bot : Character
     public void OnRevive()
     {
         health = characterConfigSO.Health;
+        ResetSize();
         SetPosition(LevelManager.Ins.GetRandomPosition(TF.position));
         OnHideVisual(false);
         OnHideCollider(false);

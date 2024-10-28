@@ -1,7 +1,9 @@
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 
@@ -11,8 +13,12 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private List<Level> levelList;
 
     private int CharacterRemain;
+    private float reviveTime = 2f;
+    private float onGroundTime = 2f;
+
     private Level currentLevel = null;
 
+    private List<Bot> botDeadList = new();
     public int TotalLevelNum => levelList.Count;
     public int CharacterNumbOfThisLevel { private set; get; } = 0;
     public int MaxCharacterOnStage { private set; get; }
@@ -72,6 +78,24 @@ public class LevelManager : Singleton<LevelManager>
         for (int i = 0; i < CharacterList.Count; i++)
         {
             CharacterList[i].OnEndGame();
+        }
+    }
+
+    public void OnReviveBot(Bot bot)
+    {
+        StartCoroutine(RespawnBot(bot));
+    }
+    private IEnumerator RespawnBot(Bot bot)
+    {
+        yield return new WaitForSeconds(onGroundTime);
+        bot.OnHideVisual(true);
+        reviveTime -= Time.deltaTime;
+
+        if (GetCharacterRemain() > GetCharacterOnGround())
+        {
+            yield return new WaitForSeconds(reviveTime);
+            bot.OnRevive();
+            Debug.Log($"{bot.CharacterName} đã hồi sinh!");
         }
     }
 

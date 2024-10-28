@@ -36,7 +36,7 @@ public class LoseUI : UICanvas
     {
         rankText.text = "Rank #" + LevelManager.Ins.GetCharacterRemain();
 
-        coinText.SetText($"{GameManager.Ins.Coin}");
+        coinText.SetText($"{GameManager.Ins.CoinReceive}");
 
         timeOutImageGO.SetActive(false);
  
