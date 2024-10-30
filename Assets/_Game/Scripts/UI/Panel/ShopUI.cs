@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using DG.Tweening;
 
 public class ShopUI : UICanvas
 {
@@ -16,6 +17,9 @@ public class ShopUI : UICanvas
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI priceText;
+
+    [SerializeField] private RectTransform coinRect, exitRect, downRect;
+    [SerializeField] private RectTransform coinPos, exitPos, downPos;
 
     private int price;
     private int currentCoin;
@@ -36,6 +40,7 @@ public class ShopUI : UICanvas
     }
     private void Init()
     {
+        OnEnableAnim();
         hatTypeList = UserDataManager.Ins.GetPurchaseHatList();
         pantTypeList = UserDataManager.Ins.GetPurchasePantList();
         weaponTypeList = UserDataManager.Ins.GetPurchaseWeaponList();
@@ -67,6 +72,8 @@ public class ShopUI : UICanvas
         bool isEquipped = false;
         bool isInList = false;
         currentShopItem.OnSelectThisItem(true);
+
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
 
         switch (shopType)
         {
@@ -104,6 +111,7 @@ public class ShopUI : UICanvas
     }
     private void OnEquipClick()
     {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         switch (shopType)
         {
             case EShopType.Weapon:
@@ -120,6 +128,7 @@ public class ShopUI : UICanvas
     }
     private void OnUnequipClick()
     {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         switch (shopType)
         {
             case EShopType.Pant:
@@ -138,6 +147,7 @@ public class ShopUI : UICanvas
     }
     private void OnBuyClick()
     {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         if (currentCoin < price)
             return;
         currentCoin -= price;
@@ -168,10 +178,12 @@ public class ShopUI : UICanvas
     }
     public void OnExitClick()
     {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
+        OnDisableAnim();
         GameManager.Ins.IsNewGame = false;
         GameManager.Ins.ChangeState(GameState.MainMenu);
         GameManager.Ins.Player.OnRefresh();
-        Close(0);
+        Close(0.3f);
     }
     public void RefreshTab()
     {
@@ -242,6 +254,22 @@ public class ShopUI : UICanvas
         UpdateTabActivity(tabID);
         isRefresh = false;
         currentItemList[itemClickIndex].OnShopItemClick();
+
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
+    }
+
+    private void OnEnableAnim()
+    {
+        coinRect.DOMove(coinPos.position, Constants.ANIM_DURATION);
+        exitRect.DOMove(exitPos.position, Constants.ANIM_DURATION);
+        downRect.DOMove(downPos.position, Constants.ANIM_DURATION);
+    }
+
+    private void OnDisableAnim()
+    {
+        coinRect.DOMove(new Vector3(coinRect.position.x + 2000, coinRect.position.y), Constants.ANIM_DURATION);
+        exitRect.DOMove(new Vector3(exitRect.position.x - 2000, exitRect.position.y), Constants.ANIM_DURATION);
+        downRect.DOMove(new Vector3(downRect.position.x, downRect.position.y - 2000), Constants.ANIM_DURATION);
     }
 
 }

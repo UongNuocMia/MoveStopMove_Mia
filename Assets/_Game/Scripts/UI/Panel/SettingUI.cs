@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,19 +8,21 @@ public class SettingUI : UICanvas
     [SerializeField] private List<Sprite> soundSpriteList; // 0 - mute, 1 - not mute
     [SerializeField] private List<Sprite> musicSpriteList;
     [SerializeField] private Image musicImage, soundImage;
-    [SerializeField] private Button musicButton, soundButton,vibrationButton;
+    [SerializeField] private Button musicButton, soundButton, vibrationButton, exitButton;
     [SerializeField] private Toggle vibrationToggle;
     [SerializeField] private Slider musicSlider, soundSlider;
     [SerializeField] private GameObject buttonGroup;
+
+    [SerializeField] private RectTransform popupRect, popupPos;
 
     private bool isMuteSound;
     private bool isMuteMusic;
 
     private void OnEnable()
     {
+        OnEnableAnim();
         Init();
     }
-
     private void Init()
     {
         soundSlider.value = UserDataManager.Ins.GetSFXVolume();
@@ -36,12 +39,12 @@ public class SettingUI : UICanvas
 
         buttonGroup.SetActive(GameManager.IsState(GameState.GamePlay));
 
+        exitButton.onClick.AddListener(CloseButton);
         musicButton.onClick.AddListener(OnMusicButtonClick);
         soundButton.onClick.AddListener(OnSoundButtonClick);
         vibrationButton.onClick.AddListener(VibrationToggle);
 
     }
-
     public void OnSoundButtonClick()
     {
         AudioManager.Ins.PlaySFX(ESound.ButtonClick);
@@ -75,11 +78,13 @@ public class SettingUI : UICanvas
     }
     public void VibrationToggle()
     {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         vibrationToggle.isOn = !vibrationToggle.isOn;
         UserDataManager.Ins.SetVibration(vibrationToggle.isOn);
     }
     public void OnSwitchVibrationToggle(bool isOn)
     {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
         UserDataManager.Ins.SetVibration(vibrationToggle.isOn);
     }
 
@@ -94,5 +99,22 @@ public class SettingUI : UICanvas
         GameManager.Ins.OnPlayAgain();
         UIManager.Ins.GetUI<GamePlayUI>().Close(0);
         Close(0);
+    }
+
+    private void CloseButton()
+    {
+        AudioManager.Ins.PlaySFX(ESound.ButtonClick);
+        OnDisableAnim();
+        Close(0.3f);
+    }
+
+    private void OnEnableAnim()
+    {
+        popupRect.DOMoveY(popupPos.position.y, Constants.ANIM_DURATION);
+    }
+
+    private void OnDisableAnim() 
+    {
+        popupRect.DOMoveY(popupPos.position.y - 2000, Constants.ANIM_DURATION);
     }
 }

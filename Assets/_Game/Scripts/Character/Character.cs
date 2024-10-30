@@ -12,6 +12,7 @@ public class Character : GameUnit
     [SerializeField] protected Animator anim;
     [SerializeField] protected Transform hatPoint;
     [SerializeField] protected Transform shootPoint;
+    [SerializeField] protected Transform hitEff_Pos;
     [SerializeField] protected Transform weaponPoint;
     [SerializeField] protected Transform characterVisual;
     [SerializeField] protected AttackArea attackArea;
@@ -19,6 +20,7 @@ public class Character : GameUnit
     [SerializeField] protected CharacterConfigSO characterConfigSO;
     [SerializeField] protected Waypoint_Indicator waypoint_Indicator;
 
+    private bool isSetColorSkin;
     private float timer = 0.13f;
     private string currentAnimName;
     protected bool isMoving;
@@ -27,7 +29,6 @@ public class Character : GameUnit
     protected bool isHadTarget;
     protected float speed;
     protected float health;
-    protected EBoosterType currentBooster;
     protected Hat currentHat;
     protected Hat currentHatPrefab;
     protected Weapon currentWeapon;
@@ -46,6 +47,7 @@ public class Character : GameUnit
     public Character Target { private set; get; }
     public Character Killer { private set; get; }
     public List<Character> CharacterInAreaList { private set; get; } = new();
+    public Transform HitEff_Pos => hitEff_Pos;
     public Transform ShootPoint => shootPoint;
     public Transform CharacterVisual => characterVisual;
 
@@ -57,7 +59,6 @@ public class Character : GameUnit
         health = characterConfigSO.Health;
         AttackRange = characterConfigSO.AttackRange;
         AttackSpeed = characterConfigSO.AttackSpeed;
-        currentBooster = EBoosterType.None;
         agent = GetComponent<NavMeshAgent>();
         OnRandomAppearance();
         WaypointSetting();
@@ -69,7 +70,11 @@ public class Character : GameUnit
     }
     protected virtual void OnRandomAppearance()
     {
-        colorRenderer.material = GameManager.Ins.GetRandomColor();
+        if (!isSetColorSkin)
+        {
+            colorRenderer.material = GameManager.Ins.GetRandomColor();
+            isSetColorSkin = true;
+        }
     }
     protected virtual void OnDeath(Character killer)
     {
@@ -109,7 +114,6 @@ public class Character : GameUnit
         nameText.SetText("");
         CharacterInAreaList.Clear();
         waypoint_Indicator.enabled = false;
-        upSize = 0;
         attackArea.gameObject.SetActive(false);
     }
     public virtual void OnKillSuccess(Character character)
@@ -119,7 +123,7 @@ public class Character : GameUnit
         CharacterInAreaList.Remove(character);
         LevelManager.Ins.SetCharacterRemain();
         UIManager.Ins.ShowNoti();
-        if(UnityEngine.Random.Range(0, 10) < 4)
+        if(UnityEngine.Random.Range(0, 11) < 3 && characterVisual.localScale.x < Constants.MAX_SCALE_UP)
         {
             OnScaleUp?.Invoke();
             CharacterSizeUp();
@@ -162,32 +166,10 @@ public class Character : GameUnit
         Character character = null;
         foreach (var characterNear in CharacterInAreaList)
         {
-            if (Vector3.Distance(TF.position, characterNear.TF.position) < distance)
+            if (Vector3.Distance(TF.position, characterNear.TF.position) < distance && !characterNear.IsDead)
                 character = characterNear;
         }
         return character;
-    }
-    private void OnGetBooster(EBoosterType boosterEnum)
-    {
-        switch (boosterEnum)
-        {
-            case EBoosterType.None:
-                break;
-            case EBoosterType.KingSpeed:
-                speed++;
-                break;
-            case EBoosterType.Hulk:
-                SetScale(0.1f);
-                break;
-            case EBoosterType.Fly:
-                break;
-            case EBoosterType.WeaponScale:
-                currentWeapon.SetScale(0.1f);
-                break;
-            default:
-                break;
-        }
-
     }
 
     private void CharacterSizeUp(float upSize = 0.2f)
@@ -195,17 +177,16 @@ public class Character : GameUnit
         characterVisual.localScale = new Vector3(characterVisual.localScale.x + upSize,
             characterVisual.localScale.y + upSize, characterVisual.localScale.y + upSize);
 
-        attackArea.transform.localScale = new Vector3(attackArea.transform.localScale.x + upSize,
-            attackArea.transform.localScale.y + upSize, attackArea.transform.localScale.z + upSize);
+        attackArea.SetScale(attackArea.transform.localScale.x + upSize);
 
-        shootPoint.localPosition = new Vector3(shootPoint.localPosition.x, shootPoint.localPosition.y, upSize);
+        shootPoint.localPosition = new Vector3(shootPoint.localPosition.x, shootPoint.localPosition.y, shootPoint.localPosition.y + upSize);
     }
 
     protected void ResetSize()
     {
         characterVisual.localScale = new Vector3(1, 1, 1);
-        attackArea.transform.localScale = new Vector3(1, 1, 1);
-        shootPoint.localPosition = new Vector3(1, 1, 1);
+        attackArea.SetScale(AttackRange);
+        shootPoint.localPosition = new Vector3(0, 0.5f, 1);
     }
 
     protected void SetUpWeapon()
@@ -255,6 +236,7 @@ public class Character : GameUnit
     }
     public bool IsCanAttack()
     {
+        CharacterInAreaList.RemoveAll(character => character.IsDead);
         if (CharacterInAreaList.Count == 0 || isAttacked || IsDead) return false;
         Target = FindNearstEnemy();
         if (Target == null) return false;
@@ -270,12 +252,6 @@ public class Character : GameUnit
 
     }
 
-    public void GetBooster(EBoosterType booster)
-    {
-        currentBooster = booster;
-        OnGetBooster(currentBooster);
-        currentBooster = EBoosterType.None;
-    }
     public void ChangeAnim(string animName)
     {
         if (currentAnimName != animName)

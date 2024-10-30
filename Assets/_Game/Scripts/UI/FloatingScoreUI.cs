@@ -14,9 +14,9 @@ public class FloatingScoreUI : MonoBehaviour
 
     private void SetText(object sender, Player.OnKillEnemyEventArgs e)
     {
-        Vector3 newPosition = scoreText.transform.position + new Vector3(0, 1.5f, 0);
+        Vector3 newPosition = new Vector3(0, 1.5f, 0);
         scoreText.text = e.score.ToString();
-        scoreText.transform.DOMove(newPosition, 1.2f).OnComplete(OnComplete);
+        scoreText.rectTransform.DOLocalMoveY(newPosition.y, 0.5f).OnComplete(OnComplete);
     }
 
     public void OnComplete()

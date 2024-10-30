@@ -6,6 +6,7 @@ public class Bullet : GameUnit, IInteractable
     [SerializeField] private GameObject bulletVisual;
     [SerializeField] private BoxCollider boxCollider;
 
+    private Effect hitEffect;
     private Character owner;
     private bool isSpawn;
     private float timeExist;
@@ -68,6 +69,7 @@ public class Bullet : GameUnit, IInteractable
         if (owner == character || !GameManager.IsState(GameState.GamePlay))
             return;
         character.TakeDamage(owner);
+        hitEffect = Instantiate(GameManager.Ins.GetEffect(EEffectType.Hit_By_Bullet_VFX), character.HitEff_Pos);
         if (character.IsDead)
             owner.OnKillSuccess(character);
         OnDespawn();

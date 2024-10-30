@@ -1,12 +1,4 @@
 
-public enum EBoosterType
-{
-    None = 0,
-    KingSpeed = 1,
-    Hulk = 2,
-    Fly = 3,
-    WeaponScale = 4,
-}
 public enum EWeaponType
 {
     None = 0,
@@ -80,7 +72,6 @@ public enum ELevelType
     None = 0,
     Normal = 1,
     Time = 2,
-    Boss = 3,
 }
 public enum ESound
 {
@@ -102,5 +93,12 @@ public enum EShopType
     Weapon = 1,
     Pant = 2,
     Hat = 3,
+}
+
+public enum EEffectType
+{
+    None = 0,
+    Win_VFX = 1,
+    Hit_By_Bullet_VFX = 2,
 }
 

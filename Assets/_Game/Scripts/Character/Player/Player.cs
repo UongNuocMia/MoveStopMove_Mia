@@ -79,8 +79,6 @@ public class Player : Character
     public override void OnEndGame()
     {
         base.OnEndGame();
-        if(!IsDead)
-            ChangeAnim(Constants.ISWIN_ANIM);
     }
     protected void SetUpHat(EHatType hatType)
     {

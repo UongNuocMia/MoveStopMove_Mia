@@ -1,4 +1,5 @@
 
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +9,14 @@ public class GamePlayUI : UICanvas
     [SerializeField] private Text remainCharacterText;
     [SerializeField] private Text remainTimeText;
     [SerializeField] private GameObject remainTimeGO;
+
+    [SerializeField] private RectTransform upLayer;
+    [SerializeField] private RectTransform upLayerPos;
     private float remainTime;
 
     private void OnEnable()
     {
-
+        OnEnableAnim();
         SetRemain();
         remainTimeGO.SetActive(false);
         if (LevelManager.Ins.CurrentLevelType == ELevelType.Time)
@@ -20,6 +24,10 @@ public class GamePlayUI : UICanvas
             remainTimeGO.SetActive(true);
             remainTime = LevelManager.Ins.TimeRemain;
         }
+    }
+    private void OnDisable()
+    {
+        upLayer.position = new Vector3(upLayer.position.x, upLayer.position.y + 400);
     }
     private void Update()
     {
@@ -44,5 +52,10 @@ public class GamePlayUI : UICanvas
     public void SetRemain()
     {
         remainCharacterText.text = "" + LevelManager.Ins.GetCharacterRemain();
+    }
+
+    private void OnEnableAnim()
+    {
+        upLayer.DOMove(upLayerPos.position, Constants.ANIM_DURATION);
     }
 }

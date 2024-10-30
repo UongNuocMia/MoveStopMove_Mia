@@ -18,7 +18,6 @@ public class LevelManager : Singleton<LevelManager>
 
     private Level currentLevel = null;
 
-    private List<Bot> botDeadList = new();
     public int TotalLevelNum => levelList.Count;
     public int CharacterNumbOfThisLevel { private set; get; } = 0;
     public int MaxCharacterOnStage { private set; get; }
@@ -94,6 +93,7 @@ public class LevelManager : Singleton<LevelManager>
         if (GetCharacterRemain() > GetCharacterOnGround())
         {
             yield return new WaitForSeconds(reviveTime);
+            if (!GameManager.IsState(GameState.GamePlay)) yield break; ;
             bot.OnRevive();
             Debug.Log($"{bot.CharacterName} đã hồi sinh!");
         }
@@ -127,7 +127,10 @@ public class LevelManager : Singleton<LevelManager>
         //total character onstage = ??
         CharacterRemain -= 1;
         if (CharacterRemain == 1)
+        {
+            GameManager.Ins.IsPlayerWin = !GameManager.Ins.Player.IsDead;
             GameManager.Ins.ChangeState(GameState.Finish);
+        }
 
     }
 

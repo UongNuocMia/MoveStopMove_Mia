@@ -23,5 +23,9 @@ public class Constants
     public const string DANCE_ANIM = "Dance";
     public const string ATTACK_ANIM = "Attack";
 
+    //
+    public const float MAX_SCALE_UP = 1.6f;
+    public const float ANIM_DURATION = 0.3f;
+
 }
 

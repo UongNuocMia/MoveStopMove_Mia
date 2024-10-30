@@ -9,14 +9,16 @@ public class GameManager : Singleton<GameManager>
 {
     //[SerializeField] UserData userData;
     //[SerializeField] CSVData csv;
-    [SerializeField] private Camera cameraUI;
+    [SerializeField] private Transform effectHolder;
+    
     [SerializeField] private DynamicJoystick dynamicJoystick;
-
     [SerializeField] private HatDataSO hatDataSO;
     [SerializeField] private WeaponDataSO weaponDataSO;
+    [SerializeField] private EffectDataSO effectDataSO;
     [SerializeField] private MaterialsDataSO colorDataSO;
     [SerializeField] private MaterialsDataSO pantDataSO;
     [SerializeField] private CharacterNameDataSO characterNameDataSO;
+
 
     private List<string> nameList = new();
     private static GameState gameState = GameState.MainMenu;
@@ -27,8 +29,9 @@ public class GameManager : Singleton<GameManager>
     public int CoinReceive { private set; get; }
 
     public bool IsMaxLevel { private set; get; }
+
+    public Transform EffectHolder => effectHolder;
     public Player Player { private set; get; }
-    public Camera CameraUI => cameraUI;
     public DynamicJoystick DynamicJoystick => dynamicJoystick;
 
 
@@ -86,7 +89,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void PrepareLevel()
     {
-        Level = 3;//UserData.Ins.GetLevel();
+        Level = UserDataManager.Ins.GetLevel();
         LevelManager.Ins.OnLoadMap();
         Player = Spawner.Ins.GetPlayer();
         CameraFollow.Ins.FindCharacter(Player.CharacterVisual);
@@ -120,13 +123,13 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
+            Player.ChangeAnim(Constants.ISWIN_ANIM);
             AudioManager.Ins.PlaySFX(ESound.Win);
             UIManager.Ins.OpenUI<WinUI>();
         }
     }
     public void OnNextLevel()
     {
-        Level = 3;
         Level = Level += 1;
         if (Level >= LevelManager.Ins.TotalLevelNum)
         {
@@ -186,7 +189,6 @@ public class GameManager : Singleton<GameManager>
 
     public string GetRandomName()
     {
-
         List<string> availableNames = characterNameDataSO.NameList.Where(name => !nameList.Contains(name)).ToList();
 
         if (availableNames.Count == 0)
@@ -211,6 +213,11 @@ public class GameManager : Singleton<GameManager>
     public void RemoveAllName()
     {
         nameList.Clear();
+    }
+
+    public Effect GetEffect(EEffectType effectType)
+    {
+        return effectDataSO.GetEffect((int)effectType);
     }
 
     public int CalculateGoldReceive(float score, int rank )

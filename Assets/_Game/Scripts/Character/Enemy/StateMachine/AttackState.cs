@@ -7,8 +7,8 @@ public class AttackState : IState<Bot>
     private float timeToDoNext;
     public void OnEnter(Bot bot)
     {
-        timeToAttack = 1f;
-        timeToDoNext = 2.5f;
+        timeToAttack = 0.5f;
+        timeToDoNext = 2f;
     }
 
     public void OnExecute(Bot bot)
@@ -23,7 +23,6 @@ public class AttackState : IState<Bot>
             {
                 bot.ChangeState(new MoveState());
             }
-
         }
     }
 

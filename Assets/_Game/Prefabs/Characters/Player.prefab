@@ -435,6 +435,7 @@ Transform:
   - {fileID: 7725759506728793666}
   - {fileID: 7549849548926348341}
   - {fileID: 4983084123875059490}
+  - {fileID: 7623086327851313105}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &5148882491249915562
@@ -482,6 +483,7 @@ MonoBehaviour:
   anim: {fileID: 634903967388350630}
   hatPoint: {fileID: 3975975006201803963}
   shootPoint: {fileID: 7549849548926348341}
+  hitEff_Pos: {fileID: 7623086327851313105}
   weaponPoint: {fileID: 9024102757054210451}
   characterVisual: {fileID: 7725759506728793666}
   attackArea: {fileID: 110855260935208545}
@@ -604,6 +606,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8598555742092679268}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5924924125577523436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7623086327851313105}
+  m_Layer: 0
+  m_Name: HitEff_Pos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7623086327851313105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5924924125577523436}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
