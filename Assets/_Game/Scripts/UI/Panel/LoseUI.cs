@@ -13,6 +13,10 @@ public class LoseUI : UICanvas
     [SerializeField] private GameObject timeOutImageGO;
 
 
+    private void Start()
+    {
+        continueButton.onClick.AddListener(ContinueButton);
+    }
     private void OnEnable()
     {
         backgroundPanel.localScale = new Vector3(backgroundPanel.localScale.x, 0);
@@ -51,8 +55,6 @@ public class LoseUI : UICanvas
             string killerString = string.Format("You've been killed by\n<color=#{0}>{1}</color>", killerColorHex, GameManager.Ins.Player.Killer.CharacterName);
             killerText.SetText(killerString);
         }
-
-        continueButton.onClick.AddListener(ContinueButton);
     }
 
     private void AnimSetup()

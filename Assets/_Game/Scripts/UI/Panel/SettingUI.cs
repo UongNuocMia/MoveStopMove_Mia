@@ -18,6 +18,13 @@ public class SettingUI : UICanvas
     private bool isMuteSound;
     private bool isMuteMusic;
 
+    private void Start()
+    {
+        exitButton.onClick.AddListener(CloseButton);
+        musicButton.onClick.AddListener(OnMusicButtonClick);
+        soundButton.onClick.AddListener(OnSoundButtonClick);
+        vibrationButton.onClick.AddListener(VibrationToggle);
+    }
     private void OnEnable()
     {
         OnEnableAnim();
@@ -38,12 +45,6 @@ public class SettingUI : UICanvas
         vibrationToggle.onValueChanged.AddListener(OnSwitchVibrationToggle);
 
         buttonGroup.SetActive(GameManager.IsState(GameState.GamePlay));
-
-        exitButton.onClick.AddListener(CloseButton);
-        musicButton.onClick.AddListener(OnMusicButtonClick);
-        soundButton.onClick.AddListener(OnSoundButtonClick);
-        vibrationButton.onClick.AddListener(VibrationToggle);
-
     }
     public void OnSoundButtonClick()
     {

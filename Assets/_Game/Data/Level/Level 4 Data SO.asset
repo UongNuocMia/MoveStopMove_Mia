@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelID: 3
   LevelType: 2
-  MaxCharacter: 35
+  MaxCharacter: 40
   Time: 120
   MapWidth: 21.5
   MapHeight: 18

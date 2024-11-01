@@ -15,6 +15,7 @@ public class UserDataManager : Singleton<UserDataManager>
     private static string SFX_KEY = "PlayerSoundKey";
     private static string MUSIC_KEY = "PlayerMusicKey";
     private static string VIBRATION_KEY = "PlayerVibrationKey";
+    private static string MAXLEVEL_KEY = "MaxLevelKey";
 
     private SaveItemShopData saveItemHatData;
 
@@ -34,7 +35,17 @@ public class UserDataManager : Singleton<UserDataManager>
     {
         PlayerPrefs.SetInt(lEVEL_KEY, level);
     }
-    public int GetLevel()=> PlayerPrefs.GetInt(lEVEL_KEY);
+    public int GetLevel() => PlayerPrefs.GetInt(lEVEL_KEY, 0);
+
+    public void SetMaxLevel(bool isMax)
+    {
+        PlayerPrefs.SetInt(MAXLEVEL_KEY, isMax ? 1 : 0);
+    }
+    public bool IsMaxLevel()
+    {
+        bool isMax = PlayerPrefs.GetInt(MAXLEVEL_KEY, 0) == 1;
+        return isMax;
+    }
 
     public void SetWeapon(EWeaponType weaponType)
     {

@@ -11,15 +11,15 @@ public class WinUI : UICanvas
     private Effect winEff;
     private float defaultSize = 1;
 
+    private void Start()
+    {
+        continueButton.onClick.AddListener(ContinueButton);
+    }
+
     private void OnEnable()
     {
         Init();
         AnimSetup();
-
-        //winEff = GameManager.Ins.GetEffect(EEffectType.Win_VFX);
-        //ParticlePool.Play(winEff.ThisEffect,
-        //    new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, -13.5f),
-        //    Quaternion.identity);
     }
 
     private void OnDisable()
@@ -32,7 +32,6 @@ public class WinUI : UICanvas
         backgroundPanel.localScale = new Vector3(backgroundPanel.localScale.x, 0);
 
         coinText.SetText($"{GameManager.Ins.CoinReceive}");
-        continueButton.onClick.AddListener(ContinueButton);
 
     }
     public void ContinueButton()

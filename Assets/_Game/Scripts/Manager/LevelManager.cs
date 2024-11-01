@@ -89,13 +89,11 @@ public class LevelManager : Singleton<LevelManager>
         yield return new WaitForSeconds(onGroundTime);
         bot.OnHideVisual(true);
         reviveTime -= Time.deltaTime;
-
+        yield return new WaitForSeconds(reviveTime);
         if (GetCharacterRemain() > GetCharacterOnGround())
         {
-            yield return new WaitForSeconds(reviveTime);
-            if (!GameManager.IsState(GameState.GamePlay)) yield break; ;
+            if (!GameManager.IsState(GameState.GamePlay)) yield break;
             bot.OnRevive();
-            Debug.Log($"{bot.CharacterName} đã hồi sinh!");
         }
     }
 

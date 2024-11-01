@@ -34,6 +34,12 @@ public class ShopUI : UICanvas
     private List<EPantType> pantTypeList;
     private List<EWeaponType> weaponTypeList;
 
+    private void Start()
+    {
+        buyButton.onClick.AddListener(OnBuyClick);
+        equipButton.onClick.AddListener(OnEquipClick);
+        un_equipButton.onClick.AddListener(OnUnequipClick);
+    }
     private void OnEnable()
     {
         Init();
@@ -46,9 +52,6 @@ public class ShopUI : UICanvas
         weaponTypeList = UserDataManager.Ins.GetPurchaseWeaponList();
         SetCoin();
         OnTabChange(0);
-        buyButton.onClick.AddListener(OnBuyClick);
-        equipButton.onClick.AddListener(OnEquipClick);
-        un_equipButton.onClick.AddListener(OnUnequipClick);
     }
     private void UpdateTabActivity(int activeTabID)
     {

@@ -134,6 +134,7 @@ public class GameManager : Singleton<GameManager>
         if (Level >= LevelManager.Ins.TotalLevelNum)
         {
             IsMaxLevel = true;
+            UserDataManager.Ins.SetMaxLevel(true);
             Level = 0;
         }
         UserDataManager.Ins.SetLevel(Level);
@@ -145,7 +146,11 @@ public class GameManager : Singleton<GameManager>
         CameraFollow.Ins.OnChangeOffSet(gameState);
         Player.ChangeAnim(Constants.ISDANCE_ANIM);
     }
-    public void IsPlayAgain(bool isPlayAgain) => IsMaxLevel = !isPlayAgain;
+    public void IsPlayAgain(bool isPlayAgain) 
+    {
+        IsMaxLevel = !isPlayAgain;
+        UserDataManager.Ins.SetMaxLevel(false);
+    } 
     public Weapon GetWeapon(EWeaponType weaponType)
     {
        return weaponDataSO.GetWeapon((int)weaponType);

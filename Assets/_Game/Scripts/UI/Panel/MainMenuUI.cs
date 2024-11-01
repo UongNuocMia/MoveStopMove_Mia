@@ -9,16 +9,24 @@ public class MainMenuUI : UICanvas
     [SerializeField] private RectTransform gameOverPanel, logoRect, shopButtonRect, settingButtonRect, tapToPlayRect, coinRect;
     [SerializeField] private RectTransform shopPosOnScreen, settingPosOnScreen, ttpPos, coinPos;
     private float defaultLogoSize = 1;
-    [SerializeField] private GameObject mask;
+    [SerializeField] private GameObject mask, maskInCredit, pressToPlayAgain;
     private Tween tapToPlayTween;
 
     private void OnEnable()
     {
-        if (GameManager.Ins.IsMaxLevel)
+        if (UserDataManager.Ins.IsMaxLevel())
         {
             gameOverPanel.gameObject.SetActive(true);
+            Invoke(nameof(OnCreditDone), 4f);
         }
         OnEnalbeAnim();
+    }
+
+    public void OnCreditDone()
+    {
+        Debug.Log("Activity");
+        pressToPlayAgain.SetActive(true);
+        maskInCredit.SetActive(true);
     }
 
     public void PlayAgain()
