@@ -81,7 +81,6 @@ public class GameManager : Singleton<GameManager>
     private void OnMainMenu()
     {
         UIManager.Ins.OpenUI<MainMenuUI>();
-        AudioManager.Ins.PlayMusic(ESound.ThemeMusicOnMainMenu);
         if (IsNewGame)
             PrepareLevel();
         CameraFollow.Ins.OnChangeOffSet(gameState);
@@ -89,6 +88,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void PrepareLevel()
     {
+        AudioManager.Ins.PlayMusic(ESound.ThemeMusicOnMainMenu);
         Level = UserDataManager.Ins.GetLevel();
         LevelManager.Ins.OnLoadMap();
         Player = Spawner.Ins.GetPlayer();

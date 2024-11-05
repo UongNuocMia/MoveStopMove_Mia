@@ -105,6 +105,7 @@ public class ShopUI : UICanvas
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
+            Debug.Log(" debug ne ");
             UserDataManager.Ins.SetCoin(500);
         }
     }

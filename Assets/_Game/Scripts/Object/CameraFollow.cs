@@ -44,7 +44,7 @@ public class CameraFollow : Singleton<CameraFollow>
                 break;
         }
     }
-    private void Update()
+    private void LateUpdate()
     {
         if (target != null)
         {

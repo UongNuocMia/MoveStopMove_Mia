@@ -17,10 +17,10 @@ public class AttackArea : MonoBehaviour
     {
         if (other.CompareTag(Constants.CHARACTER_TAG))
         {
-            Character enemy = other.GetComponent<Character>();
+            Character enemy = Cache.GetCharacter(other);
             character.OnEnemyGetInArea(enemy);
             if (character is Player && GameManager.IsState(GameState.GamePlay) && !enemy.IsDead)
-                enemy.GetComponent<Bot>().OnHideTargetSprite(false);
+                Cache.GetBot(other).OnHideTargetSprite(false);
 
         }
         if (character is Player && other.CompareTag(Constants.OBSTACLE_TAG))
@@ -33,10 +33,10 @@ public class AttackArea : MonoBehaviour
     {
         if (other.CompareTag(Constants.CHARACTER_TAG))
         {
-            Character enemy = other.GetComponent<Character>();
+            Character enemy = Cache.GetCharacter(other);
             character.OnEnemyGetOutArea(enemy);
             if (character is Player)
-                enemy.GetComponent<Bot>().OnHideTargetSprite(true);
+                Cache.GetBot(other).OnHideTargetSprite(true);
         }
         if (character is Player && other.CompareTag(Constants.OBSTACLE_TAG))
         {

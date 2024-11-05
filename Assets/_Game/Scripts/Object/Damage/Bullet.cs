@@ -37,6 +37,7 @@ public class Bullet : GameUnit, IInteractable
     }
     private void OnDespawn()
     {
+        SimplePool.Despawn(this);
         isSpawn = false;
         rb.velocity = Vector3.zero;
         OnHideVisual(true);

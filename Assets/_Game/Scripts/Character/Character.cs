@@ -166,7 +166,7 @@ public class Character : GameUnit
         Character character = null;
         foreach (var characterNear in CharacterInAreaList)
         {
-            if (Vector3.Distance(TF.position, characterNear.TF.position) < distance && !characterNear.IsDead)
+            if (Vector3.Distance(TF.position, characterNear.TF.position) <= distance && !characterNear.IsDead)
                 character = characterNear;
         }
         return character;
@@ -180,6 +180,7 @@ public class Character : GameUnit
         attackArea.SetScale(attackArea.transform.localScale.x + upSize);
 
         shootPoint.localPosition = new Vector3(shootPoint.localPosition.x, shootPoint.localPosition.y, shootPoint.localPosition.y + upSize);
+        AudioManager.Ins.PlaySFX(ESound.SizeUp);
     }
 
     protected void ResetSize()

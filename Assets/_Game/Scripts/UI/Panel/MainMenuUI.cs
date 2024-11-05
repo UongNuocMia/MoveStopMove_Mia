@@ -14,12 +14,13 @@ public class MainMenuUI : UICanvas
 
     private void OnEnable()
     {
+        Canvas.ForceUpdateCanvases();
         if (UserDataManager.Ins.IsMaxLevel())
         {
             gameOverPanel.gameObject.SetActive(true);
             Invoke(nameof(OnCreditDone), 4f);
         }
-        OnEnalbeAnim();
+        Invoke(nameof(OnEnalbeAnim), 0.1f);
     }
 
     public void OnCreditDone()

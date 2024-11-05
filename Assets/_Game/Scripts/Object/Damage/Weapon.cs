@@ -23,13 +23,13 @@ public class Weapon : GameUnit
     }
     public void Fire()
     {
-        //OnHideVisual(true);
-        if (bullet == null)
-        {
+        ////OnHideVisual(true);
+        //if (bullet == null)
+        //{
             bullet = SimplePool.Spawn<Bullet>(bulletPrefabs, owner.ShootPoint.position, Quaternion.identity);
             bullet.SetOwner(owner);
             bullet.SetAttackSpeed(owner.AttackSpeed);
-        }       
+        //}       
         bullet.SetPosition(owner.ShootPoint.position);
         bullet.OnFire();
     }

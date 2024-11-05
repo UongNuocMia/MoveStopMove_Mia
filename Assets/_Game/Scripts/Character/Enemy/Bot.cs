@@ -70,6 +70,7 @@ public class Bot : Character
     public override void OnPrepareGame()
     {
         base.OnPrepareGame();
+        OnHideTargetSprite(true);
         ChangeState(new IdleState());
         OnHideVisual(false);
     }
@@ -127,6 +128,7 @@ public class Bot : Character
         Score = 0;
         ChangeState(new MoveState());
         waypoint_Indicator.enabled = true;
+        waypoint_Indicator.textDescription = Score.ToString();
         CharacterName = GameManager.Ins.GetRandomName();
         SetName();
     }
